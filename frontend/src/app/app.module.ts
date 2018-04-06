@@ -8,6 +8,7 @@ import { AddPublicQuestionComponent } from './homePage/add-public-question/add-p
 import { PublicQuestionComponent } from './homePage/public-question/public-question.component';
 import { CommentComponent } from './comment/comment.component';
 import { PublicQuestionListComponent } from './homepage/public-question-list/public-question-list.component';
+import { HomepageComponent } from './homePage/homepage/homepage.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { PublicQuestionListComponent } from './homepage/public-question-list/pub
     AddPublicQuestionComponent,
     PublicQuestionComponent,
     CommentComponent,
-    PublicQuestionListComponent
+    PublicQuestionListComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule, SuiModule
