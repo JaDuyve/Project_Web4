@@ -1,0 +1,15 @@
+
+<form class="ui segment form" [formGroup]='question' (ngSubmit)='onSubmit()'>
+  <div class="field">
+    <label for="ques">Add Question</label>
+    <input id="q" name="ques" formControlName='description' #spy>
+  </div>
+  <button type='submit' class="ui positive right button">
+    add question
+  </button>
+</form>
+
+REMOVE {{ question.value | json }}
+<br> {{ question.get("description").errors | json}}
+<br> {{ question.valid }}
+<br> {{spy.className}}

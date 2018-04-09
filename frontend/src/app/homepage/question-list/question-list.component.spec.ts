@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPublicQuestionComponent } from './add-public-question.component';
+import { QuestionListComponent } from './question-list.component';
 
-describe('AddPublicQuestionComponent', () => {
-  let component: AddPublicQuestionComponent;
-  let fixture: ComponentFixture<AddPublicQuestionComponent>;
+describe('QuestionListComponent', () => {
+  let component: QuestionListComponent;
+  let fixture: ComponentFixture<QuestionListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddPublicQuestionComponent ]
+      declarations: [ QuestionListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddPublicQuestionComponent);
+    fixture = TestBed.createComponent(QuestionListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,8 +1,7 @@
-import {Comment} from "../../comment/comment.module";
+import {Comment} from './comment.model'
 
-export class PublicQuestion {
+export class Question {
     private _id: string;
-    private _title: string;
     private _description: string;
     private _created: Date;
     private _author: string;
@@ -11,15 +10,13 @@ export class PublicQuestion {
     private _comments: Comment[];
 
     constructor(
-        title: string,
         description: string,
-        created: Date = new Date,
         author: string,
         likes: number = 0,
         dislikes: number = 0,
+        created: Date = new Date,
         comments: Comment[] = new Array()) {
         
-        this._title = title;
         this._description = description;
         this._created = created;
         this._author = author;
@@ -31,10 +28,6 @@ export class PublicQuestion {
 
     get id(): string {
         return this._id;
-    }
-
-    get title(): string{
-        return this._title;
     }
 
     get description(): string {
@@ -61,14 +54,13 @@ export class PublicQuestion {
         return this._comments;
     }
 
-    static fromJSON(json: any): PublicQuestion {
-        const pq = new PublicQuestion(
-            json.title,
+    static fromJSON(json: any): Question {
+        const pq = new Question(
             json.description,
-            json.created,
             json.author,
             json.likes,
             json.dislikes,
+            json.created,
             json.comments
         );
 

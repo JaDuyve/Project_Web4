@@ -1,27 +1,26 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { HomepageModule } from './homepage/homepage.module';
+import { AppRoutingModule } from './app-routing.models';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {SuiModule} from 'ng2-semantic-ui';
+import { NgSemanticModule } from 'ng-semantic';
 
 
 import { AppComponent } from './app.component';
-import { AddPublicQuestionComponent } from './homePage/add-public-question/add-public-question.component';
-import { PublicQuestionComponent } from './homePage/public-question/public-question.component';
-import { CommentComponent } from './comment/comment.component';
-import { PublicQuestionListComponent } from './homepage/public-question-list/public-question-list.component';
-import { HomepageComponent } from './homePage/homepage/homepage.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AddPublicQuestionComponent,
-    PublicQuestionComponent,
-    CommentComponent,
-    PublicQuestionListComponent,
-    HomepageComponent
+    AppComponent
+
   ],
   imports: [
-    BrowserModule, SuiModule
+    BrowserModule,
+    ReactiveFormsModule,
+    HomepageModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

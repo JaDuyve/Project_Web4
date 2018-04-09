@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('studybud App', () => {
+describe('frontend App', () => {
   let page: AppPage;
 
   beforeEach(() => {

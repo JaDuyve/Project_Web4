@@ -1,7 +1,6 @@
 let mongoose = require('mongoose');
 
 let QuestionSchema = new mongoose.Schema({
-    title: String,
     description: String,
     created: Date,
     author: String,

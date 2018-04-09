@@ -1,0 +1,7 @@
+<add-question (newQuestion)="addPublicQuestion($event)"></add-question>
+<div class="ui segment basic">
+  <div class="ui cards">
+    <question *ngFor="let question of questions" [question]="question"></question>
+  </div>
+  
+</div>
