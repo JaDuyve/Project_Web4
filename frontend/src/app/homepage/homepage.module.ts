@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommentComponent } from './comment/comment.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
         
     ],
     declarations: [
+        CommentComponent,
         QuestionComponent,        
         QuestionListComponent,
         AddQuestionComponent,

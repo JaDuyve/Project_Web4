@@ -24,9 +24,9 @@ export class AddQuestionComponent implements OnInit {
   }
 
   onSubmit() {
-    const question = new Question(this.question.value.description, "jari");
+    const quest = new Question(this.question.value.description, 'jari');
         
-    this.newQuestion.emit(question);
+    this.newQuestion.emit(quest);
   }
 
 }

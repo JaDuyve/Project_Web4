@@ -1,13 +1,48 @@
-<div class="ui card">
+<div class="event ui segment">
+
+  <div class="label">
+    <img src="elliot.jpg">
+  </div>
   <div class="content">
-    <div class="header">
-      Question
+    <div class="summary">
+      <a>{{question.author}}</a> asked
+      <div class="date">
+        {{question.created | date: 'longDate'}}
+      </div>
     </div>
-    <div class="meta">
-      {{question.created | date: 'longDate' | uppercase}}
-    </div>
-    <div class="description">
+    <div class="extra text">
       {{question.description}}
     </div>
+    <div class="meta">
+      <a class="like" (click)="addLike()">
+        <i class="thumbs up icon"></i> {{question.likes}}
+      </a>
+      <a class="like" (click)="addDislike()">
+        <i class="thumbs down icon"></i> {{ question.dislikes}}
+      </a>
+      <a (click)="showModal()">answer</a>
+    </div>
+    <comment *ngFor="let comment of question.comments" [comment]="comment"></comment>
+  </div>
+
+</div>
+
+<div class="ui small modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Add a comment
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="field">
+        <label></label>
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="actions">
+    <div class="ui button">Cancel</div>
+    <div class="ui green button">Send</div>
   </div>
 </div>

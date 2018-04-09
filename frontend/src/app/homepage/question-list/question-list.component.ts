@@ -41,4 +41,15 @@ export class QuestionListComponent implements OnInit {
     );
   }
 
+  removeQuestion(question: Question) {
+    this._questionDataService.removeQuestion(question).subscribe(
+      item => (this._questions = this._questions.filter(val => item.id !== val.id)),
+      (error: HttpErrorResponse) => {
+        this.errorMsg = `Error ${error.status} while removing question for ${
+          question.description
+          }: ${error.error}`;
+      }
+    );
+  }
+
 }

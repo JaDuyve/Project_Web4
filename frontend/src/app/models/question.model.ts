@@ -14,7 +14,7 @@ export class Question {
         author: string,
         likes: number = 0,
         dislikes: number = 0,
-        created: Date = new Date,
+        created: Date = new Date(),
         comments: Comment[] = new Array()) {
         
         this._description = description;
@@ -54,6 +54,14 @@ export class Question {
         return this._comments;
     }
 
+    addLike(){
+        this._likes++;
+    }
+
+    addDislike(){
+        this._dislikes++;
+    }
+
     static fromJSON(json: any): Question {
         const pq = new Question(
             json.description,
@@ -67,5 +75,17 @@ export class Question {
         pq._id = json._id;
 
         return pq;
+    }
+
+    toJSON() {
+        return {
+            _id: this._id,
+            description: this._description,
+            author: this._author,
+            likes: this._likes,
+            dislikes: this._dislikes,
+            created: this._created,
+            comments: this._comments.map(i => i.toJSON())
+        };
     }
 }

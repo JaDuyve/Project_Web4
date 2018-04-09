@@ -26,6 +26,8 @@ router.post('/API/questions', function (req, res, next) {
     if (err) {
       return next(err);
     }
+    console.log(req.body.description +" " + req.body.author);
+
     let question = new Question({
       description: req.body.description,
       created: req.body.created,
@@ -33,6 +35,7 @@ router.post('/API/questions', function (req, res, next) {
       likes: req.body.likes,
       dislikes: req.body.dislikes
     });
+    console.log(question);
 
     question.comments = comm;
     question.save(function (err, q) {
@@ -44,6 +47,41 @@ router.post('/API/questions', function (req, res, next) {
       
       res.json(q);
     });
+  });
+});
+
+router.param('question', function(req, res, next, id) {
+  let query = Question.findById(id);
+  query.exec(function(err, question) {
+    if (err) {
+      return next(err);
+    }
+    if (!question) {
+      return next(new Error('not found ' + id));
+    }
+    req.question = question;
+    return next();
+  });
+});
+
+router.delete('/API/question/:question', function(req, res) {
+  Comment.remove({ _id: { $in: req.question.comments } }, function(err) {
+    if (err) return next(err);
+    req.question.remove(function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.json(req.question);
+    });
+  });
+});
+
+router.put('/API/question/:question', function(req, res) {
+  req.question.save(function(err){
+    if (err) {
+      return next(err);
+    }
+    res.json(req.question);
   });
 });
 

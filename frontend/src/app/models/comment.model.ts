@@ -76,4 +76,17 @@ export class Comment {
 
         return comment;
     }
+
+    toJSON() {
+        return {
+            _id: this._id,
+            message: this._message,
+            created: this._created,
+            author: this._author,
+            likes: this._likes,
+            dislikes: this._dislikes,
+            comments: this._comments.map(i => i.toJSON()),
+            questionId: this._questionId
+        }
+    }
 }
