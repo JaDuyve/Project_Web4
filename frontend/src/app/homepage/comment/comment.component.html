@@ -1,3 +1,48 @@
-<p>
-  comment works!
-</p>
+<a class="avatar">
+  <img src="/images/avatar/small/matt.jpg">
+</a>
+<div class="content">
+  <a class="author">
+    {{comment.author}}
+  </a>
+  <div class="metadata">
+    <span class="date">
+        {{comment.created | date: 'longDate'}}    </span>
+  </div>
+  <div class="text">
+    {{comment.message}} {{comment.id}}
+  </div>
+  <div class="actions">
+    <a class="like" (click)="addLike()">
+      <i class="thumbs up icon"></i> {{comment.likes}}
+    </a>
+    <a class="like" (click)="addDislike()">
+      <i class="thumbs down icon"></i> {{ comment.dislikes}}
+    </a>
+    <a (click)="showModal()">Reply</a>
+  </div>
+</div>
+
+
+<div class="ui small modal {{comment.id}}">
+  <i class="close icon"></i>
+  <div class="header">
+    Add a comment
+  </div>
+  <div class="content">
+    <form class="ui form" [formGroup]="newComment">
+      <div class="field">
+        <label></label>
+        <textarea name="" id="" cols="30" rows="10" formControlName='message' #spy></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Cancel</div>
+    <div (click)='onSubmitComment()' class="ui green button">Send</div>
+  </div>
+  <!-- REMOVE {{ comment.value | json }}
+    <br> {{ comment.get("message").errors | json}}
+    <br> {{ comment.valid }}
+    <br> {{spy.className}} -->
+</div>

@@ -1,38 +1,35 @@
 export class Comment {
-    
+    private _id: string;
     private _message: string;
     private _created: Date;
     private _author: string;
     private _likes: number;
     private _dislikes: number;
     private _comments: Comment[];
-    private _id: string;
     private _questionId: string;
 
     constructor(
         message: string,
-        created: Date = new Date,
         author: string,
+        questionId?: string,
+        created: Date = new Date,
         likes: number = 0,
         dislikes: number = 0,
         comments: Comment[] = new Array(),
-        questionId?: string) {
-        
+    ) {
+
         this._message = message;
-        this._created = created;
         this._author = author;
+        this._questionId = questionId;
+        this._created = created;
         this._likes = likes;
         this._dislikes = dislikes;
         this._comments = comments;
-        this._questionId = questionId;
-
     }
 
-    get id(): string {
-        return this._id;
-    }
 
-    get message(): string{
+
+    get message(): string {
         return this._message;
     }
 
@@ -41,7 +38,7 @@ export class Comment {
         return this._created;
     }
 
-    get author() : string{
+    get author(): string {
         return this._author;
     }
 
@@ -53,7 +50,7 @@ export class Comment {
         return this._dislikes;
     }
 
-    get comments(): Comment[]{
+    get comments(): Comment[] {
         return this._comments;
     }
 
@@ -61,19 +58,34 @@ export class Comment {
         return this._questionId;
     }
 
+    get id(): string {
+        return this._id;
+    }
+
+    addLike() {
+        this._likes++;
+    }
+
+    addDislike() {
+        this._dislikes++;
+    }
+
+    addComment(comment: Comment) {
+        this._comments.push(comment);
+    }
+
     static fromJSON(json: any): Comment {
         const comment = new Comment(
             json.message,
-            json.created,
             json.author,
+            json.questionId,
+            json.created,
             json.likes,
             json.dislikes,
             json.comments,
-            json.questionId
         );
 
         comment._id = json._id;
-
         return comment;
     }
 

@@ -1,48 +1,51 @@
-<div class="event ui segment">
-
-  <div class="label">
-    <img src="elliot.jpg">
+<div class="label">
+  <img src="elliot.jpg">
+</div>
+<div class="content">
+  <div class="summary">
+    <a>{{question.author}}</a> asked
+    <div class="date">
+      {{question.created | date: 'longDate'}}
+    </div>
   </div>
-  <div class="content">
-    <div class="summary">
-      <a>{{question.author}}</a> asked
-      <div class="date">
-        {{question.created | date: 'longDate'}}
-      </div>
-    </div>
-    <div class="extra text">
-      {{question.description}}
-    </div>
-    <div class="meta">
-      <a class="like" (click)="addLike()">
-        <i class="thumbs up icon"></i> {{question.likes}}
-      </a>
-      <a class="like" (click)="addDislike()">
-        <i class="thumbs down icon"></i> {{ question.dislikes}}
-      </a>
-      <a (click)="showModal()">answer</a>
-    </div>
-    <comment *ngFor="let comment of question.comments" [comment]="comment"></comment>
+  <div class="extra text">
+    {{question.description}} 
   </div>
-
+  <div class="meta">
+    <a class="like" (click)="addLike()">
+      <i class="thumbs up icon"></i> {{question.likes}}
+    </a>
+    <a class="like" (click)="addDislike()">
+      <i class="thumbs down icon"></i> {{ question.dislikes}}
+    </a>
+    <a (click)="showModal()">reply</a>
+  </div>
+  <div class="ui threaded comments">
+    <comment class="comment" *ngFor="let comment of question.comments" [comment]="comment"></comment>
+  </div>
 </div>
 
-<div class="ui small modal">
+
+
+<div class="ui small modal {{question.id}}">
   <i class="close icon"></i>
   <div class="header">
     Add a comment
   </div>
   <div class="content">
-    <div class="ui form">
+    <form class="ui form" [formGroup]="comment">
       <div class="field">
         <label></label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <textarea name="" id="" cols="30" rows="10" formControlName='message' #spy></textarea>
       </div>
-    </div>
-
+    </form>
   </div>
   <div class="actions">
-    <div class="ui button">Cancel</div>
-    <div class="ui green button">Send</div>
+    <div class="ui ok button">Cancel</div>
+    <div (click)='onSubmitComment()' class="ui green ok button">Send</div>
   </div>
+  <!-- REMOVE {{ comment.value | json }}
+  <br> {{ comment.get("message").errors | json}}
+  <br> {{ comment.valid }}
+  <br> {{spy.className}} -->
 </div>

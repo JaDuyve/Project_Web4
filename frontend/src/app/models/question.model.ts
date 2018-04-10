@@ -62,6 +62,10 @@ export class Question {
         this._dislikes++;
     }
 
+    addComment(comment: Comment){
+        this._comments.push(comment);
+    }
+
     static fromJSON(json: any): Question {
         const pq = new Question(
             json.description,
@@ -85,7 +89,7 @@ export class Question {
             likes: this._likes,
             dislikes: this._dislikes,
             created: this._created,
-            comments: this._comments.map(i => i.toJSON())
+            comments: this._comments.map(i => i.toJSON)
         };
     }
 }

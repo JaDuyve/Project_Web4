@@ -3,6 +3,7 @@ import { Question } from '../models/question.model';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Comment } from '../models/comment.model';
 
 @Injectable()
 export class QuestionDataService {
@@ -34,7 +35,19 @@ export class QuestionDataService {
     const headers = new HttpHeaders().set("Content-Type", "application/json");
     console.log(question);
     return this.http
-    .put(`${this._appUrl}question/${question.id}`, {quest:question}, {headers})
-    .pipe(map(Question.fromJSON));
+      .put(`${this._appUrl}question/${question.id}`, question, { headers })
+      .pipe(map(Question.fromJSON));
+  }
+
+  addCommentToQuestion(com: Comment, question: Question): Observable<Comment> {
+    const theUrl = `${this._appUrl}question/${question.id}/comments`;
+    return this.http.post(theUrl, com)
+      .pipe(map(Comment.fromJSON));
+  }
+
+  addCommentToComment(newComment: Comment, comment: Comment): Observable<Comment> {
+    const theUrl = `${this._appUrl}comment/${comment.id}/comments`;
+    return this.http.post(theUrl, newComment)
+      .pipe(map(Comment.fromJSON));
   }
 }
