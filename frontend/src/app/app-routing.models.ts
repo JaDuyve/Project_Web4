@@ -3,7 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+//tijdelijk
 const appRoutes: Routes = [
+    {
+        path: 'homepage',
+        canActivate: [AuthGuardService],
+        loadChildren: '../homepage/homepage.module#HomepageModuele'
+    },
     { path: '', redirectTo: 'homepage', pathMatch: 'full' },
     { path: '**', component: PageNotFoundComponent }
 ];
@@ -14,7 +20,7 @@ const appRoutes: Routes = [
     ],
     declarations: [
         PageNotFoundComponent,
-        ],
+    ],
     exports: [
         RouterModule
     ]

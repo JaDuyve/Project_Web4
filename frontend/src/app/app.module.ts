@@ -1,3 +1,4 @@
+import { UserModule } from './user/user.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomepageModule } from './homepage/homepage.module';
 import { AppRoutingModule } from './app-routing.models';
@@ -19,6 +20,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     BrowserModule,
     ReactiveFormsModule,
     HomepageModule,
+    UserModule,
     AppRoutingModule
   ],
   providers: [],
