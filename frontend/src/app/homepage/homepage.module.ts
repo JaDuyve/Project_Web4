@@ -17,7 +17,8 @@ import { QuestionDetailComponent } from './question-detail/question-detail.compo
 const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },
     {
-        path: ':id', component: QuestionDetailComponent,
+        path: ':id', 
+        component: QuestionDetailComponent,
         resolve: { question: QuestionResolverService }
     }
 ];

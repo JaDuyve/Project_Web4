@@ -3,9 +3,6 @@ var router = express.Router();
 let mongoose = require('mongoose');
 let Question = mongoose.model('Question');
 let Comment = mongoose.model('Comment');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = mongoose.model('User');
 let jwt = require('express-jwt');
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });

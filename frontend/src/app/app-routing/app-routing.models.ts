@@ -1,9 +1,9 @@
-import { AuthGuardService } from './user/auth-guard.service';
+import { AuthGuardService } from '../user/auth-guard.service';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HomepageModule } from './homepage/homepage.module';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { HomepageModule } from '../homepage/homepage.module';
 
 //tijdelijk
 const appRoutes: Routes = [
@@ -18,7 +18,7 @@ const appRoutes: Routes = [
 
 @NgModule({
     imports: [
-        HomepageModule,
+        
         RouterModule.forRoot(appRoutes, { enableTracing: true })
     ],
     declarations: [
