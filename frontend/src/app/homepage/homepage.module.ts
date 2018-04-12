@@ -1,3 +1,4 @@
+import { QuestionResolverService } from './question-resolver.service';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionComponent } from './question/question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
@@ -10,10 +11,15 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommentComponent } from './comment/comment.component';
 import { httpInterceptorProviders } from '../http-interceptors';
+import { QuestionDetailComponent } from './question-detail/question-detail.component';
 
 
 const routes: Routes = [
-    { path: 'homepage', component: HomepageComponent }
+    { path: 'homepage', component: HomepageComponent },
+    {
+        path: ':id', component: QuestionDetailComponent,
+        resolve: { question: QuestionResolverService }
+    }
 ];
 
 
@@ -23,16 +29,17 @@ const routes: Routes = [
         ReactiveFormsModule,
         CommonModule,
         RouterModule.forChild(routes),
-        
+
     ],
     declarations: [
         CommentComponent,
-        QuestionComponent,        
+        QuestionComponent,
         QuestionListComponent,
         AddQuestionComponent,
         HomepageComponent,
+        QuestionDetailComponent,
     ],
-    providers: [httpInterceptorProviders, QuestionDataService]
+    providers: [httpInterceptorProviders, QuestionDataService, QuestionResolverService]
 })
 
 export class HomepageModule { }

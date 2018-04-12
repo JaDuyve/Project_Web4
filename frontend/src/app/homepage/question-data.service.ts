@@ -50,4 +50,9 @@ export class QuestionDataService {
     return this.http.post(theUrl, newComment)
       .pipe(map(Comment.fromJSON));
   }
+
+  getQuestion(id: string): Observable<Question> {
+    const theUrl = `${this._appUrl}/question/${id}`;
+    return this.http.get(theUrl).pipe(map(Question.fromJSON));
+  }
 }

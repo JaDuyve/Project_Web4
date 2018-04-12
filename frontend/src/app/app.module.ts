@@ -14,12 +14,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
-    HomepageModule,
     UserModule,
     AppRoutingModule
   ],

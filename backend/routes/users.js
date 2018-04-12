@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/register', function (req, res, next) {
+router.post('/API/users/register', function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json(
       { message: 'Please fill out all fields' });
@@ -27,7 +27,7 @@ router.post('/register', function (req, res, next) {
   });
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/API/users/login', function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json(
       { message: 'Please fill out all fields' });
@@ -42,7 +42,7 @@ router.post('/login', function (req, res, next) {
   })(req, res, next);
 });
 
-router.post('/checkusername', function(req, res, next) {
+router.post('/API/users/checkusername', function(req, res, next) {
   User.find({username: req.body.username}, 
     function(err, result) {
       if (result.length) {
