@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommentComponent } from './comment/comment.component';
 import { httpInterceptorProviders } from '../http-interceptors';
 import { QuestionDetailComponent } from './question-detail/question-detail.component';
+import { GroupComponent } from './group/group.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
         AddQuestionComponent,
         HomepageComponent,
         QuestionDetailComponent,
+        GroupComponent,
     ],
     providers: [httpInterceptorProviders, QuestionDataService, QuestionResolverService]
 })
