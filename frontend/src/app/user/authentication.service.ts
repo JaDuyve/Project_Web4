@@ -4,6 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+function parseJwt(token) {
+  if (!token) {
+    return null;
+  }
+
+  const base64Token = token.split('.')[1];
+  const base64 = base64Token.replace(/-/g, '+').replace(/_/g, '/');
+  return JSON.parse(window.atob(base64));
+}
+
 @Injectable()
 export class AuthenticationService {
   private readonly _tokenKey = 'currentUser';
@@ -12,7 +22,7 @@ export class AuthenticationService {
 
 
   constructor(private http: HttpClient) {
-    let parsedToken = this.parseJwt(localStorage.getItem(this._tokenKey));
+    let parsedToken = parseJwt(localStorage.getItem(this._tokenKey));
     if (parsedToken) {
       const expires = new Date(parseInt(parsedToken.exp, 10) * 1000) < new Date();
       if (expires) {
@@ -30,18 +40,6 @@ export class AuthenticationService {
 
   get token() {
     return this._tokenKey;
-  }
-
- 
-
-  private parseJwt(token) {
-    if (!token) {
-      return null;
-    }
-
-    const base64Token = token.split('.')[1];
-    const base64 = base64Token.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(window.atob(base64));
   }
 
   login(username: string, password: string): Observable<boolean> {

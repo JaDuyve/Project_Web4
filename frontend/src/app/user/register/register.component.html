@@ -1,8 +1,28 @@
-<form [formGroup]='user'>
+<form [formGroup]='user' (ngSubmit)='onSubmit()'>
   <label for="username">username:</label>
   <input type="text" id="username" formControlName='username'>
   <div class='ui pointing red basic label' *ngIf='user.get("username").errors?.userAlreadyExists 
   && user.get("username").touched'>
     a user with that name already exists
   </div>
+</form>
+
+<form class="ui form" [formGroup]='user'>
+  <h4 class="ui dividing header">Sign Up</h4>
+  <label>Name</label>
+  <div class="field">
+    <input type="text" name="first-name" placeholder="username" formControlName='username'>
+  </div>
+  <div [formGroupName]='passwordGroup' class="field">
+    <label>Password</label>
+    <div class="two fields">
+      <div class="field">
+        <input type="text" name="Password" placeholder="Password" formControlName="ConfirmPassword">
+      </div>
+      <div class="field">
+        <input type="text" name="ConfirmPassword" placeholder="Confirm Password" formControlName='ConfirmPassword'>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="ui button" tabindex="0">Sign Up</button>
 </form>
