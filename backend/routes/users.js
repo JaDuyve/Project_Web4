@@ -14,7 +14,6 @@ router.post('/register', function (req, res, next) {
     return res.status(400).json(
       { message: 'Please fill out all fields' });
   }
-
   let user = new User();
   user.username = req.body.username;
   user.setPassword(req.body.password);

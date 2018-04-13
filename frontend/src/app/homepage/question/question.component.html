@@ -19,6 +19,8 @@
       <i class="thumbs down icon"></i> {{ question.dislikes}}
     </a>
     <a (click)="showModal()">reply</a>
+    <a (click)="removeQuestion()">delete</a>
+
   </div>
   <div class="ui threaded comments">
     <comment class="comment" *ngFor="let comment of question.comments" [comment]="comment"></comment>

@@ -16,7 +16,8 @@ import { GroupComponent } from './group/group.component';
 
 
 const routes: Routes = [
-    { path: 'homepage', component: HomepageComponent },
+    {path: 'list', component: QuestionListComponent},
+    {path: 'homepage', component: HomepageComponent},
     {
         path: ':id', 
         component: QuestionDetailComponent,

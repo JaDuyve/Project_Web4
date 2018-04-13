@@ -4,6 +4,10 @@
     <label for="ques">Add Question</label>
     <input id="q" name="ques" formControlName='description' #spy>
   </div>
+  <div class="field">
+    <label for="pic">Add Question</label>
+    <input type="file" id="pic" name="pic" (change)="onFileSelected($event)" >
+  </div>
   <button type='submit' class="ui positive right button">
     add question
   </button>

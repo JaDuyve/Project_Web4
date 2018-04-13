@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../user/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from '../../models/comment.model';
 import { QuestionDataService } from './../question-data.service';
@@ -22,7 +23,8 @@ export class QuestionComponent implements OnInit {
 
   constructor(
     private _questionDataService: QuestionDataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _authenticationService: AuthenticationService
   ) {
 
   }
@@ -66,7 +68,7 @@ export class QuestionComponent implements OnInit {
   }
 
   onSubmitComment() {
-    const comment = new Comment(this.comment.value.message, 'jari', this.question.id);
+    const comment = new Comment(this.comment.value.message, this._authenticationService.user$.value, this.question.id);
 
     this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
       item => (this.question.addComment(item)),

@@ -1,6 +1,6 @@
 import { AuthenticationService } from './../authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   public user: FormGroup;
-  public router: Router;
   public errorMsg: string;
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private _authService: AuthenticationService) { }
 
   ngOnInit() {
@@ -34,10 +34,11 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl(this._authService.redirectUrl);
             this._authService.redirectUrl = undefined;
           }else {
-            this.router.navigate(['/homepage']);
+            this.router.navigate(['/homepage/list']);
           }
         }
       }, err => this.errorMsg = err.json().message);
   }
 
+  // @HostBinding('class') classes = "ui container"; 
 }

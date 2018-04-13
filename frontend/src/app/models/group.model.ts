@@ -1,8 +1,9 @@
 import { Question } from "./question.model";
+import { User } from "./user.model";
 
 export class Group {
     private _id: string;
-    private _users: Array<string>;
+    private _users: User[];
     private _questions: Question[];
     private _groupName: string;
     private _groupCategory: string;
@@ -12,7 +13,7 @@ export class Group {
         groupName: string,
         groupCategory: string,
         closedGroup: boolean,
-        users: Array<string> = new Array(),
+        users: User[] = new Array(),
         questions: Question[] = new Array()
     ){
         this._groupName = groupName,
@@ -34,7 +35,7 @@ export class Group {
         return this._closedGroup;
     }
 
-    get users(): Array<string>{
+    get users(): User[]{
         return this._users;
     }
 

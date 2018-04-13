@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
 let mongoose = require('mongoose');
 let Question = mongoose.model('Question');
 let Comment = mongoose.model('Comment');
 let jwt = require('express-jwt');
+
+let DIR ='./uploads/images/';
+
+let upload = multer ({dest: DIR}).single('photo');
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
@@ -12,7 +17,7 @@ router.get('/', function (req, res, next) {
   res.send('server is up');
 });
 
-router.get('/API/questions', auth,  function (req, res, next) {
+router.get('/API/questions',  function (req, res, next) {
   let query = Question.find().populate('comments');
   query.exec(function (err, questions) {
     if (err) {
@@ -23,16 +28,15 @@ router.get('/API/questions', auth,  function (req, res, next) {
   });
 });
 
-router.get('/API/question/:question', auth,  function (req, res, next) {
+router.get('/API/question/:question',  function (req, res, next) {
   res.json(req.question);
 });
 
-router.post('/API/questions', auth, function (req, res, next) {
+router.post('/API/questions', function (req, res, next) {
   Comment.create(req.body.comments, function (err, comm) {
     if (err) {
       return next(err);
     }
-    console.log(req.body.description + " " + req.body.author);
 
     let question = new Question({
       description: req.body.description,
@@ -41,7 +45,6 @@ router.post('/API/questions', auth, function (req, res, next) {
       likes: req.body.likes,
       dislikes: req.body.dislikes
     });
-    console.log(question);
 
     question.comments = comm;
     question.save(function (err, q) {
@@ -56,7 +59,7 @@ router.post('/API/questions', auth, function (req, res, next) {
   });
 });
 
-router.param('question', auth, function (req, res, next, id) {
+router.param('question', function (req, res, next, id) {
   let query = Question.findById(id);
   query.exec(function (err, question) {
     if (err) {
@@ -70,7 +73,7 @@ router.param('question', auth, function (req, res, next, id) {
   });
 });
 
-router.param('comment', auth, function (req, res, next, id) {
+router.param('comment', function (req, res, next, id) {
   let query = Comment.findById(id);
   query.exec(function (err, comment) {
     if (err) {
@@ -84,7 +87,7 @@ router.param('comment', auth, function (req, res, next, id) {
   });
 });
 
-router.delete('/API/question/:question', auth, function (req, res) {
+router.delete('/API/question/:question', function (req, res) {
   Comment.remove({ _id: { $in: req.question.comments } }, function (err) {
     if (err) return next(err);
     req.question.remove(function (err) {
@@ -96,7 +99,7 @@ router.delete('/API/question/:question', auth, function (req, res) {
   });
 });
 
-router.put('/API/question/:question', auth,  function (req, res) {
+router.put('/API/question/:question',  function (req, res) {
   let question = new Question(req.body);
 
   question.save(function (err) {
@@ -107,7 +110,7 @@ router.put('/API/question/:question', auth,  function (req, res) {
   });
 });
 
-router.post('/API/question/:question/comments', auth,  function (req, res, next) {
+router.post('/API/question/:question/comments',  function (req, res, next) {
   let com = new Comment(req.body);
 
   com.save(function (err, comment) {
@@ -127,7 +130,7 @@ router.post('/API/question/:question/comments', auth,  function (req, res, next)
   });
 });
 
-router.post('/API/comment/:comment/comments', auth, function (req, res, next) {
+router.post('/API/comment/:comment/comments', function (req, res, next) {
   let com = new Comment(req.body);
 
   com.save(function (err, comment) {
@@ -145,5 +148,56 @@ router.post('/API/comment/:comment/comments', auth, function (req, res, next) {
     })
   });
 });
+
+router.get('/API/group/:group',  function (req, res, next) {
+  res.json(req.group);
+});
+
+router.post('/API/groups', function (req, res, next) {
+
+    let group = new Group({
+      
+    });
+    console.log(Group);
+
+    group.questions = [];
+    group.users = [];
+    question.save(function (err, group) {
+      if (err) {
+        // removing questions because we are in a error
+        return next(err);
+      }
+
+      res.json(group);
+    });
+  
+});
+
+router.param('group', function (req, res, next, id) {
+  let query = Group.findById(id);
+  query.exec(function (err, group) {
+    if (err) {
+      return next(err);
+    }
+    if (!group) {
+      return next(new Error('not found ' + id));
+    }
+    req.group = group;
+    return next();
+  });
+});
+
+// Uploading picture
+router.post('/API/uploadfile', function(req, res, next){
+  let path ='';
+  upload(req, res, function(err){
+    if (err){
+      console.log(err);
+      return res.status(422).send("an Error occured ");
+    }
+    path = req.file.path;
+    return res.send("Upload completed for " + path);
+  });
+})
 
 module.exports = router;

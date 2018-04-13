@@ -1,6 +1,10 @@
+import { QuestionDataService } from './../question-data.service';
 import { Question } from './../../models/question.model';
+import {  FileUploader } from 'ng2-file-upload/ng2-file-upload';
+
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthenticationService } from '../../user/authentication.service';
 
 @Component({
   selector: 'add-question',
@@ -12,8 +16,14 @@ export class AddQuestionComponent implements OnInit {
   @Output() public newQuestion = new EventEmitter<Question>();
   private question: FormGroup;
   public errorMsg: string;
+  // public uploader: FileUploader = new FileUploader({});;
+  private selectedFile = null;
 
-  constructor(private fb: FormBuilder) { 
+  constructor(
+    private fb: FormBuilder,
+    private _authenticationService: AuthenticationService,
+    private _questionDataService: QuestionDataService
+  ) { 
     
   }
 
@@ -24,9 +34,14 @@ export class AddQuestionComponent implements OnInit {
   }
 
   onSubmit() {
-    const quest = new Question(this.question.value.description, 'jari');
-        
+    const quest = new Question(this.question.value.description, this._authenticationService.user$.value);
+    
     this.newQuestion.emit(quest);
+    this._questionDataService.uploadFile(this.selectedFile);
+  }
+
+  onFileSelected(event){
+    this.selectedFile = event.target.files[0];
   }
 
 }

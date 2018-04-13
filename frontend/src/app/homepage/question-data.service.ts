@@ -1,7 +1,8 @@
+import { Group } from './../models/group.model';
 import { Injectable } from '@angular/core';
 import { Question } from '../models/question.model';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Comment } from '../models/comment.model';
 
@@ -52,7 +53,36 @@ export class QuestionDataService {
   }
 
   getQuestion(id: string): Observable<Question> {
-    const theUrl = `${this._appUrl}/question/${id}`;
+    const theUrl = `${this._appUrl}question/${id}`;
     return this.http.get(theUrl).pipe(map(Question.fromJSON));
+  }
+
+  getGroup(id: string): Observable<Group> {
+    const theUrl = `${this._appUrl}/group/${id}`;
+    return this.http.get(theUrl).pipe(map(Group.fromJSON));
+  }
+
+  addGroup(group: Group): Observable<Group> {
+    return this.http
+      .post(`${this._appUrl}group/`, group)
+      .pipe(map(Group.fromJSON));
+  }
+
+  uploadFile(file) {
+    const fd = new FormData();
+    fd.append('image', file, file.name);
+    this.http.post('/API/uploadfile', fd,
+      {
+        reportProgress: true,
+        observe: 'events'
+      }
+    ).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+        console.log('Uploaded Progress: ' + Math.round(event.loaded / event.total * 100) + '%')
+      } else if (event.type === HttpEventType.Response) {
+        console.log(event);
+      }
+    });
+
   }
 }

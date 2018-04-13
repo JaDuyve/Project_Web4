@@ -1,3 +1,4 @@
+import { AuthGuardService } from './auth-guard.service';
 import { AuthenticationService } from './authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +23,6 @@ const routes: Routes = [
   declarations: [
     LoginComponent,
     RegisterComponent],
-  providers: [AuthenticationService]
+  providers: [AuthenticationService, AuthGuardService]
 })
 export class UserModule { }

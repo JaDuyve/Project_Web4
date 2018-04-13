@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { AuthenticationService } from './../authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators, FormBuilder, AbstractControl, ValidatorFn, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 
 function passwordValidator(length: number): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } => {
@@ -30,7 +30,9 @@ export class RegisterComponent implements OnInit {
 
   public user: FormGroup;
   public errorMsg: string;
-  constructor(private fb: FormBuilder, private router, Router, private _authenticationService: AuthenticationService) { }
+  private selectedFile = null;
+
+  constructor(private fb: FormBuilder, private router: Router,  private _authenticationService:AuthenticationService) { }
 
   get passwordControl(): FormControl {
     return <FormControl>this.user.get('passwordGroup').get('password');
@@ -70,7 +72,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         val => {
           if (val) {
-            this.router.navigate(['/recipe/list']);
+            this.router.navigate(['/homepage/list']);
           }
         },
         (error: HttpErrorResponse) => {
@@ -82,5 +84,12 @@ export class RegisterComponent implements OnInit {
         }
       );
   }
+
+  onFileSelected(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  @HostBinding('class') classes = "ui container"; 
+
 
 }
