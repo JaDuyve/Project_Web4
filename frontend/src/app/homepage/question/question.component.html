@@ -1,5 +1,5 @@
 <div class="label">
-  <img src="elliot.jpg">
+  <img src="assets/images/elliot.jpg">
 </div>
 <div class="content">
   <div class="summary">
@@ -13,10 +13,10 @@
   </div>
   <div class="meta">
     <a class="like" (click)="addLike()">
-      <i class="thumbs up icon"></i> {{question.likes}}
+      <i class="thumbs up icon"></i> {{question.showAantalLikes()}}
     </a>
     <a class="like" (click)="addDislike()">
-      <i class="thumbs down icon"></i> {{ question.dislikes}}
+      <i class="thumbs down icon"></i> {{ question.showAantalDislikes()}}
     </a>
     <a (click)="showModal()">reply</a>
     <a (click)="removeQuestion()">delete</a>

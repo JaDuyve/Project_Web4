@@ -38,8 +38,9 @@ export class AuthenticationService {
     return this._user$;
   }
 
-  get token() {
-    return this._tokenKey;
+  get token(): string {
+    const localToken = localStorage.getItem(this._tokenKey);
+    return !!localToken ? localToken : '';
   }
 
   login(username: string, password: string): Observable<boolean> {

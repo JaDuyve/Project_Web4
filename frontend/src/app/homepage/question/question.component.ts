@@ -41,14 +41,14 @@ export class QuestionComponent implements OnInit {
   }
 
   addLike(): boolean {
-    this.question.addLike();
+    this.question.addLike(this._authenticationService.user$.value);
     this.updateQuestion(this.question);
 
     return false;
   }
 
   addDislike(): boolean {
-    this.question.addDislike();
+    this.question.addDislike(this._authenticationService.user$.value);
     this.updateQuestion(this.question);
     return false;
   }

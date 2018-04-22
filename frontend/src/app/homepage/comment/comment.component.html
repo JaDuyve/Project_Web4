@@ -7,17 +7,17 @@
   </a>
   <div class="metadata">
     <span class="date">
-        {{comment.created | date: 'longDate'}}    </span>
+      {{comment.created | date: 'longDate'}} </span>
   </div>
   <div class="text">
     {{comment.message}} {{comment.id}}
   </div>
   <div class="actions">
     <a class="like" (click)="addLike()">
-      <i class="thumbs up icon"></i> {{comment.likes}}
+      <i class="thumbs up icon"></i> {{comment.showAantalLikes()}}
     </a>
     <a class="like" (click)="addDislike()">
-      <i class="thumbs down icon"></i> {{ comment.dislikes}}
+      <i class="thumbs down icon"></i> {{ comment.showAantalDislikes()}}
     </a>
     <a (click)="showModal()">Reply</a>
   </div>

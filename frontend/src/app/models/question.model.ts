@@ -5,15 +5,15 @@ export class Question {
     private _description: string;
     private _created: Date;
     private _author: string;
-    private _likes: number;
-    private _dislikes: number;
+    private _likes: Set<string>;
+    private _dislikes: Set<string>;
     private _comments: Comment[];
 
     constructor(
         description: string,
         author: string,
-        likes: number = 0,
-        dislikes: number = 0,
+        likes: Set<string> = new Set(),
+        dislikes: Set<string> = new Set(),
         created: Date = new Date(),
         comments: Comment[] = new Array()) {
         
@@ -42,11 +42,11 @@ export class Question {
         return this._author;
     }
 
-    get likes(): number {
+    get likes(): Set<string> {
         return this._likes;
     }
 
-    get dislikes(): number {
+    get dislikes(): Set<string> {
         return this._dislikes;
     }
 
@@ -54,26 +54,34 @@ export class Question {
         return this._comments;
     }
 
-    addLike(){
-        this._likes++;
+    addLike(username: string){
+        this._likes.add(username);
     }
 
-    addDislike(){
-        this._dislikes++;
+    addDislike(username: string){
+        this._dislikes.add(username);
     }
 
     addComment(comment: Comment){
         this._comments.push(comment);
     }
 
+    showAantalLikes(): number {
+        return this._likes.size;
+    }
+
+    showAantalDislikes(): number {
+        return this._dislikes.size;
+    }
+
     static fromJSON(json: any): Question {
         const pq = new Question(
             json.description,
             json.author,
-            json.likes,
-            json.dislikes,
+            new Set(json.likes),
+            new Set(json.dislikes),
             json.created,
-            json.comments
+            json.comments.map(Comment.fromJSON)
         );
 
         pq._id = json._id;
@@ -86,8 +94,8 @@ export class Question {
             _id: this._id,
             description: this._description,
             author: this._author,
-            likes: this._likes,
-            dislikes: this._dislikes,
+            likes: Array.from(this._likes),
+            dislikes: Array.from(this._dislikes),
             created: this._created,
             comments: this._comments.map(i => i.toJSON)
         };

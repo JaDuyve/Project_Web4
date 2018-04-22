@@ -37,7 +37,7 @@ export class AddQuestionComponent implements OnInit {
     const quest = new Question(this.question.value.description, this._authenticationService.user$.value);
     
     this.newQuestion.emit(quest);
-    this._questionDataService.uploadFile(this.selectedFile);
+    // this._questionDataService.uploadFile(this.selectedFile);
   }
 
   onFileSelected(event){

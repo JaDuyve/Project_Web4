@@ -4,8 +4,8 @@ let QuestionSchema = new mongoose.Schema({
     description: String,
     created: Date,
     author: String,
-    likes: Number,
-    dislikes: Number,
+    likes: [String],
+    dislikes: [String],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'

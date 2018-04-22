@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
   res.send('server is up');
 });
 
-router.get('/API/questions',  function (req, res, next) {
+router.get('/API/questions', auth, function (req, res, next) {
   let query = Question.find().populate('comments');
   query.exec(function (err, questions) {
     if (err) {
@@ -28,15 +28,16 @@ router.get('/API/questions',  function (req, res, next) {
   });
 });
 
-router.get('/API/question/:question',  function (req, res, next) {
+router.get('/API/question/:question',  auth, function (req, res, next) {
   res.json(req.question);
 });
 
-router.post('/API/questions', function (req, res, next) {
+router.post('/API/questions',auth,  function (req, res, next) {
   Comment.create(req.body.comments, function (err, comm) {
     if (err) {
       return next(err);
     }
+
 
     let question = new Question({
       description: req.body.description,
@@ -87,7 +88,21 @@ router.param('comment', function (req, res, next, id) {
   });
 });
 
-router.delete('/API/question/:question', function (req, res) {
+router.param('group', function (req, res, next, id) {
+  let query = Group.findById(id);
+  query.exec(function (err, group) {
+    if (err) {
+      return next(err);
+    }
+    if (!group) {
+      return next(new Error('not found ' + id));
+    }
+    req.group = group;
+    return next();
+  });
+});
+
+router.delete('/API/question/:question', auth, function (req, res) {
   Comment.remove({ _id: { $in: req.question.comments } }, function (err) {
     if (err) return next(err);
     req.question.remove(function (err) {
@@ -99,29 +114,54 @@ router.delete('/API/question/:question', function (req, res) {
   });
 });
 
-router.put('/API/question/:question',  function (req, res) {
-  let question = new Question(req.body);
+router.put('/API/question/:question',  auth, function (req, res) {
+  let question = req.question;
+
+  question.description = req.body.description;
+  question.comments = req.body.comments;
+  question.author = req.body.author;
+  question.likes = req.body.likes;
+  question.dislikes = req.body.dislikes;
+  question.created = req.body.created;
 
   question.save(function (err) {
     if (err) {
-      return next(err);
+      return res.send(err);
     }
     res.json(req.body);
   });
 });
 
-router.post('/API/question/:question/comments',  function (req, res, next) {
-  let com = new Comment(req.body);
+router.put('/API/comment/:comment', auth,  function (req, res) {
+  let comment = req.comment;
 
+  comment.message = req.body.message;
+  comment.comments = req.body.comments;
+  comment.author = req.body.author;
+  comment.likes = req.body.likes;
+  comment.dislikes = req.body.dislikes;
+  comment.created = req.body.created;
+  comment.questionId = req.body.questionId;
+
+  comment.save(function (err) {
+    if (err) {
+      return res.send(err);
+    }
+    res.json(req.body);
+  });
+});
+
+router.post('/API/question/:question/comments',  auth, function (req, res, next) {
+  let com = new Comment(req.body);
   com.save(function (err, comment) {
     if (err) {
       return next(err);
     }
 
     req.question.comments.push(comment);
-
     req.question.save(function (err, question) {
       if (err) {
+
         return next(err);
 
       }
@@ -130,7 +170,7 @@ router.post('/API/question/:question/comments',  function (req, res, next) {
   });
 });
 
-router.post('/API/comment/:comment/comments', function (req, res, next) {
+router.post('/API/comment/:comment', auth, function (req, res, next) {
   let com = new Comment(req.body);
 
   com.save(function (err, comment) {
@@ -149,11 +189,11 @@ router.post('/API/comment/:comment/comments', function (req, res, next) {
   });
 });
 
-router.get('/API/group/:group',  function (req, res, next) {
+router.get('/API/group/:group', auth,  function (req, res, next) {
   res.json(req.group);
 });
 
-router.post('/API/groups', function (req, res, next) {
+router.post('/API/groups', auth, function (req, res, next) {
 
     let group = new Group({
       
@@ -173,22 +213,10 @@ router.post('/API/groups', function (req, res, next) {
   
 });
 
-router.param('group', function (req, res, next, id) {
-  let query = Group.findById(id);
-  query.exec(function (err, group) {
-    if (err) {
-      return next(err);
-    }
-    if (!group) {
-      return next(new Error('not found ' + id));
-    }
-    req.group = group;
-    return next();
-  });
-});
+
 
 // Uploading picture
-router.post('/API/uploadfile', function(req, res, next){
+router.post('/API/uploadfile', auth, function(req, res, next){
   let path ='';
   upload(req, res, function(err){
     if (err){

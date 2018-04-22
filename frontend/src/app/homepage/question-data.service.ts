@@ -33,11 +33,16 @@ export class QuestionDataService {
   }
 
   updateQuestion(question: Question): Observable<Question> {
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
     console.log(question);
     return this.http
-      .put(`${this._appUrl}question/${question.id}`, question, { headers })
+      .put(`${this._appUrl}question/${question.id}`, question)
       .pipe(map(Question.fromJSON));
+  }
+
+  updateComment(comment: Comment): Observable<Comment> {
+    return this.http
+    .put(`${this._appUrl}comment/${comment.id}`, comment)
+    .pipe(map(Comment.fromJSON));
   }
 
   addCommentToQuestion(com: Comment, question: Question): Observable<Comment> {
@@ -47,7 +52,7 @@ export class QuestionDataService {
   }
 
   addCommentToComment(newComment: Comment, comment: Comment): Observable<Comment> {
-    const theUrl = `${this._appUrl}comment/${comment.id}/comments`;
+    const theUrl = `${this._appUrl}comment/${comment.id}`;
     return this.http.post(theUrl, newComment)
       .pipe(map(Comment.fromJSON));
   }

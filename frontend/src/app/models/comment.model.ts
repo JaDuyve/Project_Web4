@@ -3,8 +3,8 @@ export class Comment {
     private _message: string;
     private _created: Date;
     private _author: string;
-    private _likes: number;
-    private _dislikes: number;
+    private _likes: Set<string>;
+    private _dislikes: Set<string>;
     private _comments: Comment[];
     private _questionId: string;
 
@@ -12,9 +12,9 @@ export class Comment {
         message: string,
         author: string,
         questionId?: string,
-        created: Date = new Date,
-        likes: number = 0,
-        dislikes: number = 0,
+        created: Date = new Date(),
+        likes: Set<string> = new Set(),
+        dislikes: Set<string> = new Set(),
         comments: Comment[] = new Array(),
     ) {
 
@@ -42,11 +42,11 @@ export class Comment {
         return this._author;
     }
 
-    get likes(): number {
+    get likes(): Set<string> {
         return this._likes;
     }
 
-    get dislikes(): number {
+    get dislikes(): Set<string> {
         return this._dislikes;
     }
 
@@ -62,12 +62,20 @@ export class Comment {
         return this._id;
     }
 
-    addLike() {
-        this._likes++;
+    addLike(username: string) {
+        this._likes.add(username);
     }
 
-    addDislike() {
-        this._dislikes++;
+    addDislike(username: string) {
+        this._dislikes.add(username);
+    }
+
+    showAantalLikes() : number {
+        return this._likes.size;
+    }
+
+    showAantalDislikes(): number{
+        return this._dislikes.size;
     }
 
     addComment(comment: Comment) {
@@ -80,9 +88,9 @@ export class Comment {
             json.author,
             json.questionId,
             json.created,
-            json.likes,
-            json.dislikes,
-            json.comments,
+            new Set(json.likes),
+            new Set(json.dislikes),
+            json.comments.map(Comment.fromJSON),
         );
 
         comment._id = json._id;
@@ -95,8 +103,8 @@ export class Comment {
             message: this._message,
             created: this._created,
             author: this._author,
-            likes: this._likes,
-            dislikes: this._dislikes,
+            likes: Array.from(this._likes),
+            dislikes: Array.from(this._dislikes),
             comments: this._comments.map(i => i.toJSON()),
             questionId: this._questionId
         }
