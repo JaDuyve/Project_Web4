@@ -17,7 +17,18 @@ router.get('/', function (req, res, next) {
   res.send('server is up');
 });
 
-router.get('/API/questions', auth, function (req, res, next) {
+router.get('/API/comments',auth,  function(req, res, next) {
+  let query = Comment.find().populate('comments');
+  query.exec(function (err, comments) {
+    if (err) {
+      return next(err);
+    }
+
+    res.json(comments);
+  });
+});
+
+router.get('/API/questions',auth,  function (req, res, next) {
   let query = Question.find().populate('comments');
   query.exec(function (err, questions) {
     if (err) {
@@ -32,7 +43,7 @@ router.get('/API/question/:question',  auth, function (req, res, next) {
   res.json(req.question);
 });
 
-router.post('/API/questions',auth,  function (req, res, next) {
+router.post('/API/questions',  function (req, res, next) {
   Comment.create(req.body.comments, function (err, comm) {
     if (err) {
       return next(err);
@@ -55,6 +66,7 @@ router.post('/API/questions',auth,  function (req, res, next) {
         return next(err);
       }
 
+      
       res.json(q);
     });
   });
@@ -102,7 +114,7 @@ router.param('group', function (req, res, next, id) {
   });
 });
 
-router.delete('/API/question/:question', auth, function (req, res) {
+router.delete('/API/question/:question', function (req, res) {
   Comment.remove({ _id: { $in: req.question.comments } }, function (err) {
     if (err) return next(err);
     req.question.remove(function (err) {
@@ -196,9 +208,11 @@ router.get('/API/group/:group', auth,  function (req, res, next) {
 router.post('/API/groups', auth, function (req, res, next) {
 
     let group = new Group({
-      
+      groupName: req.body.groupName,
+      closedGroup: req.body.closedGroup,
+      admin: req.body.admin
     });
-    console.log(Group);
+   
 
     group.questions = [];
     group.users = [];

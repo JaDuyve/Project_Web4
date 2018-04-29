@@ -2,7 +2,9 @@ let mongoose = require('mongoose');
 
 let GroupSchema = new mongoose.Schema({
     groupName: String,
-    groupCategory: String,
+    admin: {type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'},
+    // groupCategory: String,
     closedGroup: Boolean,
     questions: [{
         type: mongoose.Schema.Types.ObjectId,

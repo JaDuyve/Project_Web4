@@ -5,8 +5,8 @@
     <input id="q" name="ques" formControlName='description' #spy>
   </div>
   <div class="field">
-    <label for="pic">Add Question</label>
-    <input type="file" id="pic" name="pic" (change)="onFileSelected($event)" >
+    <label for="pic">picture</label>
+    <input type="file" id="Image" name="pic" #questionImage formControlName='image'>
   </div>
   <button type='submit' class="ui positive right button">
     add question
@@ -17,3 +17,4 @@ REMOVE {{ question.value | json }}
 <br> {{ question.get("description").errors | json}}
 <br> {{ question.valid }}
 <br> {{spy.className}}
+

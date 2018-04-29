@@ -1,7 +1,12 @@
+import { AuthenticationService } from './../../user/authentication.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { QuestionDataService } from './../question-data.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Question } from '../../models/question.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Group } from '../../models/group.model';
+
+declare var $: any;
 
 @Component({
   selector: 'question-list',
@@ -13,8 +18,13 @@ export class QuestionListComponent implements OnInit {
   private _questions: Question[];
 
   public errorMsg: string;
+  public group: FormGroup;
 
-  constructor(private _questionDataService: QuestionDataService) { }
+  constructor(
+    private _questionDataService: QuestionDataService,
+    private fb: FormBuilder,
+    private _authService: AuthenticationService
+  ) { }
 
   ngOnInit() {
     this._questionDataService.questions.subscribe(
@@ -25,6 +35,11 @@ export class QuestionListComponent implements OnInit {
         } while trying to retrieve questions: ${error.error}`;
       }
     );
+
+    this.group = this.fb.group({
+      group_name: [''],
+      private: ''
+    });
 
   }
 
@@ -41,6 +56,10 @@ export class QuestionListComponent implements OnInit {
     );
   }
 
+  showGroupModal(): void {
+    $(`.small.modal.group`).modal('show');
+  }
+
   removeQuestion(question: Question) {
     this._questionDataService.removeQuestion(question).subscribe(
       item => (this._questions = this._questions.filter(val => item.id !== val.id)),
@@ -52,6 +71,11 @@ export class QuestionListComponent implements OnInit {
     );
   }
 
+  onSubmitCreate() {
+    const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user$.value);
+    
 
-  
+  }  
+
+  @HostBinding('class') classes = 'ui container';
 }

@@ -1,3 +1,4 @@
+import { LogoutComponent } from './logout/logout.component';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthenticationService } from './authentication.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,7 +11,8 @@ import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent}
 ];
 
 @NgModule({
@@ -21,8 +23,10 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   declarations: [
+    LogoutComponent,
     LoginComponent,
-    RegisterComponent],
+    RegisterComponent,
+    LogoutComponent],
   providers: [AuthenticationService, AuthGuardService]
 })
 export class UserModule { }

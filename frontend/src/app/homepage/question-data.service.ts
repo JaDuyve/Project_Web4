@@ -21,9 +21,11 @@ export class QuestionDataService {
   }
 
   addPublicQuestion(question: Question): Observable<Question> {
+      
     return this.http
       .post(`${this._appUrl}questions/`, question)
       .pipe(map(Question.fromJSON));
+    
   }
 
   removeQuestion(question: Question): Observable<Question> {
@@ -33,7 +35,6 @@ export class QuestionDataService {
   }
 
   updateQuestion(question: Question): Observable<Question> {
-    console.log(question);
     return this.http
       .put(`${this._appUrl}question/${question.id}`, question)
       .pipe(map(Question.fromJSON));

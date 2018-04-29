@@ -84,6 +84,8 @@ export class Question {
             json.comments.map(Comment.fromJSON)
         );
 
+        
+
         pq._id = json._id;
 
         return pq;

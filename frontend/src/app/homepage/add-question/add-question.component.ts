@@ -2,7 +2,7 @@ import { QuestionDataService } from './../question-data.service';
 import { Question } from './../../models/question.model';
 import {  FileUploader } from 'ng2-file-upload/ng2-file-upload';
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../user/authentication.service';
 
@@ -17,7 +17,9 @@ export class AddQuestionComponent implements OnInit {
   private question: FormGroup;
   public errorMsg: string;
   // public uploader: FileUploader = new FileUploader({});;
-  private selectedFile = null;
+  private questionImageFile: File;
+
+  @ViewChild('questionImage') question_image;
 
   constructor(
     private fb: FormBuilder,
@@ -29,19 +31,29 @@ export class AddQuestionComponent implements OnInit {
 
   ngOnInit() {
     this.question = this.fb.group({
-      description: ['']
+      description: [''],
+      image: ''
     });
   }
 
   onSubmit() {
+    
+
     const quest = new Question(this.question.value.description, this._authenticationService.user$.value);
     
+    // const Image = this.question_image.nativeElement;
+
+    // if (Image.files && Image.files[0]){
+    //   this.questionImageFile = Image.files[0];
+    // }
+
+
+    // const ImageFile: File = this.questionImageFile;
+    // console.log(ImageFile);
     this.newQuestion.emit(quest);
     // this._questionDataService.uploadFile(this.selectedFile);
   }
 
-  onFileSelected(event){
-    this.selectedFile = event.target.files[0];
-  }
+  
 
 }

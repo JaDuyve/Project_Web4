@@ -2,3 +2,47 @@
 <div class="ui feed">
   <question class="event ui" *ngFor="let question of questions" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
 </div>
+
+<div class="ui vertical menu">
+  <a (click)="showGroupModal()" class="active teal item">
+    Create groep
+  </a>
+  <a class="item">
+    Spam
+  </a>
+  <a class="item">
+    updates
+  </a>
+  <!-- <div class="item">
+    <div class="ui transparent icon input">
+      <input type="text" placeholder="Search mail...">
+      <i class="search icon"></i>
+    </div>
+  </div> -->
+</div>
+
+<div class="ui small modal group">
+  <i class="close icon"></i>
+  <div class="header">
+    Create a group
+  </div>
+  <div class="content">
+    <form class="ui form" [formGroup]="group">
+      <div class="field">
+        <label for="name">Group name</label>
+        <textarea name="name" id="" cols="30" rows="10" formControlName='group_name'></textarea>
+      </div>
+      <div class="inline field">
+        <div class="ui checkbox">
+          <label class="center-block">
+            <input type="checkbox" formControlName="private" class=""> private group
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui ok button">Cancel</div>
+    <div (click)='onSubmitCreate()' class="ui green ok button">Create</div>
+  </div>
+</div>

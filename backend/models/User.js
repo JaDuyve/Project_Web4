@@ -8,6 +8,10 @@ let UserSchema = new mongoose.Schema({
         lowercase: true,
         unique: true
     },
+    groups: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group'
+    }],
     hash: String,
     salt: String
 });
