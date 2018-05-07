@@ -23,7 +23,7 @@ export class QuestionDataService {
   addPublicQuestion(question: Question): Observable<Question> {
       
     return this.http
-      .post(`${this._appUrl}questions/`, question)
+      .post(`${this._appUrl}questions/`, question) 
       .pipe(map(Question.fromJSON));
     
   }

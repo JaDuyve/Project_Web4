@@ -49,10 +49,11 @@ export class AuthenticationService {
       .post('/API/users/login', { username, password })
       .pipe(
         map((res: any) => {
+          
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(new User(username, res.prof));
+            this._user$.next(User.fromJSON(res));
             return true;
           } else {
             return false;
@@ -61,14 +62,14 @@ export class AuthenticationService {
       )
   }
 
-  register(username: string, password: string, prof: boolean): Observable<boolean> {
-    return this.http.post('/API/users/register', { username, password, prof })
+  register(user: User): Observable<boolean> {
+    return this.http.post('/API/users/register', user)
       .pipe(
         map((res: any) => {
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(new User(username, res.prof));
+            this._user$.next(User.fromJSON(res));
             return true;
           } else {
             return false;

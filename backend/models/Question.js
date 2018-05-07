@@ -3,7 +3,10 @@ let mongoose = require('mongoose');
 let QuestionSchema = new mongoose.Schema({
     description: String,
     created: Date,
-    author: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     likes: [String],
     dislikes: [String],
     dataImage:  String,

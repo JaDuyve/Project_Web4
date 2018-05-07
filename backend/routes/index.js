@@ -4,6 +4,7 @@ var multer = require('multer');
 let mongoose = require('mongoose');
 let Question = mongoose.model('Question');
 let Comment = mongoose.model('Comment');
+let User = mongoose.model('User');
 let jwt = require('express-jwt');
 let fs = require('fs');
 
@@ -30,7 +31,9 @@ router.get('/API/comments', auth, function (req, res, next) {
 });
 
 router.get('/API/questions', auth, function (req, res, next) {
-  let query = Question.find().populate('comments');
+  let query = Question.find()
+    .populate('comments')
+    .populate('author');
   query.exec(function (err, questions) {
     if (err) {
       return next(err);
@@ -50,29 +53,39 @@ router.post('/API/questions', function (req, res, next) {
       return next(err);
     }
 
-
-    let question = new Question({
-      description: req.body.description,
-      created: req.body.created,
-      author: req.body.author,
-      likes: req.body.likes,
-      dislikes: req.body.dislikes,
-      contentType: req.body.contentType,
-      dataImage: req.body.dataImage
-    });
-
-
-    question.comments = comm;
-    question.save(function (err, q) {
+    User.findById(req.body.authorId, function (err, usr) {
       if (err) {
-        // removing comments because we are in a error
-        Comment.remove({ _id: { $in: question.comments } });
         return next(err);
       }
 
+      console.log(usr);
 
-      res.json(q);
+      let question = new Question({
+        description: req.body.description,
+        created: req.body.created,
+
+        likes: req.body.likes,
+        dislikes: req.body.dislikes,
+        contentType: req.body.contentType,
+        dataImage: req.body.dataImage
+      });
+
+      question.author = usr;
+      question.comments = comm;
+      question.save(function (err, q) {
+        if (err) {
+          // removing comments because we are in a error
+          Comment.remove({ _id: { $in: question.comments } });
+          return next(err);
+        }
+
+
+        res.json(q);
+      });
     });
+
+
+
   });
 });
 

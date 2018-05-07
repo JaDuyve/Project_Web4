@@ -6,7 +6,7 @@
   </div>
   <div class="field">
     <label for="pic">picture</label>
-    <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)">
+    <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
   </div>
   <button type='submit' class="ui positive right button">
     add question
@@ -17,4 +17,3 @@ REMOVE {{ question.value | json }}
 <br> {{ question.get("description").errors | json}}
 <br> {{ question.valid }}
 <br> {{spy.className}}
-

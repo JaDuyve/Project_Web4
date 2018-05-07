@@ -1,9 +1,9 @@
 <div class="label">
-  <img src="assets/images/elliot.jpg">
+  <img src="{{question.author.getProfilePicture()}}">
 </div>
 <div class="content">
   <div class="summary">
-    <a>{{question.author}}</a> asked
+    <a>{{question.author.username}}</a> asked
     <div class="date">
       {{question.created | date: 'longDate'}}
     </div>

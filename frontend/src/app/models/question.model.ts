@@ -1,19 +1,21 @@
+import { User } from './user.model';
 import {Comment} from './comment.model'
 
 export class Question {
     private _id: string;
     private _description: string;
     private _created: Date;
-    private _author: string;
+    private _author: User;
     private _likes: Set<string>;
     private _dislikes: Set<string>;
     private _comments: Comment[];
     private _dataImage: string;
     private _contentType: string;
+    private _authorId: string;
 
     constructor(
         description: string,
-        author: string,
+        author: User = null,
         dataImage: string ="",
         contentType: string = "",
         likes: Set<string> = new Set(),
@@ -44,7 +46,7 @@ export class Question {
         return this._created;
     }
 
-    get author() : string{
+    get author() : User{
         return this._author;
     }
 
@@ -66,6 +68,14 @@ export class Question {
 
     get contentType(): string {
         return this._contentType;
+    }
+
+    get authorId(): string {
+        return this._authorId;
+    }
+
+    set authorId(id: string){
+        this._authorId = id;
     }
 
     addLike(username: string){
@@ -115,7 +125,7 @@ export class Question {
         return {
             _id: this._id,
             description: this._description,
-            author: this._author,
+            authorId: this.authorId,
             likes: Array.from(this._likes),
             dislikes: Array.from(this._dislikes),
             created: this._created,

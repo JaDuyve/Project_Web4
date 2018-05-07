@@ -14,7 +14,9 @@ let UserSchema = new mongoose.Schema({
     // }],
     prof: Boolean,
     hash: String,
-    salt: String
+    salt: String,
+    dataPF: String,
+    contentTypePF: String
 });
 
 UserSchema.methods.setPassword = function (password) {

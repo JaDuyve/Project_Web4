@@ -56,15 +56,12 @@ export class AddQuestionComponent implements OnInit {
       
 
       const quest = new Question(
-        this.question.value.description,
-        this._authenticationService.user$.value.username);
+        this.question.value.description);
 
       console.log(quest);
 
       this.newQuestion.emit(quest);
     }
-
-
 
   }
 
@@ -74,10 +71,12 @@ export class AddQuestionComponent implements OnInit {
     
     const quest = new Question(
       this.question.value.description,
-      this._authenticationService.user$.value.username,
+      null,
       this.base64textString,
       this.files[0].type
     );
+    console.log(this._authenticationService.user$.value.id);
+    quest.authorId = this._authenticationService.user$.value.id;
 
     this.newQuestion.emit(quest);
   }

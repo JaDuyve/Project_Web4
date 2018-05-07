@@ -11,18 +11,29 @@ router.get('/', function (req, res, next) {
 
 router.post('/register', function (req, res, next) {
   if (!req.body.username || !req.body.password) {
+    console.log(req.body)
     return res.status(400).json(
       { message: 'Please fill out all fields' });
   }
+  
   let user = new User();
   user.username = req.body.username;
+  user.dataPF = req.body.dataPF;
+  user.contentTypePF = req.body.contentTypePF;
   user.prof = req.body.prof;
   user.setPassword(req.body.password);
-  user.save(function (err) {
+  user.save(function (err, usr) {
     if (err) {
       return next(err);
     }
-    return res.json({ token: user.generateJWT() })
+    return res.json({ 
+      token: user.generateJWT(),
+      username: usr.username,
+      prof: usr.prof,
+      dataPF: usr.dataPF,
+      contentTypePF: usr.contentTypePF,
+      _id: usr._id
+    })
   });
 });
 
