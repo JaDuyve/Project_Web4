@@ -6,7 +6,7 @@
   </div>
   <div class="field">
     <label for="pic">picture</label>
-    <input type="file" id="Image" name="pic" #questionImage formControlName='image'>
+    <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)">
   </div>
   <button type='submit' class="ui positive right button">
     add question

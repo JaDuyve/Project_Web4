@@ -11,6 +11,9 @@
   <div class="extra text">
     {{question.description}} 
   </div>
+  <div *ngIf="question.hasImage()">
+    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" class="ui medium rounded image">
+  </div>
   <div class="meta">
     <a class="like" (click)="addLike()">
       <i class="thumbs up icon"></i> {{question.showAantalLikes()}}

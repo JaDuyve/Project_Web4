@@ -1,8 +1,9 @@
 export class User {
     private _username: string;
     private _id: string;
+    private prof: boolean;
 
-    constructor(username: string) {
+    constructor(username: string, prof: boolean) {
         this._username = username;
     }
 
@@ -12,7 +13,8 @@ export class User {
 
     static fromJSON(json: any): User {
         const pq = new User(
-            json.username
+            json.username,
+            json.prof
         );
 
         pq._id = json._id;
@@ -24,7 +26,7 @@ export class User {
         return {
             _id: this._id,
             username: this.username,
-
+            prof: this.prof
         };
     }
 }

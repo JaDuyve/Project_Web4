@@ -1,3 +1,4 @@
+import { User } from './../models/user.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +18,7 @@ function parseJwt(token) {
 @Injectable()
 export class AuthenticationService {
   private readonly _tokenKey = 'currentUser';
-  private _user$: BehaviorSubject<string>;
+  private _user$: BehaviorSubject<User>;
   public redirectUrl: string;
 
 
@@ -31,7 +32,7 @@ export class AuthenticationService {
       }
     }
 
-    this._user$ = new BehaviorSubject<string>(parsedToken && parsedToken.username);
+    this._user$ = new BehaviorSubject<User>(parsedToken && parsedToken.username);
   }
 
   get user$() {
@@ -51,7 +52,7 @@ export class AuthenticationService {
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(username);
+            this._user$.next(new User(username, res.prof));
             return true;
           } else {
             return false;
@@ -60,14 +61,14 @@ export class AuthenticationService {
       )
   }
 
-  register(username: string, password: string): Observable<boolean> {
-    return this.http.post('/API/users/register', { username, password })
+  register(username: string, password: string, prof: boolean): Observable<boolean> {
+    return this.http.post('/API/users/register', { username, password, prof })
       .pipe(
         map((res: any) => {
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(username);
+            this._user$.next(new User(username, res.prof));
             return true;
           } else {
             return false;

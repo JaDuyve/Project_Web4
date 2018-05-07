@@ -8,10 +8,11 @@ let UserSchema = new mongoose.Schema({
         lowercase: true,
         unique: true
     },
-    groups: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group'
-    }],
+    // groups: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Group'
+    // }],
+    prof: Boolean,
     hash: String,
     salt: String
 });

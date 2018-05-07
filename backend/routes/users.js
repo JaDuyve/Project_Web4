@@ -16,6 +16,7 @@ router.post('/register', function (req, res, next) {
   }
   let user = new User();
   user.username = req.body.username;
+  user.prof = req.body.prof;
   user.setPassword(req.body.password);
   user.save(function (err) {
     if (err) {
@@ -33,7 +34,7 @@ router.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
     if (err) { return next(err); }
     if (user) {
-      return res.json({ token: user.generateJWT() });
+      return res.json({ token: user.generateJWT(), prof: user.prof });
     } else {
       return res.status(401).json(info);
     }
@@ -51,6 +52,6 @@ router.post('/checkusername', function(req, res, next) {
   });
 });
 
-router.post()
+
 
 module.exports = router;

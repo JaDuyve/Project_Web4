@@ -1,16 +1,16 @@
 <div class="ui stackable menu">
-    <div class="item">
-      <img src="assets/images/logo.png">
-    </div>
-    <a class="item">Features</a>
-    <a class="item">Testimonials</a>
-    <div class="right menu">
-      <a *ngIf='(currentUser | async) else loginlink' class="item" routerLinkActive='active' routerLink="/logout">{{currentUser|async}}</a>
-      <ng-template #loginlink>
-        <a class="item" routerLinkActive='active' routerLink="/login">log in</a>
-      </ng-template>
-
-    </div>
+  <div class="item">
+    <img src="assets/images/logo.png">
   </div>
+  <a class="item">Features</a>
+  <a class="item">Testimonials</a>
+  <div class="right menu">
+    <a *ngIf='(currentUser | async) else loginlink' class="item" routerLinkActive='active' routerLink="/logout">{{currentUser | async}}</a>
+    <ng-template #loginlink>
+      <a class="item" routerLinkActive='active' routerLink="/login">log in</a>
+    </ng-template>
+
+  </div>
+</div>
 
 <router-outlet></router-outlet>

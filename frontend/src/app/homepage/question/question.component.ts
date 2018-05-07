@@ -33,6 +33,8 @@ export class QuestionComponent implements OnInit {
     this.comment = this.fb.group({
       message: ['']
     });
+
+    console.log(this.question.contentType);
   }
 
   removeQuestion(): boolean {
@@ -41,14 +43,14 @@ export class QuestionComponent implements OnInit {
   }
 
   addLike(): boolean {
-    this.question.addLike(this._authenticationService.user$.value);
+    this.question.addLike(this._authenticationService.user$.value.username);
     this.updateQuestion(this.question);
 
     return false;
   }
 
   addDislike(): boolean {
-    this.question.addDislike(this._authenticationService.user$.value);
+    this.question.addDislike(this._authenticationService.user$.value.username);
     this.updateQuestion(this.question);
     return false;
   }
@@ -68,7 +70,7 @@ export class QuestionComponent implements OnInit {
   }
 
   onSubmitComment() {
-    const comment = new Comment(this.comment.value.message, this._authenticationService.user$.value, this.question.id);
+    const comment = new Comment(this.comment.value.message, this._authenticationService.user$.value.username, this.question.id);
 
     this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
       item => (this.question.addComment(item)),

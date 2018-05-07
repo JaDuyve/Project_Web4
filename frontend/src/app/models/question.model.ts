@@ -8,14 +8,19 @@ export class Question {
     private _likes: Set<string>;
     private _dislikes: Set<string>;
     private _comments: Comment[];
+    private _dataImage: string;
+    private _contentType: string;
 
     constructor(
         description: string,
         author: string,
+        dataImage: string ="",
+        contentType: string = "",
         likes: Set<string> = new Set(),
         dislikes: Set<string> = new Set(),
         created: Date = new Date(),
-        comments: Comment[] = new Array()) {
+        comments: Comment[] = new Array(),
+        ) {
         
         this._description = description;
         this._created = created;
@@ -23,7 +28,8 @@ export class Question {
         this._likes = likes;
         this._dislikes = dislikes;
         this._comments = comments;
-
+        this._dataImage = dataImage;
+        this._contentType = contentType;
     }
 
     get id(): string {
@@ -54,6 +60,14 @@ export class Question {
         return this._comments;
     }
 
+    get dataImage(): string {
+        return this._dataImage;
+    }
+
+    get contentType(): string {
+        return this._contentType;
+    }
+
     addLike(username: string){
         this._likes.add(username);
     }
@@ -74,17 +88,23 @@ export class Question {
         return this._dislikes.size;
     }
 
+    hasImage() {
+        return this._dataImage !== "";
+    }
+
+    
+
     static fromJSON(json: any): Question {
         const pq = new Question(
             json.description,
             json.author,
+            json.dataImage,
+            json.contentType,
             new Set(json.likes),
             new Set(json.dislikes),
             json.created,
             json.comments.map(Comment.fromJSON)
         );
-
-        
 
         pq._id = json._id;
 
@@ -99,7 +119,11 @@ export class Question {
             likes: Array.from(this._likes),
             dislikes: Array.from(this._dislikes),
             created: this._created,
-            comments: this._comments.map(i => i.toJSON)
+            comments: this._comments.map(i => i.toJSON),
+            dataImage: this._dataImage,
+            contentType: this._contentType
         };
     }
+
+    
 }

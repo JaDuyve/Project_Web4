@@ -27,12 +27,20 @@
         <label for="confirmpassword">confirm password:</label>
         <input type="password" id="confirmpassword" formControlName='confirmPassword'>
       </div>
-      <div>
+      <!-- <div>
         <label for="profilepicture">profile picture:</label>
         <input type="file" name="profilepicture" id="profilepicture" (change)="onFileSelected($event)">
-      </div>
+      </div> -->
+
       <div class='ui pointing red basic label' *ngIf=' user.get("passwordGroup").errors?.passwordsDiffer && user.get("passwordGroup").get("confirmPassword").touched  && user.get("passwordGroup").get("password").touched'>
         the two passwords should be the same
+      </div>
+    </div>
+    <div class="field">
+      <div>
+        <label>
+          <input type="checkbox" class="" formControlName='prof'> prof.
+        </label>
       </div>
     </div>
     <div class="field">

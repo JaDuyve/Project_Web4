@@ -1,3 +1,4 @@
+import { User } from './models/user.model';
 import { AuthenticationService } from './user/authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
@@ -14,7 +15,15 @@ export class AppComponent {
 
   }
 
-  get currentUser(): Observable<string> {
+  get currentUser(): Observable<any> {
     return this.authService.user$;
+  }
+
+  get username(): string {
+    return this.authService.user$.value.username;
+  }
+
+  public geefGebruikersnaam(): string {
+    return this.authService.user$.value.username;
   }
 }

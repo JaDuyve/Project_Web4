@@ -45,7 +45,8 @@ export class RegisterComponent implements OnInit {
       passwordGroup: this.fb.group({
         password: ['', [Validators.required, passwordValidator(12)]],
         confirmPassword: ['', Validators.required]
-      }, { validator: comparePasswords })
+      }, { validator: comparePasswords }),
+      prof: ''
     });
   }
 
@@ -67,8 +68,9 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.user.value.prof);
     this._authenticationService
-      .register(this.user.value.username, this.passwordControl.value)
+      .register(this.user.value.username, this.passwordControl.value, this.user.value.prof)
       .subscribe(
         val => {
           if (val) {

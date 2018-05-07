@@ -6,6 +6,8 @@ let QuestionSchema = new mongoose.Schema({
     author: String,
     likes: [String],
     dislikes: [String],
+    dataImage:  String,
+    contentType: String,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'

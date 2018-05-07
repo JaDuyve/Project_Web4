@@ -33,13 +33,13 @@ export class CommentComponent implements OnInit {
 
   addLike(): boolean {
     
-    this.comment.addLike(this._authenticationService.user$.value);
+    this.comment.addLike(this._authenticationService.user$.value.username);
     this.updateComment(this.comment);
     return false;
   }
 
   addDislike(): boolean {
-    this.comment.addDislike(this._authenticationService.user$.value);
+    this.comment.addDislike(this._authenticationService.user$.value.username);
     this.updateComment(this.comment);
     return false;
   }
