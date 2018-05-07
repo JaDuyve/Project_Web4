@@ -40,9 +40,7 @@ export class AddQuestionComponent implements OnInit {
   onSubmit() {
     if (this.files) {
       let file = this.files[0];
-    
-
-
+  
       if (file) {
         let reader = new FileReader();
 
@@ -54,11 +52,10 @@ export class AddQuestionComponent implements OnInit {
 
     } else {
       
-
       const quest = new Question(
         this.question.value.description);
 
-      console.log(quest);
+        quest.authorId = this._authenticationService.user$.value.id;
 
       this.newQuestion.emit(quest);
     }

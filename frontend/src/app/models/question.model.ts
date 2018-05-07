@@ -26,7 +26,7 @@ export class Question {
         
         this._description = description;
         this._created = created;
-        this._author = author;
+        this._author = author; 
         this._likes = likes;
         this._dislikes = dislikes;
         this._comments = comments;
@@ -107,7 +107,7 @@ export class Question {
     static fromJSON(json: any): Question {
         const pq = new Question(
             json.description,
-            json.author,
+            User.fromJSON(json.author),
             json.dataImage,
             json.contentType,
             new Set(json.likes),

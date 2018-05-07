@@ -1,3 +1,4 @@
+import { User } from './../../models/user.model';
 import { AuthenticationService } from './../../user/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from '../../models/comment.model';
@@ -17,9 +18,10 @@ export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
   @Output() rmQuestion = new EventEmitter<Question>();
-
   private comment: FormGroup;
   public errorMsg: string;
+  private base64textString: string;
+  private files;
 
   constructor(
     private _questionDataService: QuestionDataService,
@@ -34,7 +36,8 @@ export class QuestionComponent implements OnInit {
       message: ['']
     });
 
-    console.log(this.question.contentType);
+    console.log(this.question.author);
+
   }
 
   removeQuestion(): boolean {
@@ -69,14 +72,59 @@ export class QuestionComponent implements OnInit {
     $(`.small.modal.${this.question.id}`).modal('show');
   }
 
+
+
   onSubmitComment() {
-    const comment = new Comment(this.comment.value.message, this._authenticationService.user$.value.username, this.question.id);
+    if (this.files) {
+      let file = this.files[0];
+
+      if (file) {
+        let reader = new FileReader();
+
+        reader.onload = this._handleReaderLoaded.bind(this);
+
+        reader.readAsBinaryString(file);
+
+      }
+
+    } else {
+
+      const comment = new Comment(this.comment.value.message, 
+        null, 
+        this.question.id);
+
+      comment.authorId = this._authenticationService.user$.value.id;
+     
+      this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
+        item => (this.question.addComment(item)),
+        (error: HttpErrorResponse) => {
+          this.errorMsg = `Error ${error.status} while adding a comment 
+            : ${error.error}`;
+        })
+    }
+  }
+
+  _handleReaderLoaded(readerEvt) {
+    let binaryString = readerEvt.target.result;
+    this.base64textString = btoa(binaryString);
+
+    const comment = new Comment(
+      this.comment.value.message,
+      null,
+      this.base64textString,
+      this.files[0].type
+    );
+    comment.authorId = this._authenticationService.user$.value.id;
 
     this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
       item => (this.question.addComment(item)),
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while adding a comment 
-        : ${error.error}`;
+          : ${error.error}`;
       })
+  }
+
+  handleFileSelect(evt) {
+    this.files = evt.target.files;
   }
 }

@@ -39,6 +39,8 @@ router.get('/API/questions', auth, function (req, res, next) {
       return next(err);
     }
 
+    console.log(questions);
+
     res.json(questions);
   });
 });
@@ -181,20 +183,25 @@ router.put('/API/comment/:comment', auth, function (req, res) {
 });
 
 router.post('/API/question/:question/comments', auth, function (req, res, next) {
-  let com = new Comment(req.body);
-  com.save(function (err, comment) {
-    if (err) {
-      return next(err);
-    }
+  User.findById(req.body.authorId, function (err, usr) {
 
-    req.question.comments.push(comment);
-    req.question.save(function (err, question) {
+    let com = new Comment(req.body);
+    com.author = usr;
+
+    com.save(function (err, comment) {
       if (err) {
-
         return next(err);
-
       }
-      res.json(comment);
+
+      req.question.comments.push(comment);
+      req.question.save(function (err, question) {
+        if (err) {
+
+          return next(err);
+
+        }
+        res.json(comment);
+      });
     });
   });
 });

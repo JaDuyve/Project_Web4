@@ -45,7 +45,12 @@ router.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
     if (err) { return next(err); }
     if (user) {
-      return res.json({ token: user.generateJWT(), prof: user.prof });
+      return res.json({ token: user.generateJWT(),
+        username: user.username,
+        prof: user.prof,
+        dataPF: user.dataPF,
+        contentTypePF: user.contentTypePF,
+        _id: user._id });
     } else {
       return res.status(401).json(info);
     }

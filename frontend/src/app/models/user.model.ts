@@ -6,7 +6,11 @@ export class User {
     private _contentTypePF: string;
     private _password: string;
 
-    constructor(username: string, prof: boolean, dataPF: string = "", contentTypePF: string = "", password: string = "") {
+    constructor(username: string, 
+        prof: boolean, 
+        dataPF: string = "", 
+        contentTypePF: string = "", 
+        password: string = "") {
         this._username = username;
         this._dataPF = dataPF;
         this._contentTypePF = contentTypePF;
@@ -23,15 +27,15 @@ export class User {
     }
 
     get dataPF(): string {
-        return this.dataPF;
+        return this._dataPF;
     }
 
     get contentTypePF(): string {
-        return this.contentTypePF;
+        return this._contentTypePF;
     }
 
     get password(): string {
-        return this.password;
+        return this._password;
     }
 
     get id(): string {
@@ -40,16 +44,18 @@ export class User {
 
     getProfilePicture(): string {
         if (this.dataPF !== ""){
-            return `data:${this.contentTypePF};base64,${this.dataPF}`
+            return `data:${this._contentTypePF};base64,${this._dataPF}`;
         }else {
-            return "assets/images/elliot.jpg"
+            return "assets/images/elliot.jpg";
         }
     }
+
+    
 
     static fromJSON(json: any): User {
         const pq = new User(
             json.username,
-            json.prof,
+            false,
             json.dataPF,
             json.contentTypePF
         );

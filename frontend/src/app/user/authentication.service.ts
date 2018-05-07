@@ -32,7 +32,7 @@ export class AuthenticationService {
       }
     }
 
-    this._user$ = new BehaviorSubject<User>(parsedToken && parsedToken.username);
+    this._user$ = new BehaviorSubject<User>(parsedToken && User.fromJSON(parsedToken));
   }
 
   get user$() {

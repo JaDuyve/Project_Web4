@@ -8,10 +8,6 @@ let UserSchema = new mongoose.Schema({
         lowercase: true,
         unique: true
     },
-    // groups: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Group'
-    // }],
     prof: Boolean,
     hash: String,
     salt: String,
@@ -41,6 +37,9 @@ UserSchema.methods.generateJWT = function () {
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        prof: this.prof,
+        dataPF: this.dataPF,
+        contentTypePF: this.contentTypePF,
         exp: parseInt(exp.getTime() / 1000)
     }, process.env.STUDYBUD_BACKEND_SECRET);
 }

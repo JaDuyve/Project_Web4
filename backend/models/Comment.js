@@ -3,15 +3,19 @@ let mongoose = require('mongoose');
 let CommentSchema = new mongoose.Schema({
     message: String,
     created: { type: Date, default: Date.now },
-    author: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    },
     likes: [String],
     dislikes: [String],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
-    questionId: String
-
+    questionId: String,
+    dataImage: String,
+    contextType: String
 })
 
 CommentSchema.pre('remove', function (next) {
