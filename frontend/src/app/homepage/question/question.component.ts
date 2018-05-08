@@ -90,7 +90,8 @@ export class QuestionComponent implements OnInit {
     } else {
 
       const comment = new Comment(this.comment.value.message, 
-        null, 
+        null, "","",
+        this.question.author.id,
         this.question.id);
 
       comment.authorId = this._authenticationService.user$.value.id;
@@ -112,16 +113,22 @@ export class QuestionComponent implements OnInit {
       this.comment.value.message,
       null,
       this.base64textString,
-      this.files[0].type
+      this.files[0].type,
+      this.question.author.id,
+      this.question.id
     );
     comment.authorId = this._authenticationService.user$.value.id;
-
+    console.log(comment);
     this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
       item => (this.question.addComment(item)),
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while adding a comment 
           : ${error.error}`;
       })
+  }
+
+  showImageModal(): void {
+    $(`.basic.modal.${this.question.id}.image`).modal('show');
   }
 
   handleFileSelect(evt) {

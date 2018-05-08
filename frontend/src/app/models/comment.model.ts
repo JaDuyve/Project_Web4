@@ -11,18 +11,21 @@ export class Comment {
     private _authorId: string; 
     private _dataImage: string;
     private _contentType: string;
-
+    private _solution: boolean;
+    private _authorPost: string;
 
     constructor(
         message: string,
         author: User,
+        dataImage: string = "",
+        contentType: string = "",
+        authorPost: string,
         questionId?: string,
+        solution: boolean = false,
         created: Date = new Date(),
         likes: Set<string> = new Set(),
         dislikes: Set<string> = new Set(),
-        comments: Comment[] = new Array(), 
-        dataImage: string = "",
-        contentType: string = ""
+        comments: Comment[] = new Array()
     ) {
 
         this._message = message;
@@ -34,6 +37,8 @@ export class Comment {
         this._comments = comments;
         this._dataImage = dataImage;
         this._contentType = contentType;
+        this._solution = solution;
+        this._authorPost = authorPost;
     }
 
 
@@ -75,12 +80,24 @@ export class Comment {
         return this._dataImage;
     }
 
-    get contextType(): string{
+    get contentType(): string{
         return this._contentType;
+    }
+
+    get solution(): boolean {
+        return this._solution;
     }
 
     set authorId(id : string) {
         this._authorId = id;
+    }
+
+    get authorPost(): string {
+        return this._authorPost;
+    }
+
+    set solution(sol: boolean){
+        this._solution = sol;
     }
 
     addLike(username: string) {
@@ -103,17 +120,24 @@ export class Comment {
         this._comments.push(comment);
     }
 
+    hasImage() {
+        return this._dataImage !== "";
+    }
+
     static fromJSON(json: any): Comment {
         const comment = new Comment(
             json.message,
             User.fromJSON(json),
+            json.dataImage,
+            json.contentType,
+            json.authorPost,
             json.questionId,
+            json.solution,
             json.created,
             new Set(json.likes),
             new Set(json.dislikes),
-            json.comments.map(Comment.fromJSON),
-            json.dataImage,
-            json.contentType
+            json.comments.map(Comment.fromJSON)
+            
         );
 
         comment._id = json._id;
@@ -131,7 +155,9 @@ export class Comment {
             comments: this._comments.map(i => i.toJSON()),
             questionId: this._questionId,
             dataImage: this._dataImage,
-            contentType: this._contentType
+            contentType: this._contentType,
+            solution: this._solution,
+            authorPost: this._authorPost
         }
     }
 }

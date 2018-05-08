@@ -1,7 +1,6 @@
-<div  class="label">
+<div class="label">
   <img src="{{question.author.getProfilePicture()}}">
 </div>
-
 <div class="content">
   <div class="summary">
     <a>{{question.author.username}}</a> asked
@@ -10,10 +9,10 @@
     </div>
   </div>
   <div class="extra text">
-    {{question.description}} 
+    {{question.description}}
   </div>
   <div *ngIf="question.hasImage()">
-    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" class="ui medium rounded image">
+    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" (click)="showImageModal()" class="ui medium rounded image">
   </div>
   <div class="meta">
     <a class="like" (click)="addLike()">
@@ -45,13 +44,21 @@
         <textarea name="" id="" cols="30" rows="10" formControlName='message' #spy></textarea>
       </div>
       <div class="field">
-          <label for="pic">picture</label>
-          <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
-        </div>
+        <label for="pic">picture</label>
+        <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
+      </div>
     </form>
   </div>
   <div class="actions">
     <div class="ui ok button">Cancel</div>
     <div (click)='onSubmitComment()' class="ui green ok button">Send</div>
+  </div>
+</div>
+
+<div class="ui basic modal {{question.id}} image">
+
+  <div class="content">
+    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" class="ui rounded image">
+
   </div>
 </div>

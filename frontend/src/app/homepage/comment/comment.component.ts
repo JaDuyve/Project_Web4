@@ -55,14 +55,15 @@ export class CommentComponent implements OnInit {
   }
 
   showModal(): void {
-
-    console.log(this.comment.message);
-    console.log(this.comment.id);
     $(`.small.modal.${this.comment.id}`).modal('show');
   }
 
+  showImageModal(): void {
+    $(`.basic.modal.${this.comment.id}.image`).modal('show');
+  }
+
   onSubmitComment() {
-    const newComment = new Comment(this.newComment.value.message, 'jari', this.comment.id);
+    const newComment = new Comment(this.newComment.value.message, null, "","", this.comment.id);
     console.log(newComment);
     this._questionDataService.addCommentToComment(newComment, this.comment).subscribe(
       item => (this.comment.addComment(item)),
@@ -70,5 +71,15 @@ export class CommentComponent implements OnInit {
         this.errorMsg = `Error ${error.status} while adding a comment 
         : ${error.error}`;
       })
+  }
+
+  isOwnerPost(){
+    return this.comment.authorPost === this._authenticationService.user$.value.id;
+  }
+
+  setSolution() {
+    this.comment.solution = true;
+    this.updateComment(this.comment);
+    return false;
   }
 };

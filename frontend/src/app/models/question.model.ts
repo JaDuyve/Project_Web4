@@ -12,12 +12,14 @@ export class Question {
     private _dataImage: string;
     private _contentType: string;
     private _authorId: string;
+    private _hasSolution: boolean;
 
     constructor(
         description: string,
         author: User = null,
         dataImage: string ="",
         contentType: string = "",
+        hasSolution: boolean = false,
         likes: Set<string> = new Set(),
         dislikes: Set<string> = new Set(),
         created: Date = new Date(),
@@ -32,6 +34,7 @@ export class Question {
         this._comments = comments;
         this._dataImage = dataImage;
         this._contentType = contentType;
+        this._hasSolution = hasSolution;
     }
 
     get id(): string {
@@ -74,6 +77,14 @@ export class Question {
         return this._authorId;
     }
 
+    get hasSolution(): boolean {
+        return this._hasSolution;
+    }
+
+    set hasSolution(hasSolution : boolean){
+        this._hasSolution = hasSolution;
+    }
+
     set authorId(id: string){
         this._authorId = id;
     }
@@ -110,6 +121,7 @@ export class Question {
             User.fromJSON(json.author),
             json.dataImage,
             json.contentType,
+            json.hasSolution,
             new Set(json.likes),
             new Set(json.dislikes),
             json.created,
@@ -131,7 +143,8 @@ export class Question {
             created: this._created,
             comments: this._comments.map(i => i.toJSON),
             dataImage: this._dataImage,
-            contentType: this._contentType
+            contentType: this._contentType,
+            hasSolution: this._hasSolution
         };
     }
 

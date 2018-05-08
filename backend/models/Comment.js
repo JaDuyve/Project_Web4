@@ -15,7 +15,8 @@ let CommentSchema = new mongoose.Schema({
     }],
     questionId: String,
     dataImage: String,
-    contextType: String
+    contentType: String,
+    solution: Boolean
 })
 
 CommentSchema.pre('remove', function (next) {

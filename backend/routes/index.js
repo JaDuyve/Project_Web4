@@ -69,7 +69,8 @@ router.post('/API/questions', function (req, res, next) {
         likes: req.body.likes,
         dislikes: req.body.dislikes,
         contentType: req.body.contentType,
-        dataImage: req.body.dataImage
+        dataImage: req.body.dataImage,
+        hasSolution: req.body.hasSolution
       });
 
       question.author = usr;
@@ -154,6 +155,7 @@ router.put('/API/question/:question', auth, function (req, res) {
   question.likes = req.body.likes;
   question.dislikes = req.body.dislikes;
   question.created = req.body.created;
+  question.hasSolution = req.body.hasSolution;
 
   question.save(function (err) {
     if (err) {
@@ -173,7 +175,7 @@ router.put('/API/comment/:comment', auth, function (req, res) {
   comment.dislikes = req.body.dislikes;
   comment.created = req.body.created;
   comment.questionId = req.body.questionId;
-
+  comment.solution = req.body.solution;
   comment.save(function (err) {
     if (err) {
       return res.send(err);
@@ -183,6 +185,7 @@ router.put('/API/comment/:comment', auth, function (req, res) {
 });
 
 router.post('/API/question/:question/comments', auth, function (req, res, next) {
+  console.log("blub");
   User.findById(req.body.authorId, function (err, usr) {
 
     let com = new Comment(req.body);

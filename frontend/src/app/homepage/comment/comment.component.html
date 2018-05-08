@@ -1,16 +1,19 @@
 <a class="avatar">
-  <img src="/images/avatar/small/matt.jpg">
+  <img src="{{comment.author.getProfilePicture()}}">
 </a>
 <div class="content">
   <a class="author">
-    {{comment.author}}
+    {{comment.author.username}}
   </a>
   <div class="metadata">
     <span class="date">
       {{comment.created | date: 'longDate'}} </span>
   </div>
   <div class="text">
-    {{comment.message}} {{comment.id}}
+    <i *ngIf="comment.solution" class="check circle icon"> </i>{{comment.message}}
+  </div>
+  <div *ngIf="comment.hasImage()">
+    <img src="data:{{comment.contentType}};base64,{{comment.dataImage}}" (click)="showImageModal()" class="ui medium rounded image">
   </div>
   <div class="actions">
     <a class="like" (click)="addLike()">
@@ -18,6 +21,9 @@
     </a>
     <a class="like" (click)="addDislike()">
       <i class="thumbs down icon"></i> {{ comment.showAantalDislikes()}}
+    </a>
+    <a *ngIf="isOwnerPost()" (click)="setSolution()">
+      Good Solution
     </a>
     <a (click)="showModal()">Reply</a>
   </div>
@@ -46,3 +52,11 @@
     <br> {{ comment.valid }}
     <br> {{spy.className}} -->
 </div>
+
+<div class="ui basic modal {{comment.id}} image">
+
+    <div class="content">
+      <img src="data:{{comment.contentType}};base64,{{comment.dataImage}}" class="ui rounded image">
+  
+    </div>
+  </div>
