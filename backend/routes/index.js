@@ -27,7 +27,7 @@ router.get('/API/comments', auth, function (req, res, next) {
   });
 });
 
-router.get('/API/questions', function (req, res, next) {
+router.get('/API/questions',auth,  function (req, res, next) {
   let query = Question.find()
     .populate('comments')
     .populate('author');
