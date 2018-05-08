@@ -1,6 +1,6 @@
 <add-question (newQuestion)="addPublicQuestion($event)"></add-question>
 <div class="ui feed">
-  <question class="event ui" *ngFor="let question of questions" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
+  <question class="event ui" *ngFor="let question of questions | async" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
 </div>
 
 <div class="ui vertical menu">
