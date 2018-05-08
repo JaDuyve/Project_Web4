@@ -46,14 +46,14 @@ export class QuestionComponent implements OnInit {
   }
 
   addLike(): boolean {
-    this.question.addLike(this._authenticationService.user$.value.username);
+    this.question.addLike(this._authenticationService.user$.value);
     this.updateQuestion(this.question);
 
     return false;
   }
 
   addDislike(): boolean {
-    this.question.addDislike(this._authenticationService.user$.value.username);
+    this.question.addDislike(this._authenticationService.user$.value);
     this.updateQuestion(this.question);
     return false;
   }
@@ -94,7 +94,7 @@ export class QuestionComponent implements OnInit {
         this.question.author.id,
         this.question.id);
 
-      comment.authorId = this._authenticationService.user$.value.id;
+      comment.authorId = this._authenticationService.user.id;
      
       this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
         item => (this.question.addComment(item)),
@@ -117,7 +117,7 @@ export class QuestionComponent implements OnInit {
       this.question.author.id,
       this.question.id
     );
-    comment.authorId = this._authenticationService.user$.value.id;
+    comment.authorId = this._authenticationService.user.id;
     console.log(comment);
     this._questionDataService.addCommentToQuestion(comment, this.question).subscribe(
       item => (this.question.addComment(item)),

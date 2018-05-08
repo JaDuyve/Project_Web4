@@ -33,13 +33,13 @@ export class CommentComponent implements OnInit {
 
   addLike(): boolean {
     
-    this.comment.addLike(this._authenticationService.user$.value.username);
+    this.comment.addLike(this._authenticationService.user$.value);
     this.updateComment(this.comment);
     return false;
   }
 
   addDislike(): boolean {
-    this.comment.addDislike(this._authenticationService.user$.value.username);
+    this.comment.addDislike(this._authenticationService.user$.value);
     this.updateComment(this.comment);
     return false;
   }
@@ -74,7 +74,7 @@ export class CommentComponent implements OnInit {
   }
 
   isOwnerPost(){
-    return this.comment.authorPost === this._authenticationService.user$.value.id;
+    return this.comment.authorPost === this._authenticationService.user.id;
   }
 
   setSolution() {

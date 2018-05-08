@@ -18,7 +18,8 @@ function parseJwt(token) {
 @Injectable()
 export class AuthenticationService {
   private readonly _tokenKey = 'currentUser';
-  private _user$: BehaviorSubject<User>;
+  private _user$: BehaviorSubject<string>;
+  private _user: User;
   public redirectUrl: string;
 
 
@@ -32,7 +33,11 @@ export class AuthenticationService {
       }
     }
 
-    this._user$ = new BehaviorSubject<User>(parsedToken && User.fromJSON(parsedToken));
+    this._user$ = new BehaviorSubject<string>(parsedToken && parsedToken.username);
+  }
+
+  get user() : User {
+    return this._user;
   }
 
   get user$() {
@@ -53,7 +58,14 @@ export class AuthenticationService {
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(User.fromJSON(res));
+            this._user$.next(username);
+            this.http.post('/API/finduser', {username})
+              .pipe(
+                map((res: any) => {
+                  this._user = User.fromJSON(res);
+                  return true;
+                })
+              ).subscribe();
             return true;
           } else {
             return false;
@@ -69,7 +81,14 @@ export class AuthenticationService {
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
-            this._user$.next(User.fromJSON(res));
+            this._user$.next(user.username);
+            this.http.post('/API/finduser', {username: user.username})
+              .pipe(
+                map((res: any) => {
+                  this._user = User.fromJSON(res);
+                  return true;
+                })
+              ).subscribe();
             return true;
           } else {
             return false;
@@ -86,7 +105,7 @@ export class AuthenticationService {
   }
 
   checkUserNameAvailability(username: string): Observable<boolean> {
-    return this.http.post(`/API/users/checkusername`, { username }).pipe(
+    return this.http.post(`/API/checkusername`, { username }).pipe(
       map((item: any) => {
         if (item.username === 'alreadyexists') {
           return false;

@@ -20,10 +20,10 @@ export class AppComponent {
   }
 
   get username(): string {
-    return this.authService.user$.value.username;
+    return this.authService.user$.value;
   }
 
   public geefGebruikersnaam(): string {
-    return this.authService.user$.value.username;
+    return this.authService.user$.value;
   }
 }

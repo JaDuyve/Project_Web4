@@ -55,7 +55,7 @@ export class AddQuestionComponent implements OnInit {
       const quest = new Question(
         this.question.value.description);
 
-        quest.authorId = this._authenticationService.user$.value.id;
+        quest.authorId = this._authenticationService.user.id;
 
       this.newQuestion.emit(quest);
     }
@@ -72,8 +72,8 @@ export class AddQuestionComponent implements OnInit {
       this.base64textString,
       this.files[0].type
     );
-    console.log(this._authenticationService.user$.value.id);
-    quest.authorId = this._authenticationService.user$.value.id;
+    console.log(this._authenticationService.user.id);
+    quest.authorId = this._authenticationService.user.id;
 
     this.newQuestion.emit(quest);
   }

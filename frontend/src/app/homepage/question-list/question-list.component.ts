@@ -72,7 +72,7 @@ export class QuestionListComponent implements OnInit {
   }
 
   onSubmitCreate() {
-    const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user$.value.username);
+    const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user$.value);
     
 
   }  

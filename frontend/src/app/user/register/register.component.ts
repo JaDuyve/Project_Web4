@@ -71,7 +71,6 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     console.log(this.user.value.prof);
-    console.log(this.user.value.password);
 
     if (this.selectedFile) {
       let file = this.selectedFile[0];

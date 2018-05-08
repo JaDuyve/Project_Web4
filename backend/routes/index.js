@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var multer = require('multer');
+
 let mongoose = require('mongoose');
 let Question = mongoose.model('Question');
 let Comment = mongoose.model('Comment');
@@ -8,9 +8,6 @@ let User = mongoose.model('User');
 let jwt = require('express-jwt');
 let fs = require('fs');
 
-let DIR = './uploads/images/';
-
-let upload = multer({ dest: DIR }).single('photo');
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
@@ -30,7 +27,7 @@ router.get('/API/comments', auth, function (req, res, next) {
   });
 });
 
-router.get('/API/questions', auth, function (req, res, next) {
+router.get('/API/questions', function (req, res, next) {
   let query = Question.find()
     .populate('comments')
     .populate('author');
@@ -268,5 +265,24 @@ router.post('/API/uploadfile', auth, function (req, res, next) {
     return res.send("Upload completed for " + path);
   });
 })
+
+router.post('/API/finduser', auth, function(req, res, next){
+  User.find({username: req.body.username}, function(err, user){
+    if (err) {
+      return next(err);
+    }
+
+    if (user){
+      res.json({
+        username: user.username,
+        prof: user.prof,
+        dataPF: user.dataPF,
+        contentTypePF: user.contentTypePF
+      })
+    } else {
+      return res.status(401).json(info);
+    }
+  });
+});
 
 module.exports = router;

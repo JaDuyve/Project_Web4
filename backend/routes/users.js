@@ -3,6 +3,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 let passport = require("passport");
+let jwt = require('express-jwt');
+
+let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -27,12 +30,7 @@ router.post('/register', function (req, res, next) {
       return next(err);
     }
     return res.json({ 
-      token: user.generateJWT(),
-      username: usr.username,
-      prof: usr.prof,
-      dataPF: usr.dataPF,
-      contentTypePF: usr.contentTypePF,
-      _id: usr._id
+      token: user.generateJWT()
     })
   });
 });
@@ -45,12 +43,7 @@ router.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
     if (err) { return next(err); }
     if (user) {
-      return res.json({ token: user.generateJWT(),
-        username: user.username,
-        prof: user.prof,
-        dataPF: user.dataPF,
-        contentTypePF: user.contentTypePF,
-        _id: user._id });
+      return res.json({ token: user.generateJWT() });
     } else {
       return res.status(401).json(info);
     }
@@ -67,6 +60,7 @@ router.post('/checkusername', function(req, res, next) {
       }
   });
 });
+
 
 
 
