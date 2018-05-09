@@ -37,9 +37,7 @@ UserSchema.methods.generateJWT = function () {
     return jwt.sign({
         _id: this._id,
         username: this.username,
-        prof: this.prof,
-        dataPF: this.dataPF,
-        contentTypePF: this.contentTypePF,
+        
         exp: parseInt(exp.getTime() / 1000)
     }, process.env.STUDYBUD_BACKEND_SECRET);
 }

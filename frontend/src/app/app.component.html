@@ -2,8 +2,8 @@
   <div class="item">
     <img src="assets/images/logo.png">
   </div>
-  <a class="item">Features</a>
-  <a class="item">Testimonials</a>
+  <a class="item" routerLinkActive="active" routerLink="homepage/list">Question Feed</a>
+  <a class="item" routerLinkActive="active" routerLink="homepage/add">Add Question</a>
   <div class="right menu">
     <a *ngIf='(currentUser | async) else loginlink' class="item" routerLinkActive='active' routerLink="/logout">{{currentUser | async}}</a>
     <ng-template #loginlink>

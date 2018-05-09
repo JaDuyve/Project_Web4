@@ -13,13 +13,15 @@ import { CommentComponent } from './comment/comment.component';
 import { httpInterceptorProviders } from '../http-interceptors';
 import { QuestionDetailComponent } from './question-detail/question-detail.component';
 import { GroupComponent } from './group/group.component';
+import { QuestionfilterService } from './questionfilter.service';
 
 
 const routes: Routes = [
-    {path: 'list', component: QuestionListComponent},
-    {path: 'homepage', component: HomepageComponent},
+    { path: 'list', component: QuestionListComponent },
+    { path: 'add', component: AddQuestionComponent },
+    { path: 'homepage', component: HomepageComponent },
     {
-        path: ':id', 
+        path: '/:id',
         component: QuestionDetailComponent,
         resolve: { question: QuestionResolverService }
     }
@@ -42,6 +44,7 @@ const routes: Routes = [
         HomepageComponent,
         QuestionDetailComponent,
         GroupComponent,
+        QuestionfilterService
     ],
     providers: [httpInterceptorProviders, QuestionDataService, QuestionResolverService]
 })

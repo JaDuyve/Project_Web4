@@ -27,16 +27,20 @@ router.get('/API/comments', auth, function (req, res, next) {
   });
 });
 
-router.get('/API/questions',auth,  function (req, res, next) {
+router.get('/API/questions', auth, function (req, res, next) {
   let query = Question.find()
     .populate('comments')
+    .populate({
+      path: 'comments', 
+      populate: {path: 'author'}
+    })
     .populate('author');
   query.exec(function (err, questions) {
     if (err) {
       return next(err);
     }
 
-    console.log(questions);
+    // console.log(questions);
 
     res.json(questions);
   });
@@ -57,7 +61,6 @@ router.post('/API/questions', function (req, res, next) {
         return next(err);
       }
 
-      console.log(usr);
 
       let question = new Question({
         description: req.body.description,
@@ -182,7 +185,6 @@ router.put('/API/comment/:comment', auth, function (req, res) {
 });
 
 router.post('/API/question/:question/comments', auth, function (req, res, next) {
-  console.log("blub");
   User.findById(req.body.authorId, function (err, usr) {
 
     let com = new Comment(req.body);
@@ -252,36 +254,22 @@ router.post('/API/groups', auth, function (req, res, next) {
 });
 
 
-
-// Uploading picture
-router.post('/API/uploadfile', auth, function (req, res, next) {
-  let path = '';
-  upload(req, res, function (err) {
-    if (err) {
-      console.log(err);
-      return res.status(422).send("an Error occured ");
-    }
-    path = req.file.path;
-    return res.send("Upload completed for " + path);
-  });
-})
-
-router.post('/API/finduser', auth, function(req, res, next){
-  User.find({username: req.body.username}, function(err, user){
+router.post('/API/finduser', function (req, res, next) {
+  User.findOne({ username: req.body.username }, function (err, user) {
     if (err) {
       return next(err);
     }
 
-    if (user){
+   
       res.json({
         username: user.username,
         prof: user.prof,
         dataPF: user.dataPF,
-        contentTypePF: user.contentTypePF
+        contentTypePF: user.contentTypePF,
+        _id: user._id
       })
-    } else {
-      return res.status(401).json(info);
-    }
+    
+
   });
 });
 

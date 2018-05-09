@@ -1,8 +1,16 @@
-<add-question (newQuestion)="addPublicQuestion($event)"></add-question>
-<div class="ui feed">
-  <question class="event ui" *ngFor="let question of questions" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
+<!-- <add-question (newQuestion)="addPublicQuestion($event)"></add-question> -->
+<div>
+    <div class="ui basic segment">
+        <div class="ui two fields">
+          <div class="ui input">
+            <input (keyup)='filterQuestion$.next($event.target.value)' type='text' id='filter' name='filter' placeholder='filter question name...'>
+          </div>
+        </div>
+      </div>
+  <div class="ui feed">
+    <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
+  </div>
 </div>
-
 <div class="ui vertical menu">
   <a (click)="showGroupModal()" class="active teal item">
     Create groep
@@ -34,9 +42,9 @@
       </div>
       <div class="inline field">
         <div class="ui checkbox">
-            <input type="checkbox" formControlName="private" class="">
+          <input type="checkbox" formControlName="private" class="">
           <label class="center-block">
-             private group
+            private group
           </label>
         </div>
       </div>

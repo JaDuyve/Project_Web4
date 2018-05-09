@@ -5,6 +5,7 @@ import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../user/authentication.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -15,7 +16,6 @@ import { AuthenticationService } from '../../user/authentication.service';
 })
 export class AddQuestionComponent implements OnInit {
 
-  @Output() public newQuestion = new EventEmitter<Question>();
   private question: FormGroup;
   public errorMsg: string;
 
@@ -23,7 +23,7 @@ export class AddQuestionComponent implements OnInit {
   private files;
 
   constructor(
-    private fb : FormBuilder,
+    private fb: FormBuilder,
     private _authenticationService: AuthenticationService,
     private _questionDataService: QuestionDataService
   ) {
@@ -40,43 +40,53 @@ export class AddQuestionComponent implements OnInit {
   onSubmit() {
     if (this.files) {
       let file = this.files[0];
-  
+
       if (file) {
         let reader = new FileReader();
 
         reader.onload = this._handleReaderLoaded.bind(this);
 
         reader.readAsBinaryString(file);
-        
+
       }
 
     } else {
-      
+
       const quest = new Question(
         this.question.value.description);
 
-        quest.authorId = this._authenticationService.user.id;
+      quest.authorId = this._authenticationService.user.id;
 
-      this.newQuestion.emit(quest);
-    }
+      this._questionDataService.addPublicQuestion(quest).subscribe(
+        item => (console.log(item)),
+        (error: HttpErrorResponse) => {
+          this.errorMsg = `Error ${error.status} while updating question for ${
+            quest.description
+            }: ${error.error}`;
+        });    }
 
   }
 
-  _handleReaderLoaded(readerEvt) {
+  _handleReaderLoaded(readerEvt): void {
     let binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
-    
+
     const quest = new Question(
       this.question.value.description,
       null,
       this.base64textString,
       this.files[0].type
     );
-    console.log(this._authenticationService.user.id);
     quest.authorId = this._authenticationService.user.id;
 
-    this.newQuestion.emit(quest);
-  }
+
+    this._questionDataService.addPublicQuestion(quest).subscribe(
+      item => (console.log(item)),
+      (error: HttpErrorResponse) => {
+        this.errorMsg = `Error ${error.status} while updating question for ${
+          quest.description
+          }: ${error.error}`;
+      });  }
 
   handleFileSelect(evt) {
     this.files = evt.target.files;

@@ -55,7 +55,7 @@ export class User {
     static fromJSON(json: any): User {
         const pq = new User(
             json.username,
-            false,
+            json.prof,
             json.dataPF,
             json.contentTypePF
         );

@@ -36,7 +36,6 @@ export class QuestionComponent implements OnInit {
       message: ['']
     });
 
-    console.log(this.question.author);
 
   }
 

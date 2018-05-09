@@ -19,7 +19,7 @@ function parseJwt(token) {
 export class AuthenticationService {
   private readonly _tokenKey = 'currentUser';
   private _user$: BehaviorSubject<string>;
-  private _user: User;
+  private _user: User = null;
   public redirectUrl: string;
 
 
@@ -34,10 +34,26 @@ export class AuthenticationService {
     }
 
     this._user$ = new BehaviorSubject<string>(parsedToken && parsedToken.username);
+    if (this._user$.value !== null){
+      this.user = null;
+
+    }
   }
 
-  get user() : User {
+  get user(): User {
+
+
     return this._user;
+  }
+
+  set user(obj) {
+    this.http.post('/API/finduser', { username: this._user$.value })
+      .pipe(
+        map((res: any) => {
+          this._user = User.fromJSON(res);
+          return true;
+        })
+      ).subscribe();
   }
 
   get user$() {
@@ -54,18 +70,12 @@ export class AuthenticationService {
       .post('/API/users/login', { username, password })
       .pipe(
         map((res: any) => {
-          
+
           const token = res.token;
           if (token) {
             localStorage.setItem(this._tokenKey, token);
             this._user$.next(username);
-            this.http.post('/API/finduser', {username})
-              .pipe(
-                map((res: any) => {
-                  this._user = User.fromJSON(res);
-                  return true;
-                })
-              ).subscribe();
+            this.user = null;
             return true;
           } else {
             return false;
@@ -82,7 +92,7 @@ export class AuthenticationService {
           if (token) {
             localStorage.setItem(this._tokenKey, token);
             this._user$.next(user.username);
-            this.http.post('/API/finduser', {username: user.username})
+            this.http.post('/API/finduser', { username: user.username })
               .pipe(
                 map((res: any) => {
                   this._user = User.fromJSON(res);
@@ -97,15 +107,15 @@ export class AuthenticationService {
       )
   }
 
-  logout(){
-    if (this._user$.getValue()){
+  logout() {
+    if (this._user$.getValue()) {
       localStorage.removeItem(this._tokenKey);
       setTimeout(() => this._user$.next(null));
     }
   }
 
   checkUserNameAvailability(username: string): Observable<boolean> {
-    return this.http.post(`/API/checkusername`, { username }).pipe(
+    return this.http.post(`/API/users/checkusername`, { username }).pipe(
       map((item: any) => {
         if (item.username === 'alreadyexists') {
           return false;

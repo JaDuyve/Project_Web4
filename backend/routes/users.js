@@ -51,9 +51,9 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/checkusername', function(req, res, next) {
-  User.find({username: req.body.username}, 
+  User.findOne({username: req.body.username}, 
     function(err, result) {
-      if (result.length) {
+      if (result !== null) {
         res.json({'username': 'alreadyexists'})
       } else {
         res.json({'username': 'ok'})

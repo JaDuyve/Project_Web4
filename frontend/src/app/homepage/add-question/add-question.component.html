@@ -3,6 +3,9 @@
   <div class="field">
     <label for="ques">Add Question</label>
     <input id="q" name="ques" formControlName='description' #spy>
+    <div *ngIf='question.get("description").errors?.required && question.get("description").touched' class='ui pointing red basic label'>
+      a question must have a name of at least 10 characters long
+    </div>
   </div>
   <div class="field">
     <label for="pic">picture</label>
@@ -12,8 +15,3 @@
     add question
   </button>
 </form>
-
-REMOVE {{ question.value | json }}
-<br> {{ question.get("description").errors | json}}
-<br> {{ question.valid }}
-<br> {{spy.className}}
