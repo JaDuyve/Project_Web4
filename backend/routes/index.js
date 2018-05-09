@@ -29,7 +29,6 @@ router.get('/API/comments', auth, function (req, res, next) {
 
 router.get('/API/questions', auth, function (req, res, next) {
   let query = Question.find()
-    .populate('comments')
     .populate({
       path: 'comments', 
       populate: {path: 'author'}
@@ -151,7 +150,7 @@ router.put('/API/question/:question', auth, function (req, res) {
 
   question.description = req.body.description;
   question.comments = req.body.comments;
-  question.author = req.body.author;
+  
   question.likes = req.body.likes;
   question.dislikes = req.body.dislikes;
   question.created = req.body.created;
@@ -170,7 +169,7 @@ router.put('/API/comment/:comment', auth, function (req, res) {
 
   comment.message = req.body.message;
   comment.comments = req.body.comments;
-  comment.author = req.body.author;
+  
   comment.likes = req.body.likes;
   comment.dislikes = req.body.dislikes;
   comment.created = req.body.created;

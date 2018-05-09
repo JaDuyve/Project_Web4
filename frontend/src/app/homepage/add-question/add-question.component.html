@@ -1,17 +1,18 @@
-
-<form class="ui segment form" [formGroup]='question' (ngSubmit)='onSubmit()'>
-  <div class="field">
-    <label for="ques">Add Question</label>
-    <input id="q" name="ques" formControlName='description' #spy>
-    <div *ngIf='question.get("description").errors?.required && question.get("description").touched' class='ui pointing red basic label'>
-      a question must have a name of at least 10 characters long
+<div class="ui container">
+  <form class="ui segment form" [formGroup]='question' (ngSubmit)='onSubmit()'>
+    <div class="field">
+      <label for="ques">Add Question</label>
+      <input id="q" name="ques" formControlName='description' #spy>
+      <div *ngIf='question.get("description").errors?.required && question.get("description").touched' class='ui pointing red basic label'>
+        a question must have a name of at least 10 characters long
+      </div>
     </div>
-  </div>
-  <div class="field">
-    <label for="pic">picture</label>
-    <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
-  </div>
-  <button type='submit' class="ui positive right button">
-    add question
-  </button>
-</form>
+    <div class="field">
+      <label for="pic">picture</label>
+      <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
+    </div>
+    <button type='submit' class="ui positive right button">
+      add question
+    </button>
+  </form>
+</div>

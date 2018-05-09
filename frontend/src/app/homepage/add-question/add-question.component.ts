@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { QuestionDataService } from './../question-data.service';
 import { Question } from './../../models/question.model';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
@@ -24,6 +25,7 @@ export class AddQuestionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private _authenticationService: AuthenticationService,
     private _questionDataService: QuestionDataService
   ) {
@@ -58,12 +60,16 @@ export class AddQuestionComponent implements OnInit {
       quest.authorId = this._authenticationService.user.id;
 
       this._questionDataService.addPublicQuestion(quest).subscribe(
-        item => (console.log(item)),
+        item => console.log(item)
+        ,
         (error: HttpErrorResponse) => {
           this.errorMsg = `Error ${error.status} while updating question for ${
             quest.description
             }: ${error.error}`;
-        });    }
+        });    
+      }
+
+        this.router.navigate(['/homepage/list'])
 
   }
 
@@ -81,12 +87,15 @@ export class AddQuestionComponent implements OnInit {
 
 
     this._questionDataService.addPublicQuestion(quest).subscribe(
-      item => (console.log(item)),
+      item => console.log(item)     
+      ,
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while updating question for ${
           quest.description
           }: ${error.error}`;
-      });  }
+      }); 
+      this.router.navigate(['/homepage/list']);
+    }
 
   handleFileSelect(evt) {
     this.files = evt.target.files;

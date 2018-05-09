@@ -10,7 +10,8 @@ export class QuestionResolverService implements Resolve<Question> {
   
   constructor(private _questionDataService: QuestionDataService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state:  RouterStateSnapshot): Observable<Question>  {
+  resolve(route: ActivatedRouteSnapshot, 
+    state:  RouterStateSnapshot): Observable<Question>  {
     return this._questionDataService.getQuestion(route.params['id']);
   }
 

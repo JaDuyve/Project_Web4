@@ -42,7 +42,10 @@ export class QuestionListComponent implements OnInit {
 
   ngOnInit() {
     this._questionDataService.questions.subscribe(
-      items => this._questions = items
+      items => {
+        this._questions = items.reverse();
+        
+      }
       
     );
     // .subscribe(
