@@ -17,7 +17,8 @@ let QuestionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment', autopopulate: true
     }],
-    hasSolution: Boolean
+    hasSolution: Boolean,
+    sitsInGroup: Boolean
 });
 
 QuestionSchema.plugin(autopopulate);

@@ -15,10 +15,11 @@ let GroupSchema = new mongoose.Schema({
     closedGroup: Boolean,
     questions: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question'
+        ref: 'Question',
+        autopopulate: {select: 'username prof dataPF contentTypePF'}
     }]
     ,
-    Users: [{
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         autopopulate: {select: 'username prof dataPF contentTypePF'}

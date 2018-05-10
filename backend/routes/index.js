@@ -28,7 +28,7 @@ router.get('/API/comments', auth, function (req, res, next) {
 });
 
 router.get('/API/questions', auth, function (req, res, next) {
-  let query = Question.find();
+  let query = Question.find().where('sitsInGroup').equals(false);
   query.exec(function (err, questions) {
     if (err) {
       return next(err);
@@ -63,7 +63,8 @@ router.post('/API/questions', function (req, res, next) {
         dislikes: req.body.dislikes,
         contentType: req.body.contentType,
         dataImage: req.body.dataImage,
-        hasSolution: req.body.hasSolution
+        hasSolution: req.body.hasSolution,
+        sitsInGroup: false
       });
 
       question.author = usr;

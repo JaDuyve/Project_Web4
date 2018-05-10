@@ -11,12 +11,12 @@ let jwt = require('express-jwt');
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
-router.get('group/:group', auth, function (req, res, next) {
+router.get('/group/:group', auth, function (req, res, next) {
     res.json(req.group);
 });
 
 router.param('group', function (req, res, next, id) {
-    let query = Group.findById(id);
+    let query = Group.findById(id).select('groupName admin closedGroup users');
     query.exec(function (err, group) {
         if (err) {
             return next(err);
@@ -56,7 +56,7 @@ router.post('/add', auth, function (req, res, next) {
     });
 });
 
-router.post('/checkgroupname', function (req, res, next) {
+router.post('/checkgroupname', auth, function (req, res, next) {
     Group.findOne({ groupName: req.body.groupName },
         function (err, result) {
             if (result !== null) {
@@ -66,5 +66,48 @@ router.post('/checkgroupname', function (req, res, next) {
             }
         });
 });
+
+router.post('/group/:group/question', auth, function (req, res, next) {
+    User.findById(req.body.authorId, function (err, usr) {
+        console.log(req.body);
+        let question = new Question(req.body);
+        question.author = usr;
+        question.sitsInGroup = true;
+
+        question.save(function (err, question) {
+            if (err) {
+                return next(err);
+            }
+
+            req.group.questions.push(question);
+            req.group.save(function (err, group) {
+                if (err) {
+
+                    return next(err);
+
+                }
+                res.json(question);
+            });
+        });
+    });
+});
+
+router.post('/group/question', auth, function(req, res, next){
+    let query = Group.findById(req.body.id).select('questions');
+
+    query.exec(function (err, questions) {
+        if (err) {
+            return next(err);
+        }
+        if (!questions) {
+            return next(new Error('not found ' + req.body.id));
+        }
+
+        console.log(questions);
+        res.json(questions.questions)
+    });
+});
+
+router.put('/group/update')
 
 module.exports = router;

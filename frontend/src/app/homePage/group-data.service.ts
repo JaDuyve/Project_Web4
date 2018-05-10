@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Group } from '../models/group.model';
+import { Question } from '../models/question.model';
 
 @Injectable()
 export class GroupDataService {
@@ -12,7 +13,7 @@ export class GroupDataService {
   constructor(private http: HttpClient) { }
 
   getGroup(id: string): Observable<Group> {
-    const theUrl = `${this._appUrl}/group/${id}`;
+    const theUrl = `${this._appUrl}groups/group/${id}`;
     return this.http.get(theUrl).pipe(map(Group.fromJSON));
   }
 
@@ -40,6 +41,20 @@ export class GroupDataService {
         }
       })
     );
+  }
+
+  addQuestionToGroup(groupid: string, question: Question): Observable<Question> {
+    return this.http.post(`${this._appUrl}groups/group/${groupid}/question`, question)
+      .pipe(
+        map(Question.fromJSON)
+      );
+  }
+
+  getQuestionGroup(groupid: string): Observable<Question[]> {
+    return this.http.post(`${this._appUrl}groups/group/question`, {id: groupid})
+      .pipe(
+        map((list: any[]): Question[] => list.map(Question.fromJSON))
+      );
   }
 
 }

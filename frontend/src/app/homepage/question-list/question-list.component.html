@@ -1,12 +1,21 @@
 <!-- <add-question (newQuestion)="addPublicQuestion($event)"></add-question> -->
-<div>
-  <div class="ui basic segment">
-    <div class="ui two fields">
-      <div class="ui input">
-        <input (keyup)='filterQuestion$.next($event.target.value)' type='text' id='filter' name='filter' placeholder='filter question name...'>
+<div class="ui vertical segment">
+  <div class="ui secondary menu">
+    <div class="item">
+      <h1 class="ui header">Public Questions</h1>
+    </div>
+
+    <div class="right menu">
+      <div class="item">
+        <div class="ui icon input">
+          <input (keyup)='filterQuestion$.next($event.target.value)' type='text' id='filter' name='filter' placeholder='filter question name...'>
+          <i class="search icon"></i>
+        </div>
       </div>
     </div>
   </div>
+  <div class="ui divider"></div>
+
   <div class="ui feed">
     <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question"
       (rmQuestion)="removeQuestion($event)"></question>
@@ -64,5 +73,5 @@
       </div>
     </form>
   </div>
-  
+
 </div>

@@ -50,7 +50,10 @@ export class Group {
         return this._admin;
     }
 
+    
+
     static fromJSON(json: any): Group {
+        console.log(json);
         const pq = new Group(
             json.groupName,
             // json.groupCategory,

@@ -16,6 +16,9 @@ import { GroupComponent } from './group/group.component';
 import { QuestionfilterService } from './questionfilter.service';
 import { BaseUrlInterceptor } from '../http-interceptors/BaseUrlInterceptor';
 import { GroupDataService } from './group-data.service';
+import { GroupResolverService } from './group-resolver.service';
+import { GroupQuestionListComponent } from './group-question-list/group-question-list.component';
+import { GroupAddQuestionComponent } from './group-add-question/group-add-question.component';
 
 
 const routes: Routes = [
@@ -27,6 +30,11 @@ const routes: Routes = [
         component: QuestionDetailComponent
         ,
         resolve: { question: QuestionResolverService }
+    },
+    {
+        path: 'group/:id',
+        component: GroupComponent,
+        resolve: { group: GroupResolverService }
     }
 ];
 
@@ -47,9 +55,11 @@ const routes: Routes = [
         HomepageComponent,
         QuestionDetailComponent,
         GroupComponent,
-        QuestionfilterService
+        QuestionfilterService,
+        GroupQuestionListComponent,
+        GroupAddQuestionComponent
     ],
-    providers: [BaseUrlInterceptor, httpInterceptorProviders, QuestionDataService, GroupDataService, QuestionResolverService]
+    providers: [BaseUrlInterceptor, httpInterceptorProviders, QuestionDataService, GroupDataService, QuestionResolverService, GroupResolverService]
 })
 
 export class HomepageModule { }
