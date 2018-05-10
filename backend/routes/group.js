@@ -15,6 +15,21 @@ router.get('/group/:group', auth, function (req, res, next) {
     res.json(req.group);
 });
 
+router.get('/groups', function (req, res, next) {
+    let query = Group.find().select({groupName: 1});
+    query.exec(function (err, comments) {
+        if (err) {
+            return next(err);
+        }
+
+        res.json(comments);
+    });
+});
+
+router.get('/groupname/:group', auth, function (req, res, next) {
+    res.json(req.group);
+});
+
 router.param('group', function (req, res, next, id) {
     let query = Group.findById(id).select('groupName admin closedGroup users');
     query.exec(function (err, group) {
@@ -27,6 +42,18 @@ router.param('group', function (req, res, next, id) {
         req.group = group;
         return next();
     });
+});
+
+router.post('/groupname', auth, function (req, res, next) {
+    Group.findOne({ groupName: req.body.id },
+        function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            res.json(result);
+
+        });
 });
 
 router.post('/add', auth, function (req, res, next) {
@@ -112,7 +139,9 @@ router.put('/group/:group', auth, function (req, res, next) {
     User.findById(req.body.userAdded, function (err, usr) {
         console.log(req.body);
         let group = req.group;
-        group.users.push = usr;
+
+        console.log(usr);
+        group.users.push(usr);
 
         group.save(function (err, group) {
             if (err) {
@@ -120,7 +149,7 @@ router.put('/group/:group', auth, function (req, res, next) {
                 return next(err);
 
             }
-            res.json({"groupupdated": "ok"});
+            res.json({ "groupupdated": "ok" });
         });
     });
 });

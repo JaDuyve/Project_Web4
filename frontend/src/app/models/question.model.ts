@@ -112,7 +112,7 @@ export class Question {
         let classred: string = "";
 
         if (this._likes.has(this._author.username)) {
-            classred = "red";
+            classred = "green";
         }
 
         return classred;

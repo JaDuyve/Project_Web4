@@ -21,10 +21,10 @@
   </div>
   <div class="actions">
     <a class="like" (click)="addLike()">
-      <i class="thumbs up icon"></i> {{comment.showAantalLikes()}}
+      <i class="{{comment.hasLike()}} thumbs up icon"></i> {{comment.showAantalLikes()}}
     </a>
     <a class="like" (click)="addDislike()">
-      <i class="thumbs down icon"></i> {{ comment.showAantalDislikes()}}
+      <i class="{{comment.hasLike()}} thumbs down icon"></i> {{ comment.showAantalDislikes()}}
     </a>
     <a *ngIf="isOwnerPost() && !comment.solution" (click)="setSolution()">
       Good Solution

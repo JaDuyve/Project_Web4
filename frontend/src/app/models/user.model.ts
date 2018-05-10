@@ -9,7 +9,6 @@ export class User {
 
     constructor(username: string, 
         prof: boolean, 
-        joinedGroups: string[],
         dataPF: string = "", 
         contentTypePF: string = "", 
         password: string = "") {
@@ -17,7 +16,7 @@ export class User {
         this._dataPF = dataPF;
         this._contentTypePF = contentTypePF;
         this._password = password;
-        this._joinedGroups = joinedGroups;
+        this._joinedGroups = new Array();
         this._id = "";
     }
 
@@ -47,7 +46,15 @@ export class User {
     }
 
     get joinedGroups(): string[] {
+        if (this._joinedGroups === undefined)
+        {
+            this._joinedGroups  = new Array();
+        }
         return this._joinedGroups;
+    }
+
+    set joinedGroups(groups: string[]) {
+        this._joinedGroups = groups;
     }
 
     getProfilePicture(): string {
@@ -64,12 +71,11 @@ export class User {
         const pq = new User(
             json.username,
             json.prof,
-            json.joinedGroup,
             json.dataPF,
             json.contentTypePF,
             
         );
-
+        pq._joinedGroups = json.joinedGroups
         pq._id = json._id;
 
         return pq;

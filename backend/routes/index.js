@@ -227,7 +227,8 @@ router.post('/API/finduser', function (req, res, next) {
       prof: user.prof,
       dataPF: user.dataPF,
       contentTypePF: user.contentTypePF,
-      _id: user._id
+      _id: user._id,
+      joinedGroups: user.joinedGroups
     })
 
 

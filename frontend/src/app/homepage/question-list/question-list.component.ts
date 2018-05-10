@@ -1,5 +1,5 @@
 import { AuthenticationService } from './../../user/authentication.service';
-import { FormBuilder, FormGroup, ValidatorFn,Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators, AbstractControl } from '@angular/forms';
 import { QuestionDataService } from './../question-data.service';
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Question } from '../../models/question.model';
@@ -22,6 +22,8 @@ declare var $: any;
 export class QuestionListComponent implements OnInit {
 
   private _questions: Question[];
+  private _groups: Group[];
+
 
   public errorMsg: string;
   public group: FormGroup;
@@ -52,7 +54,16 @@ export class QuestionListComponent implements OnInit {
 
     );
 
-
+    this._groupDataService.getGroups().subscribe(
+      items => {
+        this._groups = items.filter(val => {
+          return val.users.filter(val => {
+            return val.username = this._authService.user.username;
+          }).length === 0;
+          
+        });;
+      }
+    );
     this.group = this.fb.group({
       group_name: ['', [Validators.required, Validators.minLength(5)],
         this.serverSideValidateGroupname()],
@@ -62,8 +73,11 @@ export class QuestionListComponent implements OnInit {
   }
 
   get questions() {
-    console.log(this._questions);
     return this._questions;
+  }
+
+  get groups() {
+    return this._groups;
   }
 
   addPublicQuestion(question: Question) {
@@ -91,6 +105,11 @@ export class QuestionListComponent implements OnInit {
           }: ${error.error}`;
       }
     );
+  }
+
+  get user() {
+    console.log(this._authService.user);
+    return this._authService.user;
   }
 
   onSubmitCreate() {

@@ -25,12 +25,24 @@
   <a (click)="showGroupModal()" class="active teal item">
     Create groep
   </a>
-  <a class="item">
-    Spam
-  </a>
-  <a class="item">
-    updates
-  </a>
+  <div class="item">
+    <h4 class="ui header">Groups</h4>
+  </div>
+  <div *ngFor="let groupname of groups">
+      <a href="homepage/group/{{groupname.groupName}}" class="item">
+        {{groupname.groupName}}
+      </a>
+  </div>
+
+  <div class="item">
+    <h4 class="ui header">Joined Groups</h4>
+  </div>
+  <div *ngFor="let groupname of user.joinedGroups">
+    <a href="homepage/group/{{groupname}}" class="item">
+      {{groupname}}
+    </a>
+
+  </div>
   <!-- <div class="item">
     <div class="ui transparent icon input">
       <input type="text" placeholder="Search mail...">

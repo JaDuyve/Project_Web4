@@ -12,9 +12,14 @@ export class GroupDataService {
 
   constructor(private http: HttpClient) { }
 
-  getGroup(id: string): Observable<Group> {
-    const theUrl = `${this._appUrl}groups/group/${id}`;
-    return this.http.get(theUrl).pipe(map(Group.fromJSON));
+  getGroup(groupname: string): Observable<Group> {
+    const theUrl = `${this._appUrl}groups/groupname/`;
+    return this.http.post(theUrl, {id: groupname}).pipe(map(Group.fromJSON));
+  }
+
+  getGroups(): Observable<Group[]> {
+    const theUrl = `${this._appUrl}groups/groups/`;
+    return this.http.get(theUrl).pipe(map((list: any[]): Group[] => list.map(Group.fromJSON)));
   }
 
   addGroup(group: Group): Observable<boolean> {

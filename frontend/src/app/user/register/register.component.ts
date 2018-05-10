@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
 
 
       this._authenticationService
-        .register(new User(this.user.value.username, this.user.value.prof, "", "", this.passwordControl.value))
+        .register(new User(this.user.value.username, this.user.value.prof , "", "", this.passwordControl.value))
         .subscribe(
           val => {
             if (val) {

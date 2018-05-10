@@ -132,6 +132,26 @@ export class Comment {
         return moment(this.created).fromNow();
     }
 
+    hasDislike(): string {
+        let classred: string = "";
+
+        if (this._dislikes.has(this._author.username)) {
+            classred = "red";
+        }
+
+        return classred;
+    }
+
+    hasLike(): string {
+        let classred: string = "";
+
+        if (this._likes.has(this._author.username)) {
+            classred = "green";
+        }
+
+        return classred;
+    }
+
     static fromJSON(json: any): Comment {
         const comment = new Comment(
             json.message,
