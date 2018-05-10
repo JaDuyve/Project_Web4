@@ -9,6 +9,7 @@ export class Group {
     private _groupName: string;
     private _groupCategory: string;
     private _closedGroup: boolean;
+    private _userAdded: string;
 
     constructor(
         groupName: string,
@@ -50,10 +51,11 @@ export class Group {
         return this._admin;
     }
 
-    
+    set userAdded(id: string) {
+        this._userAdded = id;
+    }
 
     static fromJSON(json: any): Group {
-        console.log(json);
         const pq = new Group(
             json.groupName,
             // json.groupCategory,
@@ -63,6 +65,7 @@ export class Group {
             
         );
 
+
         pq._id = json._id;
 
         return pq;
@@ -70,11 +73,10 @@ export class Group {
 
     toJSON() {
         return {
-            _id: this._id,
             groupName: this._groupName,
             adminId: this._admin.id,
             users: this._users.map(i => i.toJSON()),
-
+            userAdded: this._userAdded,
             // questions: this._questions,
             // groupCategory: this._groupCategory,
             closedGroup: this.closedGroup,

@@ -92,7 +92,7 @@ router.post('/group/:group/question', auth, function (req, res, next) {
     });
 });
 
-router.post('/group/question', auth, function(req, res, next){
+router.post('/group/question', auth, function (req, res, next) {
     let query = Group.findById(req.body.id).select('questions');
 
     query.exec(function (err, questions) {
@@ -103,11 +103,27 @@ router.post('/group/question', auth, function(req, res, next){
             return next(new Error('not found ' + req.body.id));
         }
 
-        console.log(questions);
+        console.log(questions.questions);
         res.json(questions.questions)
     });
 });
 
-router.put('/group/update')
+router.put('/group/:group', auth, function (req, res, next) {
+    User.findById(req.body.userAdded, function (err, usr) {
+        console.log(req.body);
+        let group = req.group;
+        group.users.push = usr;
+
+        group.save(function (err, group) {
+            if (err) {
+
+                return next(err);
+
+            }
+            res.json({"groupupdated": "ok"});
+        });
+    });
+});
+
 
 module.exports = router;

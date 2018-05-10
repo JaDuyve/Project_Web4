@@ -16,7 +16,7 @@ let GroupSchema = new mongoose.Schema({
     questions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
-        autopopulate: {select: 'username prof dataPF contentTypePF'}
+        autopopulate: true
     }]
     ,
     users: [{

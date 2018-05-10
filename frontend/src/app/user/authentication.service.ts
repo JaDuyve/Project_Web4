@@ -125,4 +125,12 @@ export class AuthenticationService {
       })
     );
   }
+
+  updateUser(): Observable<boolean> {
+    return this.http.post(`/API/users/userUpdate`, this._user)
+      .pipe(
+        map((item: any) => { return true; })
+
+      );
+  }
 }

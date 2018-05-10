@@ -57,4 +57,13 @@ export class GroupDataService {
       );
   }
 
+  updateGroup(group: Group): Observable<boolean> {
+    return this.http.put(`${this._appUrl}groups/group/${group.id}`, group)
+      .pipe(
+        map((item: any) => {
+          return true;
+        })
+      );{}
+  }
+
 }

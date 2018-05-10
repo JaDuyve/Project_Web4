@@ -1,8 +1,25 @@
 <div class="ui container">
-  <div class="ui vertical segment">
-    <h1 class="ui header">Group {{group.groupName}}</h1>
+  <div class="ui secondary menu">
+    <div class="item">
+      <h1 class="ui header">Group {{group.groupName}}</h1>
+    </div>
+    <div class="right menu">
+      <div *ngIf="!hasJoined()" class="item">
+        <button (click)="joinGroup()" class="ui blue button">
+          <i class="users icon"></i> Join
+        </button>
+      </div>
+      <div *ngIf="hasJoined()" class="item">
+        <div ui large label>
+          <i class="users icon"></i>
+          {{group.users.length}}
+          <a class="detail">People</a>
+        </div>
+      </div>
+    </div>
     <div class="ui divider"></div>
-    <group-question-list [groupid]="group.id"></group-question-list>
 
   </div>
+  <group-question-list [groupid]="group.id"></group-question-list>
+
 </div>

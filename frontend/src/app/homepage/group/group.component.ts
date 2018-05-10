@@ -30,8 +30,22 @@ export class GroupComponent implements OnInit {
   joinGroup(): boolean {
     this._group.users.push(this._authenticationService.user);
 
+    this._groupDataService.updateGroup(this._group).subscribe(
+      item => {
+        this._authenticationService.user.joinedGroups.push(this.group.groupName)
+        this._authenticationService.updateUser().subscribe(
+          item => console.log("group updated")
+        )
+      }
+    );
+
 
     return false;
+  }
+
+  hasJoined(): boolean {
+    let users = this.group.users.filter(val => val.username === this._authenticationService.user.username);
+    return users.length > 1;
   }
 
 }

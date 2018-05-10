@@ -61,7 +61,27 @@ router.post('/checkusername', function(req, res, next) {
   });
 });
 
+router.post('/userUpdate', function (req, res, next) {
+  
+  User.findById(req.body._id, function (err, user) {
+    if (err) {
+      return next(err);
+    }
 
 
+    user.prof = req.body.prof;
+    user.dataPF = req.body.dataPF;
+    user.contentTypePF = req.body.contentTypePF;
+    user.joinedGroups = req.body.joinedGroups;
+
+    user.save(function(err, usr){
+      if (err){
+        return next(err);
+      }
+
+      res.json({'userupdated': 'ok'})
+    });
+  });
+});
 
 module.exports = router;

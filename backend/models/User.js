@@ -12,7 +12,8 @@ let UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     dataPF: String,
-    contentTypePF: String
+    contentTypePF: String,
+    joinedGroups: [String]
 });
 
 UserSchema.methods.setPassword = function (password) {

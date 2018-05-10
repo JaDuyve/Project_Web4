@@ -44,7 +44,7 @@ export class GroupQuestionListComponent implements OnInit {
     return this._questions;
   }
 
-  addPublicQuestion(question: Question) {
+  addPublicQuestion(question: Question): boolean {
     this._groupDataService.addQuestionToGroup(this.groupid, question).subscribe(
       item => {
         this._questions.push(item);
@@ -53,7 +53,10 @@ export class GroupQuestionListComponent implements OnInit {
         this.errorMsg = `Error ${error.status} while adding question ${question}: ${error.error}`;
       }
     );
+    return false;
   }
+
+  
 
 
   // removeQuestion(question: Question) {
