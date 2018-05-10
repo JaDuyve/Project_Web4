@@ -134,6 +134,10 @@ export class Question {
         return this._dataImage !== "";
     }
 
+    hasComments() {
+        return this.comments.length > 0;
+    }
+
     formatDate(): string {
         return moment(this.created).fromNow();
     }

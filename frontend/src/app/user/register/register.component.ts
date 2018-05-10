@@ -70,7 +70,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.user.value.prof);
 
     if (this.selectedFile) {
       let file = this.selectedFile[0];
@@ -115,7 +114,6 @@ export class RegisterComponent implements OnInit {
     this.base64textString = btoa(binaryString);
 
 
-    console.log(this.user.value.prof);
     this._authenticationService
       .register(new User(this.user.value.username, this.user.value.prof, this.base64textString, this.selectedFile[0].type, this.passwordControl.value))
       .subscribe(

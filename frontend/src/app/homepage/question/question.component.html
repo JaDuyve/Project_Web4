@@ -24,10 +24,11 @@
       <i class="{{question.hasDislike()}} thumbs down icon"></i> {{ question.showAantalDislikes()}}
     </a>
     <a (click)="showModal()">reply</a>
+    <a *ngIf="question.hasComments()" (click)="showCommentsModal()">show comments</a>
     <a (click)="removeQuestion()">delete</a>
 
   </div>
-  <div class="ui accordion {{question.id}}">
+  <!-- <div class="ui accordion {{question.id}}">
     <div class="title">
       <i class=" dropdown icon"></i>
       Comments
@@ -37,10 +38,19 @@
         <comment class="comment" (commentupdate)="updateQuestionSol($event)" *ngFor="let comment of question.comments" [comment]="comment"></comment>
       </div>
     </div>
+  </div> -->
+</div>
+
+
+<div *ngIf="question.hasComments()" class="ui long modal comments {{question.id}}">
+  <i class="close icon"></i>
+  <div class="header">Comments</div>
+  <div class="content">
+    <div class="ui threaded comments">
+      <comment class="comment" (commentupdate)="updateQuestionSol($event)" *ngFor="let comment of question.comments" [comment]="comment"></comment>
+    </div>
   </div>
-
-
-
+</div>
 
 
 <div class="ui small modal {{question.id}}">

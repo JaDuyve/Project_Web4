@@ -1,5 +1,5 @@
 import { AuthenticationService } from './../../user/authentication.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn,Validators, AbstractControl } from '@angular/forms';
 import { QuestionDataService } from './../question-data.service';
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Question } from '../../models/question.model';
@@ -7,6 +7,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Group } from '../../models/group.model';
 import { Subject } from 'rxjs/Subject';
 import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
+import { GroupDataService } from '../group-data.service';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -30,7 +32,8 @@ export class QuestionListComponent implements OnInit {
   constructor(
     private _questionDataService: QuestionDataService,
     private fb: FormBuilder,
-    private _authService: AuthenticationService
+    private _authService: AuthenticationService,
+    private _groupDataService: GroupDataService
   ) {
     this.filterQuestion$
       .pipe(distinctUntilChanged(),
@@ -51,8 +54,9 @@ export class QuestionListComponent implements OnInit {
 
 
     this.group = this.fb.group({
-      group_name: [''],
-      private: ''
+      group_name: ['', [Validators.required, Validators.minLength(5)],
+        this.serverSideValidateGroupname()],
+      private: 'false'
     });
 
   }
@@ -92,7 +96,22 @@ export class QuestionListComponent implements OnInit {
   onSubmitCreate() {
     const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user);
 
+    this._groupDataService.addGroup(newGroup).subscribe();
+  }
 
+  private serverSideValidateGroupname(): ValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any }> => {
+      return this._groupDataService
+        .checkGroupNameAvailability(control.value)
+        .pipe(
+          map(available => {
+            if (available) {
+              return null;
+            }
+            return { groupAlreadyExists: true };
+          })
+        )
+    }
   }
 
   @HostBinding('class') classes = 'ui container';

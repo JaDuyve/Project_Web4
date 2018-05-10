@@ -1,9 +1,16 @@
 let mongoose = require('mongoose');
+let autopopulate = require("mongoose-autopopulate");
+
 
 let GroupSchema = new mongoose.Schema({
-    groupName: String,
+    groupName: {
+        type: String,
+        lowercase: true,
+        unique: true
+    },
     admin: {type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'},
+            ref: 'User',
+            autopopulate: {select: 'username prof dataPF contentTypePF'}},
     // groupCategory: String,
     closedGroup: Boolean,
     questions: [{
@@ -13,10 +20,13 @@ let GroupSchema = new mongoose.Schema({
     ,
     Users: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        autopopulate: {select: 'username prof dataPF contentTypePF'}
     }]
     
     
 });
+GroupSchema.plugin(autopopulate);
 
-mongoose.model('Question', QuestionSchema);
+
+mongoose.model('Group', GroupSchema);

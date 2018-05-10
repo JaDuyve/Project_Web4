@@ -15,6 +15,7 @@ import { QuestionDetailComponent } from './question-detail/question-detail.compo
 import { GroupComponent } from './group/group.component';
 import { QuestionfilterService } from './questionfilter.service';
 import { BaseUrlInterceptor } from '../http-interceptors/BaseUrlInterceptor';
+import { GroupDataService } from './group-data.service';
 
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
         GroupComponent,
         QuestionfilterService
     ],
-    providers: [BaseUrlInterceptor, httpInterceptorProviders, QuestionDataService, QuestionResolverService]
+    providers: [BaseUrlInterceptor, httpInterceptorProviders, QuestionDataService, GroupDataService, QuestionResolverService]
 })
 
 export class HomepageModule { }

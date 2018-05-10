@@ -65,32 +65,6 @@ export class QuestionDataService {
     return this.http.get(theUrl).pipe(map(Question.fromJSON));
   }
 
-  getGroup(id: string): Observable<Group> {
-    const theUrl = `${this._appUrl}/group/${id}`;
-    return this.http.get(theUrl).pipe(map(Group.fromJSON));
-  }
 
-  addGroup(group: Group): Observable<Group> {
-    return this.http
-      .post(`${this._appUrl}group/`, group)
-      .pipe(map(Group.fromJSON));
-  }
 
-  uploadFile(file) {
-    const fd = new FormData();
-    fd.append('image', file, file.name);
-    this.http.post('/API/uploadfile', fd,
-      {
-        reportProgress: true,
-        observe: 'events'
-      }
-    ).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        console.log('Uploaded Progress: ' + Math.round(event.loaded / event.total * 100) + '%')
-      } else if (event.type === HttpEventType.Response) {
-        console.log(event);
-      }
-    });
-
-  }
 }

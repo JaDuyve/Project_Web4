@@ -162,7 +162,9 @@ export class Comment {
             comments: this._comments.map(i => i.toJSON()),
             questionId: this._questionId,
             solution: this._solution,
-            authorPost: this._authorPost
+            authorPost: this._authorPost,
+            dataImage: this._dataImage,
+            contentType: this._contentType
         }
     }
 }

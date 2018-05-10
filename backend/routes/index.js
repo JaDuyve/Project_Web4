@@ -4,9 +4,9 @@ var router = express.Router();
 let mongoose = require('mongoose');
 let Question = mongoose.model('Question');
 let Comment = mongoose.model('Comment');
+let Group = mongoose.model('Group');
 let User = mongoose.model('User');
 let jwt = require('express-jwt');
-let fs = require('fs');
 
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
@@ -113,19 +113,7 @@ router.param('comment', function (req, res, next, id) {
   });
 });
 
-router.param('group', function (req, res, next, id) {
-  let query = Group.findById(id);
-  query.exec(function (err, group) {
-    if (err) {
-      return next(err);
-    }
-    if (!group) {
-      return next(new Error('not found ' + id));
-    }
-    req.group = group;
-    return next();
-  });
-});
+
 
 router.delete('/API/question/:question', function (req, res) {
   Comment.remove({ _id: { $in: req.question.comments } }, function (err) {
@@ -182,7 +170,7 @@ router.put('/API/comment/:comment', auth, function (req, res) {
 
 router.post('/API/question/:question/comments', auth, function (req, res, next) {
   User.findById(req.body.authorId, function (err, usr) {
-
+    console.log(req.body);
     let com = new Comment(req.body);
     com.author = usr;
 
@@ -223,36 +211,7 @@ router.post('/API/comment/:comment', auth, function (req, res, next) {
   });
 });
 
-router.get('/API/group/:group', auth, function (req, res, next) {
-  res.json(req.group);
-});
 
-router.post('/API/groups', auth, function (req, res, next) {
-  User.findById(req.body.adminId, function (err, usr) {
-    if (err) {
-      return next(err);
-    }
-
-
-    let group = new Group({
-      groupName: req.body.groupName,
-      closedGroup: req.body.closedGroup,
-
-    });
-
-    group.admin = usr;
-    group.questions = [];
-    group.users = [];
-    group.save(function (err, group) {
-      if (err) {
-        // removing questions because we are in a error
-        return next(err);
-      }
-
-      res.json(group);
-    });
-  });
-});
 
 
 router.post('/API/finduser', function (req, res, next) {

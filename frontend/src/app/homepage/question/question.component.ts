@@ -134,6 +134,10 @@ export class QuestionComponent implements OnInit {
     $(`.basic.modal.${this.question.id}.image`).modal('show');
   }
 
+  showCommentsModal(): void {
+    $(`.long.modal.comments.${this.question.id}`).modal('show');
+  }
+
   handleFileSelect(evt) {
     this.files = evt.target.files;
   }

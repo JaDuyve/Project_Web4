@@ -34,7 +34,7 @@ export class AuthenticationService {
     }
 
     this._user$ = new BehaviorSubject<string>(parsedToken && parsedToken.username);
-    if (this._user$.value !== null){
+    if (this._user$.value !== null) {
       this.user = null;
 
     }

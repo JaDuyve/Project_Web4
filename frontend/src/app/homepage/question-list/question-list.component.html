@@ -1,14 +1,15 @@
 <!-- <add-question (newQuestion)="addPublicQuestion($event)"></add-question> -->
 <div>
-    <div class="ui basic segment">
-        <div class="ui two fields">
-          <div class="ui input">
-            <input (keyup)='filterQuestion$.next($event.target.value)' type='text' id='filter' name='filter' placeholder='filter question name...'>
-          </div>
-        </div>
+  <div class="ui basic segment">
+    <div class="ui two fields">
+      <div class="ui input">
+        <input (keyup)='filterQuestion$.next($event.target.value)' type='text' id='filter' name='filter' placeholder='filter question name...'>
       </div>
+    </div>
+  </div>
   <div class="ui feed">
-    <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question" (rmQuestion)="removeQuestion($event)"></question>
+    <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question"
+      (rmQuestion)="removeQuestion($event)"></question>
   </div>
 </div>
 <div class="ui vertical menu">
@@ -35,10 +36,19 @@
     Create a group
   </div>
   <div class="content">
-    <form class="ui form" [formGroup]="group">
+    <form class="ui form" [formGroup]="group" (ngSubmit)="onSubmitCreate()">
       <div class="field">
         <label for="name">Group name</label>
-        <input name="name" id="" formControlName='group_name'/>
+        <input name="name" id="" formControlName='group_name' />
+        <div class='ui pointing red basic label' *ngIf='group.get("group_name").errors?.required && group.get("group_name").touched'>
+          a groupname is required
+        </div>
+        <div class='ui pointing red basic label' *ngIf='group.get("group_name").errors?.minlength && group.get("group_name").touched'>
+          the groupname should be at least {{group.get("group_name").errors?.minlength.requiredLength }} letters
+        </div>
+        <div class='ui pointing red basic label' *ngIf='group.get("group_name").errors?.groupAlreadyExists && group.get("group_name").touched'>
+          a group with that name already exists
+        </div>
       </div>
       <div class="inline field">
         <div class="ui checkbox">
@@ -48,10 +58,11 @@
           </label>
         </div>
       </div>
+      <div class="actions">
+        <div class="ui ok button">Cancel</div>
+        <button type="submit" [disabled]="!group.valid" class="ui positive ok button">Create</button>
+      </div>
     </form>
   </div>
-  <div class="actions">
-    <div class="ui ok button">Cancel</div>
-    <div (click)='onSubmitCreate()' class="ui green ok button">Create</div>
-  </div>
+  
 </div>
