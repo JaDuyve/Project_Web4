@@ -1,63 +1,75 @@
 <div class="label">
-    <img src="{{question.author.getProfilePicture()}}">
+  <img src="{{question.author.getProfilePicture()}}">
+</div>
+<div class="content">
+  <div class="summary">
+    <a>{{question.author.username}}</a> asked
+    <div title="{{question.created | date: 'longDate'}}" class="date">
+      {{question.formatDate()}}
+    </div>
+
+    <div *ngIf="question.hasSolution" class="ui green horizontal label">Solved</div>
   </div>
-  <div class="content">
-    <div class="summary">
-      <a>{{question.author.username}}</a> asked
-      <div class="date">
-        {{question.created | date: 'longDate'}}
+  <div class="extra text">
+    {{question.description}}
+  </div>
+  <div *ngIf="question.hasImage()">
+    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" (click)="showImageModal()" class="ui medium rounded image">
+  </div>
+  <div class="meta">
+    <a class="like" (click)="addLike()">
+      <i class="{{question.hasLike()}} thumbs up icon"></i> {{question.showAantalLikes()}}
+    </a>
+    <a class="like" (click)="addDislike()">
+      <i class="{{question.hasDislike()}} thumbs down icon"></i> {{ question.showAantalDislikes()}}
+    </a>
+    <a (click)="showModal()">reply</a>
+    <a (click)="removeQuestion()">delete</a>
+
+  </div>
+  <div class="ui accordion {{question.id}}">
+    <div class="title">
+      <i class=" dropdown icon"></i>
+      Comments
+    </div>
+    <div class="content">
+      <div class="ui threaded comments">
+        <comment class="comment" (commentupdate)="updateQuestionSol($event)" *ngFor="let comment of question.comments" [comment]="comment"></comment>
       </div>
     </div>
-    <div class="extra text">
-      {{question.description}}
-    </div>
-    <div *ngIf="question.hasImage()">
-      <img src="data:{{question.contentType}};base64,{{question.dataImage}}" (click)="showImageModal()" class="ui medium rounded image">
-    </div>
-    <div class="meta">
-      <a class="like" (click)="addLike()">
-        <i class="thumbs up icon"></i> {{question.showAantalLikes()}}
-      </a>
-      <a class="like" (click)="addDislike()">
-        <i class="thumbs down icon"></i> {{ question.showAantalDislikes()}}
-      </a>
-      <a (click)="showModal()">reply</a>
-  
-    </div>
-    <div class="ui threaded comments">
-      <comment class="comment" *ngFor="let comment of question.comments" [comment]="comment"></comment>
-    </div>
   </div>
-  
-  
-  
-  <div class="ui small modal {{question.id}}">
-    <i class="close icon"></i>
-    <div class="header">
-      Add a comment
-    </div>
-    <div class="content">
-      <form class="ui form" [formGroup]="comment">
-        <div class="field">
-          <label></label>
-          <textarea name="" id="" cols="30" rows="10" formControlName='message' #spy></textarea>
-        </div>
-        <div class="field">
-          <label for="pic">picture</label>
-          <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
-        </div>
-      </form>
-    </div>
-    <div class="actions">
-      <div class="ui ok button">Cancel</div>
-      <div (click)='onSubmitComment()' class="ui green ok button">Send</div>
-    </div>
+
+
+
+
+
+<div class="ui small modal {{question.id}}">
+  <i class="close icon"></i>
+  <div class="header">
+    Add a comment
   </div>
-  
-  <div class="ui basic modal {{question.id}} image">
-  
-    <div class="content">
-      <img src="data:{{question.contentType}};base64,{{question.dataImage}}" class="ui rounded image">
-  
-    </div>
+  <div class="content">
+    <form class="ui form" [formGroup]="comment">
+      <div class="field">
+        <label></label>
+        <textarea name="" id="" cols="30" rows="10" formControlName='message' #spy></textarea>
+      </div>
+      <div class="field">
+        <label for="pic">picture</label>
+        <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
+      </div>
+    </form>
   </div>
+  <div class="actions">
+    <div class="ui ok button">Cancel</div>
+    <div (click)='onSubmitComment()' class="ui green ok button">Send</div>
+  </div>
+</div>
+
+<div class="ui basic modal {{question.id}} image">
+
+  <div class="content">
+    <img src="data:{{question.contentType}};base64,{{question.dataImage}}" class="ui rounded image">
+
+  </div>
+</div>

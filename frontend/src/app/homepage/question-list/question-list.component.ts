@@ -31,31 +31,24 @@ export class QuestionListComponent implements OnInit {
     private _questionDataService: QuestionDataService,
     private fb: FormBuilder,
     private _authService: AuthenticationService
-  ) { 
+  ) {
     this.filterQuestion$
       .pipe(distinctUntilChanged(),
-      debounceTime(400),
-      map(val => val.toLowerCase())
-    )
-    .subscribe(val => (this.filterQuestionName = val));
+        debounceTime(400),
+        map(val => val.toLowerCase())
+      )
+      .subscribe(val => (this.filterQuestionName = val));
   }
 
   ngOnInit() {
     this._questionDataService.questions.subscribe(
       items => {
         this._questions = items.reverse();
-        
+
       }
-      
+
     );
-    // .subscribe(
-    //   data => {this._questions = data},
-    //   (error: HttpErrorResponse) => {
-    //     this.errorMsg = `Error ${
-    //       error.status
-    //     } while trying to retrieve questions: ${error.error}`;
-    //   }
-    // );
+
 
     this.group = this.fb.group({
       group_name: [''],
@@ -71,8 +64,10 @@ export class QuestionListComponent implements OnInit {
 
   addPublicQuestion(question: Question) {
     this._questionDataService.addPublicQuestion(question).subscribe(
-      item => {this._questions.push(item);
-      console.log(item)},
+      item => {
+        this._questions.push(item);
+        console.log(item)
+      },
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while adding question ${question}: ${error.error}`;
       }
@@ -95,10 +90,10 @@ export class QuestionListComponent implements OnInit {
   }
 
   onSubmitCreate() {
-    const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user.id);
-    
+    const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user);
 
-  }  
+
+  }
 
   @HostBinding('class') classes = 'ui container';
 }

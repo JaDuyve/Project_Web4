@@ -144,7 +144,7 @@ router.put('/API/question/:question', auth, function (req, res) {
 
   question.description = req.body.description;
   // question.comments = req.body.comments;
-  
+
   question.likes = req.body.likes;
   question.dislikes = req.body.dislikes;
   question.created = req.body.created;
@@ -164,7 +164,7 @@ router.put('/API/comment/:comment', auth, function (req, res) {
   let comment = req.comment;
 
   comment.message = req.body.message;
-  
+
   comment.likes = req.body.likes;
   comment.dislikes = req.body.dislikes;
   comment.created = req.body.created;
@@ -228,25 +228,30 @@ router.get('/API/group/:group', auth, function (req, res, next) {
 });
 
 router.post('/API/groups', auth, function (req, res, next) {
-
-  let group = new Group({
-    groupName: req.body.groupName,
-    closedGroup: req.body.closedGroup,
-    admin: req.body.admin
-  });
-
-
-  group.questions = [];
-  group.users = [];
-  question.save(function (err, group) {
+  User.findById(req.body.adminId, function (err, usr) {
     if (err) {
-      // removing questions because we are in a error
       return next(err);
     }
 
-    res.json(group);
-  });
 
+    let group = new Group({
+      groupName: req.body.groupName,
+      closedGroup: req.body.closedGroup,
+
+    });
+
+    group.admin = usr;
+    group.questions = [];
+    group.users = [];
+    group.save(function (err, group) {
+      if (err) {
+        // removing questions because we are in a error
+        return next(err);
+      }
+
+      res.json(group);
+    });
+  });
 });
 
 
@@ -256,15 +261,15 @@ router.post('/API/finduser', function (req, res, next) {
       return next(err);
     }
 
-   
-      res.json({
-        username: user.username,
-        prof: user.prof,
-        dataPF: user.dataPF,
-        contentTypePF: user.contentTypePF,
-        _id: user._id
-      })
-    
+
+    res.json({
+      username: user.username,
+      prof: user.prof,
+      dataPF: user.dataPF,
+      contentTypePF: user.contentTypePF,
+      _id: user._id
+    })
+
 
   });
 });

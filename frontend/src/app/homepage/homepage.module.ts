@@ -22,8 +22,9 @@ const routes: Routes = [
     { path: 'add', component: AddQuestionComponent },
     { path: 'homepage', component: HomepageComponent },
     {
-        path: '/:id',
-        component: QuestionDetailComponent,
+        path: 'question-detail/:id',
+        component: QuestionDetailComponent
+        ,
         resolve: { question: QuestionResolverService }
     }
 ];

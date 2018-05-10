@@ -4,7 +4,7 @@ import { User } from "./user.model";
 export class Group {
     private _id: string;
     private _users: User[];
-    private _admin: string;
+    private _admin: User;
     private _questions: Question[];
     private _groupName: string;
     private _groupCategory: string;
@@ -14,7 +14,7 @@ export class Group {
         groupName: string,
         // groupCategory: string,
         closedGroup: boolean,
-        admin: string,
+        admin: User,
         users: User[] = new Array(),
         questions: Question[] = new Array()
     ){
@@ -46,14 +46,18 @@ export class Group {
         return this._questions;
     }
 
+    get admin(): User {
+        return this._admin;
+    }
+
     static fromJSON(json: any): Group {
         const pq = new Group(
             json.groupName,
             // json.groupCategory,
             json.closedGroup,
-            json.admin,
-            json.users,
-            json.questions,
+            User.fromJSON(json.admin),
+            json.users.map(User.fromJSON)
+            
         );
 
         pq._id = json._id;
@@ -65,9 +69,10 @@ export class Group {
         return {
             _id: this._id,
             groupName: this._groupName,
-            admin: this._admin,
-            users: this._users,
-            questions: this._questions,
+            adminId: this._admin.id,
+            users: this._users.map(i => i.toJSON()),
+
+            // questions: this._questions,
             // groupCategory: this._groupCategory,
             closedGroup: this.closedGroup,
         };

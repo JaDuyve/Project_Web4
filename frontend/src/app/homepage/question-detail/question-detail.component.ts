@@ -24,23 +24,28 @@ export class QuestionDetailComponent implements OnInit {
   private files;
 
   constructor(
+    private route: ActivatedRoute,
     private _questionDataService: QuestionDataService,
     private fb: FormBuilder,
-    private _authenticationService: AuthenticationService,
-    private route: ActivatedRoute
+    private _authenticationService: AuthenticationService
+    
   ) {
 
   }
 
   ngOnInit() {
-    this.route.data.subscribe(
-      item => (this._question = item['question']),
-      (error: HttpErrorResponse) => {
-        this.errorMsg = `Error ${
-          error.status
-        } while trying to retrieve recipe: ${error.error}`;
-      }
-    );
+    // this.route.data.subscribe(
+    //   item => (this._question = item['question']),
+    //   (error: HttpErrorResponse) => {
+    //     this.errorMsg = `Error ${
+    //       error.status
+    //     } while trying to retrieve recipe: ${error.error}`;
+    //   }
+    // );
+
+    this.route.data.subscribe(item =>
+      this._question = item['question']);
+    
 
     this.comment = this.fb.group({
       message: ['']
@@ -97,13 +102,13 @@ export class QuestionDetailComponent implements OnInit {
 
     } else {
 
-      const comment = new Comment(this.comment.value.message, 
-        null, "","",
+      const comment = new Comment(this.comment.value.message,
+        null, "", "",
         this._question.author.id,
         this._question.id);
 
       comment.authorId = this._authenticationService.user.id;
-     
+
       this._questionDataService.addCommentToQuestion(comment, this._question).subscribe(
         item => (this._question.addComment(item)),
         (error: HttpErrorResponse) => {
@@ -141,5 +146,12 @@ export class QuestionDetailComponent implements OnInit {
 
   handleFileSelect(evt) {
     this.files = evt.target.files;
+  }
+
+  
+  updateQuestionSol(comment: Comment) {
+    this.question.hasSolution = true;
+    this.updateQuestion(this.question);
+    return false;
   }
 }
