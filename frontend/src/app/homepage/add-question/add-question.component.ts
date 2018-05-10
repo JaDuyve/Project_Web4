@@ -66,10 +66,10 @@ export class AddQuestionComponent implements OnInit {
           this.errorMsg = `Error ${error.status} while updating question for ${
             quest.description
             }: ${error.error}`;
-        });    
-      }
+        });
+    }
 
-        this.router.navigate(['/homepage/list'])
+    this.router.navigate(['/homepage/list']);
 
   }
 
@@ -78,8 +78,7 @@ export class AddQuestionComponent implements OnInit {
     this.base64textString = btoa(binaryString);
 
     const quest = new Question(
-      this.question.value.description,
-      null,
+      this.question.value.description,null,
       this.base64textString,
       this.files[0].type
     );
@@ -87,15 +86,15 @@ export class AddQuestionComponent implements OnInit {
 
 
     this._questionDataService.addPublicQuestion(quest).subscribe(
-      item => console.log(item)     
+      item => console.log(item)
       ,
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while updating question for ${
           quest.description
           }: ${error.error}`;
-      }); 
-      this.router.navigate(['/homepage/list']);
-    }
+      });
+    this.router.navigate(['/homepage/list']);
+  }
 
   handleFileSelect(evt) {
     this.files = evt.target.files;

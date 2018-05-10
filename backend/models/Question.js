@@ -1,11 +1,13 @@
 let mongoose = require('mongoose');
+let autopopulate = require("mongoose-autopopulate");
 
 let QuestionSchema = new mongoose.Schema({
     description: String,
     created: Date,
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        autopopulate: {select: 'username prof dataPF contentTypePF'}
     },
     likes: [String],
     dislikes: [String],
@@ -13,10 +15,12 @@ let QuestionSchema = new mongoose.Schema({
     contentType: String,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
+        ref: 'Comment', autopopulate: true
     }],
     hasSolution: Boolean
 });
+
+QuestionSchema.plugin(autopopulate);
 
 // QuestionSchema.pre('remove', function (next) {
 //     this.model('group').update({},

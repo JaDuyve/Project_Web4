@@ -1,4 +1,7 @@
 import { User } from './user.model';
+import * as moment from 'moment';
+
+
 export class Comment {
     private _id: string;
     private _message: string;
@@ -6,13 +9,13 @@ export class Comment {
     private _author: User;
     private _likes: Set<string>;
     private _dislikes: Set<string>;
-    private _comments: Comment[];
     private _questionId: string;
     private _authorId: string; 
     private _dataImage: string;
     private _contentType: string;
     private _solution: boolean;
     private _authorPost: string;
+    private _comments: Comment[];
 
     constructor(
         message: string,
@@ -34,11 +37,11 @@ export class Comment {
         this._created = created;
         this._likes = likes;
         this._dislikes = dislikes;
-        this._comments = comments;
         this._dataImage = dataImage;
         this._contentType = contentType;
         this._solution = solution;
         this._authorPost = authorPost;
+        this._comments = comments;
     }
 
 
@@ -47,6 +50,9 @@ export class Comment {
         return this._message;
     }
 
+    get comments(): Comment[] {
+        return this._comments;
+    }
 
     get created(): Date {
         return this._created;
@@ -64,9 +70,7 @@ export class Comment {
         return this._dislikes;
     }
 
-    get comments(): Comment[] {
-        return this._comments;
-    }
+   
 
     get questionId(): string {
         return this._questionId;
@@ -124,10 +128,14 @@ export class Comment {
         return this._dataImage !== "";
     }
 
+    formatDate(): string {
+        return moment(this.created).fromNow();
+    }
+
     static fromJSON(json: any): Comment {
         const comment = new Comment(
             json.message,
-            User.fromJSON(json),
+            User.fromJSON(json.author),
             json.dataImage,
             json.contentType,
             json.authorPost,
@@ -137,7 +145,6 @@ export class Comment {
             new Set(json.likes),
             new Set(json.dislikes),
             json.comments.map(Comment.fromJSON)
-            
         );
 
         comment._id = json._id;
@@ -154,8 +161,6 @@ export class Comment {
             dislikes: Array.from(this._dislikes),
             comments: this._comments.map(i => i.toJSON()),
             questionId: this._questionId,
-            dataImage: this._dataImage,
-            contentType: this._contentType,
             solution: this._solution,
             authorPost: this._authorPost
         }

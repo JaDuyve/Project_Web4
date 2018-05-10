@@ -36,7 +36,7 @@ export class QuestionComponent implements OnInit {
       message: ['']
     });
 
-
+    $(`.ui.accordion.${this.question.id}`).accordion();
   }
 
   removeQuestion(): boolean {
@@ -88,10 +88,14 @@ export class QuestionComponent implements OnInit {
 
     } else {
 
-      const comment = new Comment(this.comment.value.message, 
-        null, "","",
-        this.question.author.id,
-        this.question.id);
+      const comment = new Comment(
+        this.comment.value.message, 
+        this._authenticationService.user, 
+        "",
+        "",
+        this.question.author.username,
+        this.question.id
+      );
 
       comment.authorId = this._authenticationService.user.id;
      
@@ -110,10 +114,10 @@ export class QuestionComponent implements OnInit {
 
     const comment = new Comment(
       this.comment.value.message,
-      null,
+      this._authenticationService.user,
       this.base64textString,
       this.files[0].type,
-      this.question.author.id,
+      this.question.author.username,
       this.question.id
     );
     comment.authorId = this._authenticationService.user.id;
@@ -132,5 +136,11 @@ export class QuestionComponent implements OnInit {
 
   handleFileSelect(evt) {
     this.files = evt.target.files;
+  }
+
+  updateQuestionSol(comment: Comment) {
+    this.question.hasSolution = true;
+    this.updateQuestion(this.question);
+    return false;
   }
 }

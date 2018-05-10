@@ -4,9 +4,11 @@
 <div class="content">
   <div class="summary">
     <a>{{question.author.username}}</a> asked
-    <div class="date">
-      {{question.created | date: 'longDate'}}
+    <div title="{{question.created | date: 'longDate'}}" class="date">
+      {{question.formatDate()}}
     </div>
+
+    <div *ngIf="question.hasSolution" class="ui green horizontal label">Solved</div>
   </div>
   <div class="extra text">
     {{question.description}}
@@ -16,19 +18,28 @@
   </div>
   <div class="meta">
     <a class="like" (click)="addLike()">
-      <i class="thumbs up icon"></i> {{question.showAantalLikes()}}
+      <i class="{{question.hasLike()}} thumbs up icon"></i> {{question.showAantalLikes()}}
     </a>
     <a class="like" (click)="addDislike()">
-      <i class="thumbs down icon"></i> {{ question.showAantalDislikes()}}
+      <i class="{{question.hasDislike()}} thumbs down icon"></i> {{ question.showAantalDislikes()}}
     </a>
     <a (click)="showModal()">reply</a>
     <a (click)="removeQuestion()">delete</a>
 
   </div>
-  <div class="ui threaded comments">
-    <comment class="comment" *ngFor="let comment of question.comments" [comment]="comment"></comment>
+  <div class="ui accordion {{question.id}}">
+    <div class="title">
+      <i class=" dropdown icon"></i>
+      Comments
+    </div>
+    <div class="content">
+      <div class="ui threaded comments">
+        <comment class="comment" (commentupdate)="updateQuestionSol($event)" *ngFor="let comment of question.comments" [comment]="comment"></comment>
+      </div>
+    </div>
   </div>
-</div>
+
+
 
 
 

@@ -1,5 +1,6 @@
 import { User } from './user.model';
-import {Comment} from './comment.model'
+import { Comment } from './comment.model'
+import * as moment from 'moment';
 
 export class Question {
     private _id: string;
@@ -17,18 +18,18 @@ export class Question {
     constructor(
         description: string,
         author: User = null,
-        dataImage: string ="",
+        dataImage: string = "",
         contentType: string = "",
         hasSolution: boolean = false,
         likes: Set<string> = new Set(),
         dislikes: Set<string> = new Set(),
         created: Date = new Date(),
         comments: Comment[] = new Array(),
-        ) {
-        
+    ) {
+
         this._description = description;
         this._created = created;
-        this._author = author; 
+        this._author = author;
         this._likes = likes;
         this._dislikes = dislikes;
         this._comments = comments;
@@ -49,7 +50,7 @@ export class Question {
         return this._created;
     }
 
-    get author() : User{
+    get author(): User {
         return this._author;
     }
 
@@ -61,8 +62,8 @@ export class Question {
         return this._dislikes;
     }
 
-    get comments(): Comment[]{
-        return this._comments;
+    get comments(): Comment[] {
+        return this._comments.reverse();
     }
 
     get dataImage(): string {
@@ -81,23 +82,43 @@ export class Question {
         return this._hasSolution;
     }
 
-    set hasSolution(hasSolution : boolean){
+    set hasSolution(hasSolution: boolean) {
         this._hasSolution = hasSolution;
     }
 
-    set authorId(id: string){
+    set authorId(id: string) {
         this._authorId = id;
     }
 
-    addLike(username: string){
+    addLike(username: string) {
         this._likes.add(username);
     }
 
-    addDislike(username: string){
+    addDislike(username: string) {
         this._dislikes.add(username);
     }
 
-    addComment(comment: Comment){
+    hasDislike(): string {
+        let classred: string = "";
+
+        if (this._dislikes.has(this._author.username)) {
+            classred = "red";
+        }
+
+        return classred;
+    }
+
+    hasLike(): string {
+        let classred: string = "";
+
+        if (this._likes.has(this._author.username)) {
+            classred = "red";
+        }
+
+        return classred;
+    }
+
+    addComment(comment: Comment) {
         this._comments.push(comment);
     }
 
@@ -113,7 +134,9 @@ export class Question {
         return this._dataImage !== "";
     }
 
-    
+    formatDate(): string {
+        return moment(this.created).fromNow();
+    }
 
     static fromJSON(json: any): Question {
         const pq = new Question(
@@ -148,5 +171,5 @@ export class Question {
         };
     }
 
-    
+
 }

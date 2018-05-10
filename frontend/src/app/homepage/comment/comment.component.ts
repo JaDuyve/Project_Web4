@@ -2,7 +2,7 @@ import { AuthenticationService } from './../../user/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Comment } from './../../models/comment.model';
 import { QuestionDataService } from './../question-data.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 declare var $: any;
@@ -15,6 +15,7 @@ declare var $: any;
 export class CommentComponent implements OnInit {
 
   @Input() comment: Comment;
+  @Output() commentupdate: EventEmitter<Comment> = new EventEmitter();
   private newComment: FormGroup;
 
   public errorMsg: string;
@@ -32,7 +33,7 @@ export class CommentComponent implements OnInit {
   }
 
   addLike(): boolean {
-    
+
     this.comment.addLike(this._authenticationService.user$.value);
     this.updateComment(this.comment);
     return false;
@@ -54,6 +55,16 @@ export class CommentComponent implements OnInit {
       });
   }
 
+  saveAsSolution(comment: Comment) {
+    this._questionDataService.updateComment(comment).subscribe(
+      item => (console.log(item)),
+      (error: HttpErrorResponse) => {
+        this.errorMsg = `Error ${error.status} while updating question for ${
+          comment.message
+          }: ${error.error}`;
+      });
+  }
+
   showModal(): void {
     $(`.small.modal.${this.comment.id}`).modal('show');
   }
@@ -63,7 +74,7 @@ export class CommentComponent implements OnInit {
   }
 
   onSubmitComment() {
-    const newComment = new Comment(this.newComment.value.message, null, "","", this.comment.id);
+    const newComment = new Comment(this.newComment.value.message, null, "", "", this.comment.id);
     console.log(newComment);
     this._questionDataService.addCommentToComment(newComment, this.comment).subscribe(
       item => (this.comment.addComment(item)),
@@ -73,13 +84,15 @@ export class CommentComponent implements OnInit {
       })
   }
 
-  isOwnerPost(){
-    return this.comment.authorPost === this._authenticationService.user.id;
+  isOwnerPost() {
+    return this.comment.authorPost === this._authenticationService.user$.value;
   }
 
   setSolution() {
     this.comment.solution = true;
-    this.updateComment(this.comment);
+
+    this.saveAsSolution(this.comment);
+    this.commentupdate.emit(this.comment);
     return false;
   }
 };

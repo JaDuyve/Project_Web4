@@ -28,19 +28,13 @@ router.get('/API/comments', auth, function (req, res, next) {
 });
 
 router.get('/API/questions', auth, function (req, res, next) {
-  let query = Question.find()
-    .populate({
-      path: 'comments', 
-      populate: {path: 'author'}
-    })
-    .populate('author');
+  let query = Question.find();
   query.exec(function (err, questions) {
     if (err) {
       return next(err);
     }
 
     // console.log(questions);
-
     res.json(questions);
   });
 });
@@ -149,7 +143,7 @@ router.put('/API/question/:question', auth, function (req, res) {
   let question = req.question;
 
   question.description = req.body.description;
-  question.comments = req.body.comments;
+  // question.comments = req.body.comments;
   
   question.likes = req.body.likes;
   question.dislikes = req.body.dislikes;
@@ -164,11 +158,12 @@ router.put('/API/question/:question', auth, function (req, res) {
   });
 });
 
+
+
 router.put('/API/comment/:comment', auth, function (req, res) {
   let comment = req.comment;
 
   comment.message = req.body.message;
-  comment.comments = req.body.comments;
   
   comment.likes = req.body.likes;
   comment.dislikes = req.body.dislikes;
@@ -182,6 +177,8 @@ router.put('/API/comment/:comment', auth, function (req, res) {
     res.json(req.body);
   });
 });
+
+
 
 router.post('/API/question/:question/comments', auth, function (req, res, next) {
   User.findById(req.body.authorId, function (err, usr) {

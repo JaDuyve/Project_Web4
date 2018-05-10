@@ -6,11 +6,15 @@
     {{comment.author.username}}
   </a>
   <div class="metadata">
-    <span class="date">
-      {{comment.created | date: 'longDate'}} </span>
+    <span title="{{comment.created | date: 'longDate'}}" class="date">
+        {{comment.formatDate()}}</span>
+    
+    <div *ngIf="comment.solution" class="ui label">
+      <i class="yellow lightbulb icon"></i> Solution
+    </div>
   </div>
   <div class="text">
-    <i *ngIf="comment.solution" class="check circle icon"> </i>{{comment.message}}
+    {{comment.message}}
   </div>
   <div *ngIf="comment.hasImage()">
     <img src="data:{{comment.contentType}};base64,{{comment.dataImage}}" (click)="showImageModal()" class="ui medium rounded image">
@@ -22,10 +26,10 @@
     <a class="like" (click)="addDislike()">
       <i class="thumbs down icon"></i> {{ comment.showAantalDislikes()}}
     </a>
-    <a *ngIf="isOwnerPost()" (click)="setSolution()">
+    <a *ngIf="isOwnerPost() && !comment.solution" (click)="setSolution()">
       Good Solution
     </a>
-    <a (click)="showModal()">Reply</a>
+    <!-- <a (click)="showModal()">Reply</a> -->
   </div>
 </div>
 
@@ -47,16 +51,13 @@
     <div class="ui cancel button">Cancel</div>
     <div (click)='onSubmitComment()' class="ui green button">Send</div>
   </div>
-  <!-- REMOVE {{ comment.value | json }}
-    <br> {{ comment.get("message").errors | json}}
-    <br> {{ comment.valid }}
-    <br> {{spy.className}} -->
+  
 </div>
 
 <div class="ui basic modal {{comment.id}} image">
 
-    <div class="content">
-      <img src="data:{{comment.contentType}};base64,{{comment.dataImage}}" class="ui rounded image">
-  
-    </div>
+  <div class="content">
+    <img src="data:{{comment.contentType}};base64,{{comment.dataImage}}" class="ui rounded image">
+
   </div>
+</div>
