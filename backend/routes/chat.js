@@ -7,24 +7,25 @@ let Comment = mongoose.model('Comment');
 let Group = mongoose.model('Group');
 let User = mongoose.model('User');
 let Chatroom = mongoose.model('Chatroom');
+let Message = mongoose.model('Message');
+
 let jwt = require('express-jwt');
 
 let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
 router.get('/users', auth, function (req, res, next) {
-    let query = User.find({ autopopulate: false });
+    let query = User.find();
     query.exec(function (err, comments) {
         if (err) {
             return next(err);
         }
-
+        console.log(comments);
         res.json(comments);
     });
 });
 
-router.post('/chatroom/', function (req, res, next) {
+router.post('/chatroom', auth, function (req, res, next) {
     User.findById(req.body.user1Id, function (err, usr1) {
-        console.log(req.body);
         if (err) {
             return next(err);
         }
@@ -48,7 +49,8 @@ router.post('/chatroom/', function (req, res, next) {
 
                 }
 
-                us1.chatrooms.push(chat);
+                us1.chatrooms.push(chat._id);
+                us2.chatrooms.push(chat._id);
                 let c = chat;
                 us1.save(function (err, urs) {
                     if (err) {
@@ -71,5 +73,80 @@ router.post('/chatroom/', function (req, res, next) {
 
     });
 })
+
+
+router.param('chatrooms', function (req, res, next, id) {
+    let query = User.findOne({ username: id });
+    query.exec(function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return next(new Error('not found ' + id));
+        }
+        req.user = user;
+        return next();
+    });
+});
+
+router.get('/chatrooms/:chatrooms', function (req, res, next) {
+
+    let userChats = req.user.chatrooms;
+
+
+    Chatroom.find({
+        '_id': { $in: userChats.map(val => mongoose.Types.ObjectId(val)) }
+    }, function (err, docs) {
+        console.log(docs);
+        res.json(docs);
+    });
+
+});
+router.param('chatroom', function (req, res, next, id) {
+
+    let query = Chatroom.findById(id);
+    query.exec(function (err, chatroom) {
+        if (err) {
+            return next(err);
+        }
+        if (!chatroom) {
+            return next(new Error('not found ' + id));
+        }
+        console.log(chatroom);
+        req.chatroom = chatroom;
+        return next();
+    });
+});
+
+router.post('/chatroom/:chatroom/message', function (req, res, next) {
+    let chatroom = req.chatroom;
+
+    let message = new Message({
+        message: req.body.message,
+        created: req.body.created,
+        author: req.body.author
+    });
+
+    message.save(function (err, msg) {
+        if (err) {
+            return next(err);
+        }
+        console.log(chatroom);
+        chatroom.Messages.push(msg);
+        chatroom.lastMessage = msg.created;
+        chatroom.lastMess = msg.message;
+
+        chatroom.save(function (err, chatroom) {
+            if (err) {
+                Message.remove({ _id: { $in: chatroom.Messages } });
+                return next(err);
+            }
+
+            res.json(msg);
+        })
+    });
+});
+
+
 
 module.exports = router;

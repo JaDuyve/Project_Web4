@@ -1,5 +1,5 @@
-<div class="chatcontrol">
-    <input type="text" class="form-control chatinput" />
-    <button class="btn btn-success sendbtn" (click)="sendMessage()">Send</button>
-  </div>
-  
+
+  <form class="ui fluid action input"[formGroup]='newMessage' >
+    <input type="text" placeholder="Message..." formControlName='message'>
+    <div class="ui button" (click)="sendMessage()">Send</div>
+  </form>

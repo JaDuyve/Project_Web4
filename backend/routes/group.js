@@ -78,7 +78,7 @@ router.post('/add', auth, function (req, res, next) {
                 return next(err);
             }
 
-            res.json({ 'groupadd': 'ok' })
+            res.json({ 'groupid': g.groupName })
         });
     });
 });

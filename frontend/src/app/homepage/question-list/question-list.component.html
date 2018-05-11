@@ -15,41 +15,49 @@
     </div>
   </div>
   <div class="ui divider"></div>
+  <div class="ui grid">
+    <div class="five wide column">
+      <div class="ui vertical menu">
+        <a (click)="showGroupModal()" class="active teal item">
+          Create groep
+        </a>
+        <div class="item">
+          <h4 class="ui header">Groups</h4>
+        </div>
+        <div *ngFor="let groupname of groups">
+          <a href="homepage/group/{{groupname.groupName}}" class="item">
+            {{groupname.groupName}}
+          </a>
+        </div>
 
-  <div class="ui feed">
-    <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question"
-      (rmQuestion)="removeQuestion($event)"></question>
-  </div>
-</div>
-<div class="ui vertical menu">
-  <a (click)="showGroupModal()" class="active teal item">
-    Create groep
-  </a>
-  <div class="item">
-    <h4 class="ui header">Groups</h4>
-  </div>
-  <div *ngFor="let groupname of groups">
-      <a href="homepage/group/{{groupname.groupName}}" class="item">
-        {{groupname.groupName}}
-      </a>
-  </div>
+        <div class="item">
+          <h4 class="ui header">Joined Groups</h4>
+        </div>
+        <div *ngFor="let groupname of user.joinedGroups">
+          <a href="homepage/group/{{groupname}}" class="item">
+            {{groupname}}
+          </a>
 
-  <div class="item">
-    <h4 class="ui header">Joined Groups</h4>
-  </div>
-  <div *ngFor="let groupname of user.joinedGroups">
-    <a href="homepage/group/{{groupname}}" class="item">
-      {{groupname}}
-    </a>
-
-  </div>
-  <!-- <div class="item">
-    <div class="ui transparent icon input">
-      <input type="text" placeholder="Search mail...">
-      <i class="search icon"></i>
+        </div>
+        <!-- <div class="item">
+              <div class="ui transparent icon input">
+                <input type="text" placeholder="Search mail...">
+                <i class="search icon"></i>
+              </div>
+            </div> -->
+      </div>
     </div>
-  </div> -->
+    <div class="eleven wide column">
+      <div class="ui feed">
+        <question class="event ui" *ngFor="let question of questions | questionFilter: filterQuestionName" [question]="question"
+          (rmQuestion)="removeQuestion($event)"></question>
+      </div>
+    </div>
+
+  </div>
+
 </div>
+
 
 <div class="ui small modal group">
   <i class="close icon"></i>
@@ -71,14 +79,14 @@
           a group with that name already exists
         </div>
       </div>
-      <div class="inline field">
+      <!-- <div class="inline field">
         <div class="ui checkbox">
           <input type="checkbox" formControlName="private" class="">
           <label class="center-block">
             private group
           </label>
         </div>
-      </div>
+      </div> -->
       <div class="actions">
         <div class="ui ok button">Cancel</div>
         <button type="submit" [disabled]="!group.valid" class="ui positive ok button">Create</button>

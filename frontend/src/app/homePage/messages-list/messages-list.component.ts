@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ViewChild,AfterViewInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { Message } from '../../models/Message.model';
 import { MessageItemComponent } from '../message-item/message-item.component';
+import { Chatroom } from '../../models/chatroom.model';
+import { AuthenticationService } from '../../user/authentication.service';
 
 @Component({
   selector: 'messages-list',
@@ -9,13 +11,13 @@ import { MessageItemComponent } from '../message-item/message-item.component';
 })
 export class MessagesListComponent implements OnInit {
   @Input('messages')
-  private messages: Message[];
+  private messages: Chatroom;
 
   @ViewChild('chatlist', { read: ElementRef }) chatList: ElementRef;
   @ViewChildren(MessageItemComponent, { read: ElementRef }) chatItems: QueryList<MessageItemComponent>;
 
 
-  constructor() { }
+  constructor(private _authService: AuthenticationService) { }
 
   ngOnInit() {
   }
@@ -35,4 +37,14 @@ export class MessagesListComponent implements OnInit {
       console.log('Could not find the "chatList" element.');
     }
   }
+
+  getUser(){
+    if (this.messages.user1.username === this._authService.user.username) {
+      return this.messages.user2;
+    } else {
+      return this.messages.user1;
+    }
+  }
+
+ 
 }

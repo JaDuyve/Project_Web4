@@ -1,17 +1,62 @@
-<button (click)="showUsers()">Start chat</button>
-<div class="chatform">
-  <messages-list [messages]="messages"></messages-list>
-  <message-form [message]="message" [messages]="messages"></message-form>
-</div>
+<div class="ui container">
+  <div class="ui vertical segment">
+    <div class="ui secondary menu">
+      <div class="item">
+        <h1 class="ui header">Chat</h1>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="ui grid">
+      <div class="five wide column">
+        <div class="ui vertical menu">
+          <a (click)="showUsers()" class="active teal item">
+            Start chat
+          </a>
+          <div class="item">
+            <h4 class="ui header">Chats</h4>
+          </div>
+          <div *ngFor="let chatroom of chatrooms">
+            <a (click)="switchCurrentChatroom(chatroom)" class="item">
+              {{getUser(chatroom).username}}
+            </a>
+          </div>
 
-<div class="ui small modal">
-  <i class="close icon"></i>
-  <div class="header">Users</div>
-  <div class="content">
-    <div *ngFor="let user of users">
-      <a (click)="chooseUser(user.id)" class="ok label">
-          <img src="{{user.getProfilePicture()}}"> <span>{{user.username}}</span>
-      </a>
+
+          <!-- <div class="item">
+        <div class="ui transparent icon input">
+          <input type="text" placeholder="Search mail...">
+          <i class="search icon"></i>
+        </div>
+      </div> -->
+        </div>
+
+      </div>
+      <div class="eleven wide column">
+        <div *ngIf="currentChatroom !== null">
+          <messages-list [messages]="currentChatroom"></messages-list>
+          <message-form [message]="message" (newMessageEmit)="sendMessage($event)" [messages]="currentChatroom"></message-form>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="ui small modal chat">
+      <i class="close icon"></i>
+      <div class="header">Users</div>
+      <div class="content">
+        <div class="ui middle aligned selection list" *ngFor="let user of users">
+          <div class="item" (click)="chooseUser(user.id)">
+            <img class="ui avatar image" src="{{user.getProfilePicture()}}">
+            <div class="content">
+              <div  class="ok header">
+                {{user.username}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>

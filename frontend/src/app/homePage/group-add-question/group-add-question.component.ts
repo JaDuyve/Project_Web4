@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Question } from '../../models/question.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from '../../user/authentication.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'group-add-question',
@@ -26,10 +26,7 @@ export class GroupAddQuestionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.question = this.fb.group({
-      description: [''],
-      image: ''
-    });
+    this.resetForm()
   }
 
   onSubmit() {
@@ -53,17 +50,10 @@ export class GroupAddQuestionComponent implements OnInit {
       quest.authorId = this._authenticationService.user.id;
 
       this.newQuestion.emit(quest);
-      // this._questionDataService.addPublicQuestion(quest).subscribe(
-      //   item => console.log(item)
-      //   ,
-      //   (error: HttpErrorResponse) => {
-      //     this.errorMsg = `Error ${error.status} while updating question for ${
-      //       quest.description
-      //       }: ${error.error}`;
-      //   });
+        
+      this.resetForm();
+      
     }
-
-    // this.router.navigate(['/homepage/list']);
 
   }
 
@@ -77,18 +67,16 @@ export class GroupAddQuestionComponent implements OnInit {
       this.files[0].type
     );
     quest.authorId = this._authenticationService.user.id;
-
+    this.resetForm();
     this.newQuestion.emit(quest);
 
-    // this._questionDataService.addPublicQuestion(quest).subscribe(
-    //   item => console.log(item)
-    //   ,
-    //   (error: HttpErrorResponse) => {
-    //     this.errorMsg = `Error ${error.status} while updating question for ${
-    //       quest.description
-    //       }: ${error.error}`;
-    //   });
-    // this.router.navigate(['/homepage/list']);
+  }
+
+  private resetForm() {
+    this.question = this.fb.group({
+      description: ['', [Validators.required, Validators.minLength(5)]],
+      image: ''
+    });
   }
 
   handleFileSelect(evt) {

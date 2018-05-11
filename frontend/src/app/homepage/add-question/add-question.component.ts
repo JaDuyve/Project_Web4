@@ -2,9 +2,9 @@ import { Router } from '@angular/router';
 import { QuestionDataService } from './../question-data.service';
 import { Question } from './../../models/question.model';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
+import { FormBuilder, FormGroup, ValidatorFn, Validators, AbstractControl } from '@angular/forms';
 
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../user/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -17,7 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AddQuestionComponent implements OnInit {
 
-  private question: FormGroup;
+  public question: FormGroup;
   public errorMsg: string;
 
   private base64textString: string = "";
@@ -32,9 +32,11 @@ export class AddQuestionComponent implements OnInit {
 
   }
 
+  
+
   ngOnInit() {
     this.question = this.fb.group({
-      description: [''],
+      description: ['', [Validators.required, Validators.minLength(5)]],
       image: ''
     });
   }

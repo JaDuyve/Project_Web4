@@ -1,4 +1,3 @@
-import { Chatroom } from "./chatroom.model";
 
 export class User {
     private _username: string;
@@ -8,7 +7,7 @@ export class User {
     private _contentTypePF: string;
     private _password: string;
     private _joinedGroups: string[];
-    private _chatrooms: Chatroom[];
+    private _chatrooms: string[];
 
     constructor(username: string, 
         prof: boolean, 
@@ -20,6 +19,7 @@ export class User {
         this._contentTypePF = contentTypePF;
         this._password = password;
         this._joinedGroups = new Array();
+        this._chatrooms = new Array();
         this._id = "";
     }
 
@@ -60,12 +60,12 @@ export class User {
         this._joinedGroups = groups;
     }
 
-    get chatrooms(): Chatroom[] {
+    get chatrooms(): string[] {
         
         return this._chatrooms;
     }
 
-    set chatrooms(groups: Chatroom[]) {
+    set chatrooms(groups: string[]) {
         this._chatrooms = groups;
     }
 
@@ -88,7 +88,7 @@ export class User {
             
         );
 
-        pq._chatrooms = json.chatrooms.map(Chatroom.fromJSON)
+        pq._chatrooms = json.chatrooms;
         pq._joinedGroups = json.joinedGroups
         pq._id = json._id;
 
@@ -103,6 +103,7 @@ export class User {
             contentTypePF: this._contentTypePF,
             password: this._password,
             joinedGroups: this._joinedGroups,
+            chatrooms: this._chatrooms,
             _id: this._id
         };
     }

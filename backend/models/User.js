@@ -14,11 +14,7 @@ let UserSchema = new mongoose.Schema({
     dataPF: String,
     contentTypePF: String,
     joinedGroups: [String],
-    chatrooms: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chatroom',
-        autopopulate: true
-    }]
+    chatrooms: [String]
 });
 
 UserSchema.methods.setPassword = function (password) {

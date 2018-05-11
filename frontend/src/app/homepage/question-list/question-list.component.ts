@@ -9,6 +9,8 @@ import { Subject } from 'rxjs/Subject';
 import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 import { GroupDataService } from '../group-data.service';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 
 
@@ -23,7 +25,7 @@ export class QuestionListComponent implements OnInit {
 
   private _questions: Question[];
   private _groups: Group[];
-
+  private _user: User;
 
   public errorMsg: string;
   public group: FormGroup;
@@ -34,6 +36,7 @@ export class QuestionListComponent implements OnInit {
   constructor(
     private _questionDataService: QuestionDataService,
     private fb: FormBuilder,
+    private _router: Router,
     private _authService: AuthenticationService,
     private _groupDataService: GroupDataService
   ) {
@@ -46,6 +49,8 @@ export class QuestionListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._user = this._authService.user;
+
     this._questionDataService.questions.subscribe(
       items => {
         this._questions = items.reverse();
@@ -60,7 +65,7 @@ export class QuestionListComponent implements OnInit {
           return val.users.filter(val => {
             return val.username === this._authService.user.username;
           }).length === 0;
-          
+
         });;
       }
     );
@@ -113,7 +118,12 @@ export class QuestionListComponent implements OnInit {
   onSubmitCreate() {
     const newGroup = new Group(this.group.value.group_name, this.group.value.private, this._authService.user);
 
-    this._groupDataService.addGroup(newGroup).subscribe();
+    this._groupDataService.addGroup(newGroup).subscribe(item => {
+        console.log(item);
+        this._router.navigate([`/homepage/group/${item}`])
+    }
+
+    );
   }
 
   private serverSideValidateGroupname(): ValidatorFn {

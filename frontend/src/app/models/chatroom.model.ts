@@ -2,12 +2,11 @@ import { Message } from "./Message.model";
 import { User } from "./user.model";
 
 export class Chatroom {
-    message: Message;
     lastMessage: Date;
     user1: User;
     user2: User; 
     _id: string; 
-    Messages: [Message];
+    private _messages: Message[];
     lastMess: string;
     user1Id: string;
     user2Id: string;
@@ -17,6 +16,15 @@ export class Chatroom {
         this.user1 = user1;
         this.user2 = user2;
         this.lastMess = lastMess;
+        this._messages = messages;
+    }
+
+    get messages(): Message[] {
+        if (!this._messages){
+            this._messages = new Array();
+        }
+
+        return this._messages;
     }
 
     static fromJSON(json: any): Chatroom {
@@ -36,7 +44,7 @@ export class Chatroom {
     toJSON() {
         return {
             _id: this._id,
-            message: this.message,
+            Messages: this.messages,
             user1Id: this.user1Id,
             user2Id: this.user2Id,
             lastMessage: this.lastMessage,

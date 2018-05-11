@@ -1,18 +1,21 @@
 <div class="ui container">
-    <form class="ui segment form topje" [formGroup]='question' (ngSubmit)='onSubmit()'>
-      <div class="field">
-        <label for="ques">Add Question</label>
-        <input id="q" name="ques" formControlName='description' #spy>
-        <div *ngIf='question.get("description").errors?.required && question.get("description").touched' class='ui pointing red basic label'>
-          a question must have a name of at least 10 characters long
-        </div>
+  <form class="ui segment form topje" [formGroup]='question' (ngSubmit)='onSubmit()'>
+    <div class="field">
+      <label for="ques">Add Question</label>
+      <input id="q" name="ques" formControlName='description' #spy>
+      <div class='ui pointing red basic label' *ngIf='question.get("description").errors?.required && question.get("description").touched'>
+        a description is required
       </div>
-      <div class="field">
-        <label for="pic">picture</label>
-        <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
+      <div class='ui pointing red basic label' *ngIf='group.get("description").errors?.minlength && question.get("description").touched'>
+        the description should be at least {{question.get("description").errors?.minlength.requiredLength }} letters
       </div>
-      <button type='submit' class="ui positive right button">
-        add question
-      </button>
-    </form>
-  </div>
+    </div>
+    <div class="field">
+      <label for="pic">picture</label>
+      <input type="file" id="Image" name="pic" (change)="handleFileSelect($event)" accept="image/*">
+    </div>
+    <button type='submit' [disabled]="!question.valid" class="ui positive right button">
+      add question
+    </button>
+  </form>
+</div>

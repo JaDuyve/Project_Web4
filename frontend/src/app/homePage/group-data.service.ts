@@ -22,16 +22,12 @@ export class GroupDataService {
     return this.http.get(theUrl).pipe(map((list: any[]): Group[] => list.map(Group.fromJSON)));
   }
 
-  addGroup(group: Group): Observable<boolean> {
+  addGroup(group: Group): Observable<string> {
     return this.http
       .post(`${this._appUrl}groups/add`, group)
       .pipe(
         map((item: any) => {
-          if (item.groupadd === 'ok') {
-            return false;
-          } else {
-            return true;
-          }
+          return item.groupid;
       })
     );
   }

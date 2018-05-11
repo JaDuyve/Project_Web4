@@ -5,7 +5,6 @@ let MessageSchema = new mongoose.Schema({
     message: String,
     created: Date,
     author: String,
-    receiver: String
 });
 
 MessageSchema.plugin(autopopulate);
@@ -16,5 +15,12 @@ MessageSchema.plugin(autopopulate);
 //         { safe: true, multi: true },
 //         next);
 // });
+
+MessageSchema.pre('remove', function (next) {
+    this.model('Chatroom').update({},
+        { $pull: { Messages: this._id } },
+        { safe: true, multi: true },
+        next);
+});
 
 mongoose.model('Message', MessageSchema);
