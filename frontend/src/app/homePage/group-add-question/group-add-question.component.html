@@ -6,7 +6,7 @@
       <div class='ui pointing red basic label' *ngIf='question.get("description").errors?.required && question.get("description").touched'>
         a description is required
       </div>
-      <div class='ui pointing red basic label' *ngIf='group.get("description").errors?.minlength && question.get("description").touched'>
+      <div class='ui pointing red basic label' *ngIf='question.get("description").errors?.minlength && question.get("description").touched'>
         the description should be at least {{question.get("description").errors?.minlength.requiredLength }} letters
       </div>
     </div>
@@ -18,4 +18,4 @@
       add question
     </button>
   </form>
-</div>
+</div>♣

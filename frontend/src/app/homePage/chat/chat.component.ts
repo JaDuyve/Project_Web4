@@ -112,10 +112,8 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage(message: Message) {
-    console.log(this._currentChatroom);
 
     // this._currentChatroom.messages.push(message);
-    console.log(message);
     this._chatService.Messag(this._currentChatroom, message)
       .subscribe(res => {
         this._currentChatroom.messages.push(res)

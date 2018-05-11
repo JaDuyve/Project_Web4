@@ -37,7 +37,6 @@ export class MessageFormComponent implements OnInit {
     if (this.newMessage.value.message !== "") {
       let message = new Message(this.newMessage.value.message, this._authService.user.username);
       this.newMessageEmit.emit(message);
-      console.log("qsmdljf");
       this.resetForm();
     }
 

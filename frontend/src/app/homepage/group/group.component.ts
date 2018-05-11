@@ -28,10 +28,8 @@ export class GroupComponent implements OnInit {
   }
 
   joinGroup(): boolean {
-    console.log(this._authenticationService.user);
     this._group.users.push(this._authenticationService.user);
     this._group.userAdded = this._authenticationService.user.id;
-    console.log(this._group);
     this._groupDataService.updateGroup(this._group).subscribe(
       item => {
         this._authenticationService.user.joinedGroups.push(this.group.groupName)
