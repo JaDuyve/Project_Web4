@@ -7,6 +7,11 @@ url: https://studybudy-frontend.herokuapp.com/
 user: web4
 password: Webapplicaties4
 
+concept:
+  leerlingen kunnen vragen stellen waar andere op kunnen antwoorden.
+  leerlingen kunnen groepen maken voor bijvoorbeeld een bepaald vak of richting.
+  leerlingen kunnen met elkaar praten om makkelijker dingen te bespreken.
+
 functionaliteit: 
   users:
   Registreren, inloggen en uitloggen.
