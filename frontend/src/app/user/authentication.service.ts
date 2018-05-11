@@ -46,6 +46,12 @@ export class AuthenticationService {
     return this._user;
   }
 
+  get users(): Observable<User[]> {
+    return this.http
+      .get(`/API/groups/users`)
+      .pipe(map((list: any[]): User[] => list.map(User.fromJSON)));
+  }
+
   set user(obj) {
     this.http.post('/API/finduser', { username: this._user$.value })
       .pipe(

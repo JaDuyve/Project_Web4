@@ -13,7 +13,12 @@ let UserSchema = new mongoose.Schema({
     salt: String,
     dataPF: String,
     contentTypePF: String,
-    joinedGroups: [String]
+    joinedGroups: [String],
+    chatrooms: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chatroom',
+        autopopulate: true
+    }]
 });
 
 UserSchema.methods.setPassword = function (password) {

@@ -1,0 +1,17 @@
+<button (click)="showUsers()">Start chat</button>
+<div class="chatform">
+  <messages-list [messages]="messages"></messages-list>
+  <message-form [message]="message" [messages]="messages"></message-form>
+</div>
+
+<div class="ui small modal">
+  <i class="close icon"></i>
+  <div class="header">Users</div>
+  <div class="content">
+    <div *ngFor="let user of users">
+      <a (click)="chooseUser(user.id)" class="ok label">
+          <img src="{{user.getProfilePicture()}}"> <span>{{user.username}}</span>
+      </a>
+    </div>
+  </div>
+</div>

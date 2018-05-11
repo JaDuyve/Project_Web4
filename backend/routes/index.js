@@ -228,7 +228,8 @@ router.post('/API/finduser', function (req, res, next) {
       dataPF: user.dataPF,
       contentTypePF: user.contentTypePF,
       _id: user._id,
-      joinedGroups: user.joinedGroups
+      joinedGroups: user.joinedGroups,
+      chatrooms: user.chatrooms
     })
 
 

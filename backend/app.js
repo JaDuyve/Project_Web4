@@ -12,12 +12,16 @@ require('./models/Comment');
 require('./models/Question');
 require('./models/User');
 require('./models/Group');
+require('./models/Message');
+require('./models/Chatroom');
 
 require('./config/passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var groups = require('./routes/group');
+var chats = require('./routes/chat');
+
 
 var app = express();
 
@@ -42,6 +46,7 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/API/users', users);
 app.use('/API/groups', groups);
+app.use('/API/chats', chats);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

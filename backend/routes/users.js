@@ -5,7 +5,6 @@ var User = mongoose.model('User');
 let passport = require("passport");
 let jwt = require('express-jwt');
 
-let auth = jwt({ secret: process.env.STUDYBUD_BACKEND_SECRET });
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -83,5 +82,7 @@ router.post('/userUpdate', function (req, res, next) {
     });
   });
 });
+
+
 
 module.exports = router;

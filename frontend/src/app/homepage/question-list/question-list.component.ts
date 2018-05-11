@@ -58,7 +58,7 @@ export class QuestionListComponent implements OnInit {
       items => {
         this._groups = items.filter(val => {
           return val.users.filter(val => {
-            return val.username = this._authService.user.username;
+            return val.username === this._authService.user.username;
           }).length === 0;
           
         });;
@@ -84,7 +84,6 @@ export class QuestionListComponent implements OnInit {
     this._questionDataService.addPublicQuestion(question).subscribe(
       item => {
         this._questions.push(item);
-        console.log(item)
       },
       (error: HttpErrorResponse) => {
         this.errorMsg = `Error ${error.status} while adding question ${question}: ${error.error}`;
@@ -108,7 +107,6 @@ export class QuestionListComponent implements OnInit {
   }
 
   get user() {
-    console.log(this._authService.user);
     return this._authService.user;
   }
 

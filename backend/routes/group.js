@@ -154,5 +154,15 @@ router.put('/group/:group', auth, function (req, res, next) {
     });
 });
 
+router.get('/users', function (req, res, next) {
+    let query = User.find().select('dataPF contentType username contentTypePF chatrooms');
+    query.exec(function (err, comments) {
+      if (err) {
+        return next(err);
+      }
+      console.log(comments);
+      res.json(comments);
+    });
+  });
 
 module.exports = router;

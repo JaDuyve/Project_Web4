@@ -19,6 +19,11 @@ import { GroupDataService } from './group-data.service';
 import { GroupResolverService } from './group-resolver.service';
 import { GroupQuestionListComponent } from './group-question-list/group-question-list.component';
 import { GroupAddQuestionComponent } from './group-add-question/group-add-question.component';
+import { ChatComponent } from './chat/chat.component';
+import { MessagesListComponent } from './messages-list/messages-list.component';
+import { MessageItemComponent } from './message-item/message-item.component';
+import { MessageFormComponent } from './message-form/message-form.component';
+import { ChatService } from './chat.service';
 
 
 const routes: Routes = [
@@ -35,6 +40,10 @@ const routes: Routes = [
         path: 'group/:id',
         component: GroupComponent,
         resolve: { group: GroupResolverService }
+    },
+    {
+        path: 'chat',
+        component: ChatComponent
     }
 ];
 
@@ -57,9 +66,19 @@ const routes: Routes = [
         GroupComponent,
         QuestionfilterService,
         GroupQuestionListComponent,
-        GroupAddQuestionComponent
+        GroupAddQuestionComponent,
+        ChatComponent,
+        MessagesListComponent,
+        MessageItemComponent,
+        MessageFormComponent
     ],
-    providers: [BaseUrlInterceptor, httpInterceptorProviders, QuestionDataService, GroupDataService, QuestionResolverService, GroupResolverService]
+    providers: [BaseUrlInterceptor,
+         httpInterceptorProviders, 
+         QuestionDataService, 
+         GroupDataService, 
+         QuestionResolverService, 
+         GroupResolverService,
+        ChatService]
 })
 
 export class HomepageModule { }

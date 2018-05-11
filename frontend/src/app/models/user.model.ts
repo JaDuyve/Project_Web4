@@ -1,3 +1,5 @@
+import { Chatroom } from "./chatroom.model";
+
 export class User {
     private _username: string;
     private _id: string;
@@ -6,6 +8,7 @@ export class User {
     private _contentTypePF: string;
     private _password: string;
     private _joinedGroups: string[];
+    private _chatrooms: Chatroom[];
 
     constructor(username: string, 
         prof: boolean, 
@@ -57,6 +60,15 @@ export class User {
         this._joinedGroups = groups;
     }
 
+    get chatrooms(): Chatroom[] {
+        
+        return this._chatrooms;
+    }
+
+    set chatrooms(groups: Chatroom[]) {
+        this._chatrooms = groups;
+    }
+
     getProfilePicture(): string {
         if (this.dataPF !== ""){
             return `data:${this._contentTypePF};base64,${this._dataPF}`;
@@ -75,6 +87,8 @@ export class User {
             json.contentTypePF,
             
         );
+
+        pq._chatrooms = json.chatrooms.map(Chatroom.fromJSON)
         pq._joinedGroups = json.joinedGroups
         pq._id = json._id;
 
