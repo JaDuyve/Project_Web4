@@ -18,7 +18,7 @@ declare var $: any;
 export class QuestionDetailComponent implements OnInit {
 
   private _question: Question;
-  private comment: FormGroup;
+  public comment: FormGroup;
   public errorMsg: string;
   private base64textString: string;
   private files;

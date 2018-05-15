@@ -18,7 +18,7 @@ export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
   @Output() rmQuestion = new EventEmitter<Question>();
-  private comment: FormGroup;
+  public comment: FormGroup;
   public errorMsg: string;
   private base64textString: string;
   private files;

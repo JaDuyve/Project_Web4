@@ -11,7 +11,7 @@ import { AuthenticationService } from '../../user/authentication.service';
 })
 export class MessagesListComponent implements OnInit {
   @Input('messages')
-  private messages: Chatroom;
+  public messages: Chatroom;
 
   @ViewChild('chatlist', { read: ElementRef }) chatList: ElementRef;
   @ViewChildren(MessageItemComponent, { read: ElementRef }) chatItems: QueryList<MessageItemComponent>;

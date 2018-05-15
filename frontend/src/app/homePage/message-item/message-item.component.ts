@@ -11,11 +11,11 @@ import { AuthenticationService } from '../../user/authentication.service';
 export class MessageItemComponent implements OnInit {
 
   @Input('message')
-  private message: Message;
+  public message: Message;
 
 
   @Input('chatroom')
-  private chatroom: Chatroom;
+  public chatroom: Chatroom;
 
   constructor(private _authService: AuthenticationService) { }
 

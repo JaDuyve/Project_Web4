@@ -1,3 +1,4 @@
+import { basehttpInterceptorProviders } from './../http-interceptors/index';
 import { QuestionResolverService } from './question-resolver.service';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { QuestionComponent } from './question/question.component';
@@ -72,7 +73,7 @@ const routes: Routes = [
         MessageItemComponent,
         MessageFormComponent
     ],
-    providers: [BaseUrlInterceptor,
+    providers: [basehttpInterceptorProviders,
          httpInterceptorProviders, 
          QuestionDataService, 
          GroupDataService, 

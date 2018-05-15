@@ -1,3 +1,4 @@
+import { basehttpInterceptorProviders } from './../http-interceptors/index';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthenticationService } from './authentication.service';
@@ -27,6 +28,6 @@ const routes: Routes = [
     LoginComponent,
     RegisterComponent,
     LogoutComponent],
-  providers: [AuthenticationService, AuthGuardService]
+  providers: [basehttpInterceptorProviders, AuthenticationService, AuthGuardService]
 })
 export class UserModule { }

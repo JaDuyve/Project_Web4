@@ -16,7 +16,7 @@ export class CommentComponent implements OnInit {
 
   @Input() comment: Comment;
   @Output() commentupdate: EventEmitter<Comment> = new EventEmitter();
-  private newComment: FormGroup;
+  public newComment: FormGroup;
 
   public errorMsg: string;
 

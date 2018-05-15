@@ -7,7 +7,7 @@
   "start": "node server",
   "deploy-backend": "git subtree push --prefix backend studybudy-backend master",
   "build-frontend": "cd frontend && ng build --prod",
-  "commit-build-changes": "git add . && git commit -m 'chore(build): build files'",
+  "commit-build-changes": "git add . && git commit -m 'build files'",
   "deploy-frontend": "npm run build-frontend && npm run copy && npm run commit-build-changes && git subtree push --prefix serve-frontend studybudy-frontend master",
   "copy": "cpx 'frontend/dist/**' serve-frontend/www"
  },

@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators, AbstractControl } from
 })
 export class GroupAddQuestionComponent implements OnInit {
 
-  private question: FormGroup;
+  public question: FormGroup;
   public errorMsg: string;
   @Output() public newQuestion = new EventEmitter<Question>();
 
