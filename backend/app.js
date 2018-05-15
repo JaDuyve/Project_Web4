@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let passport = require('passport');
 
-mongoose.connect('mongodb://localhost/studybuddb');
+mongoose.connect(process.env.STUDYBUDY_DATABASE || 'mongodb://localhost/studybuddb');
 require('./models/Comment');
 require('./models/Question');
 require('./models/User');
@@ -23,7 +23,11 @@ var groups = require('./routes/group');
 var chats = require('./routes/chat');
 
 
+
 var app = express();
+
+let cors = require('cors');
+app.use(cors({origin: '*'}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
