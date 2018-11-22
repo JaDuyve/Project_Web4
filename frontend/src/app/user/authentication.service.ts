@@ -87,7 +87,7 @@ export class AuthenticationService {
             return false;
           }
         })
-      )
+      );
   }
 
   register(user: User): Observable<boolean> {
@@ -110,7 +110,7 @@ export class AuthenticationService {
             return false;
           }
         })
-      )
+      );
   }
 
   logout() {

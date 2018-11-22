@@ -18,8 +18,8 @@ export class Question {
     constructor(
         description: string,
         author: User = null,
-        dataImage: string = "",
-        contentType: string = "",
+        dataImage: string = '',
+        contentType: string = '',
         hasSolution: boolean = false,
         likes: Set<string> = new Set(),
         dislikes: Set<string> = new Set(),
